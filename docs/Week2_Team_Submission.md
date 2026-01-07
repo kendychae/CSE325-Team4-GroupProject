@@ -76,15 +76,18 @@ This document tracks the required submissions for Week 2 Group Project: Setup, P
 
 ### Attendees
 
-- ✅ Kendahl Bingham (Team Leader - Week 1)
+- ✅ Kendahl Chae Bingham (Team Leader - Week 1)
 - ✅ Shayla Foley
 - ✅ Judy Hanson
 - ✅ Michael Effiong Akpan
 - ✅ Adetokunbo Olutola Osibo
 - ✅ Gabriel Enrique Torrejon Aguilera
 - ✅ Curtis Guelable Siahe
+- ✅ Djimy Francillon
+- ✅ Iyen Samuel Evbosaru
+- ✅ Maxwell Balla Nvani
 
-**Total Present:** [X/7]  
+**Total Present:** [X/10]  
 **Absent:** [List any absent members]
 
 ---
@@ -95,7 +98,7 @@ This document tracks the required submissions for Week 2 Group Project: Setup, P
 
 ### Repository Setup Details
 
-- Repository created by: Kendahl Bingham (Team Leader)
+- Repository created by: Kendahl Chae Bingham (Team Leader)
 - Repository type: Public/Private [specify]
 - Initial files included:
   - ✅ README.md with all team member names
@@ -270,7 +273,7 @@ Below are the application proposals our team is considering for the semester pro
 
 ## 👨‍💼 Leadership Rotation
 
-- **Week 1 Leader:** Kendahl Bingham
+- **Week 1 Leader:** Kendahl Chae Bingham
 - **Week 2 Leader:** [To be selected during Week 2 meeting]
 - **Week 3 Leader:** [TBD]
 

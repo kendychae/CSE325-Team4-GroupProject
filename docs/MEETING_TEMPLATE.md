@@ -9,13 +9,16 @@
 
 ## 📋 Attendees
 
-- [ ] Kendahl Bingham
+- [ ] Kendahl Chae Bingham
 - [ ] Shayla Foley
 - [ ] Judy Hanson
 - [ ] Michael Effiong Akpan
 - [ ] Adetokunbo Olutola Osibo
 - [ ] Gabriel Enrique Torrejon Aguilera
 - [ ] Curtis Guelable Siahe
+- [ ] Djimy Francillon
+- [ ] Iyen Samuel Evbosaru
+- [ ] Maxwell Balla Nvani
 
 **Present:** [X/7]  
 **Absent:** [List names if any]

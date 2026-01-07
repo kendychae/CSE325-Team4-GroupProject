@@ -8,13 +8,16 @@ This document outlines our team's working agreements, communication protocols, a
 
 | Name | Role (Rotating) | GitHub Username | Email | Timezone |
 |------|----------------|-----------------|-------|----------|
-| Kendahl Bingham | Week 1 Leader | [@username] | [email] | [TZ] |
+| Kendahl Chae Bingham | Week 1 Leader | [@username] | [email] | [TZ] |
 | Shayla Foley | | [@username] | [email] | [TZ] |
 | Judy Hanson | | [@username] | [email] | [TZ] |
 | Michael Effiong Akpan | | [@username] | [email] | [TZ] |
 | Adetokunbo Olutola Osibo | | [@username] | [email] | [TZ] |
 | Gabriel Enrique Torrejon Aguilera | | [@username] | [email] | [TZ] |
 | Curtis Guelable Siahe | | [@username] | [email] | [TZ] |
+| Djimy Francillon | | [@username] | [email] | [TZ] |
+| Iyen Samuel Evbosaru | | [@username] | [email] | [TZ] |
+| Maxwell Balla Nvani | | [@username] | [email] | [TZ] |
 
 ---
 
@@ -68,7 +71,7 @@ The team leader role rotates weekly. Each leader is responsible for:
 
 | Week | Leader | Dates |
 |------|--------|-------|
-| 1 | Kendahl Bingham | [Dates] |
+| 1 | Kendahl Chae Bingham | [Dates] |
 | 2 | [TBD] | [Dates] |
 | 3 | [TBD] | [Dates] |
 | 4 | [TBD] | [Dates] |
