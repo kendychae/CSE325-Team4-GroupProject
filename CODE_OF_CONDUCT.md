@@ -37,7 +37,7 @@ The following behaviors are unacceptable:
 
 ### Communication
 
-- Respond to team messages within 24 hours
+- Respond to team messages within 24-48 hours
 - Use appropriate channels for different types of communication
 - Be clear and concise in written communication
 - Assume positive intent in others' messages

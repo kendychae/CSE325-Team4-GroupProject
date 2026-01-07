@@ -44,7 +44,7 @@ This repository contains the collaborative group project for CSE 325 - .NET Soft
 ### Cloning the Repository
 
 ```bash
-git clone https://github.com/[your-username]/CSE325-Team4-GroupProject.git
+git clone https://github.com/kendychae/CSE325-Team4-GroupProject.git
 cd CSE325-Team4-GroupProject
 ```
 
@@ -82,7 +82,9 @@ CSE325-Team4-GroupProject/
 
 ## 📊 Project Management
 
-We use [Trello](https://trello.com/) for project management and task tracking. Team members can access our board at: [Link to be added]
+We use [Trello](https://trello.com/) for project management and task tracking.
+
+**Trello Board:** https://trello.com/b/ZF7fZpJP/cse325-team-4
 
 ## 📝 Weekly Submissions
 

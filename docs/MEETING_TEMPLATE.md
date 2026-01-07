@@ -20,7 +20,7 @@
 - [ ] Iyen Samuel Evbosaru
 - [ ] Maxwell Balla Nvani
 
-**Present:** [X/7]  
+**Present:** [X/10]  
 **Absent:** [List names if any]
 
 ---
@@ -51,10 +51,10 @@
 
 ## ✅ Action Items
 
-| Task | Assigned To | Due Date | Status |
-|------|-------------|----------|--------|
-| [Task description] | [Name] | [Date] | [ ] |
-| [Task description] | [Name] | [Date] | [ ] |
+| Task               | Assigned To | Due Date | Status |
+| ------------------ | ----------- | -------- | ------ |
+| [Task description] | [Name]      | [Date]   | [ ]    |
+| [Task description] | [Name]      | [Date]   | [ ]    |
 
 ---
 

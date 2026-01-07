@@ -2,152 +2,109 @@
 
 **Course:** CSE 325 - .NET Software Development  
 **Team:** Team 4  
-**Team Leader (Week 1):** Kendahl Bingham  
-**Submission Date:** 1-14-26 18:00UTC  
-**Semester:** Winter 2026
+**Submission Date:** January 14, 2026
 
 ---
 
-## ✅ Submission Checklist
+## 1. Meeting Summary (3 pts)
 
-This document tracks the required submissions for Week 2 Group Project: Setup, Planning, and Brainstorming.
-
-### Required Submissions (Each Team Member Submits Individually in Canvas)
-
-- [ ] **Meeting Summary** - Brief summary of meeting content
-- [ ] **Participants List** - List of all attendees
-- [ ] **Project Repository URL** - URL of the group's GitHub project repo
-- [ ] **Local Clone Screenshot** - Screenshot showing successfully cloned project
-- [ ] **Project Ideas List** - Application proposals with features and target audience
-
----
-
-## 📝 Meeting Summary
-
-### Meeting Information
-
-- **Date:** 1-14-26
-- **Time:** 18:00UTC
-- **Location/Platform:** Microsoft Teams
+**Meeting Information:**
+- **Date:** January 14, 2026
+- **Time:** 18:00 UTC
 - **Duration:** 1 hour
+- **Platform:** Microsoft Teams
 
-### Meeting Agenda & Activities
+**Meeting Activities:**
 
-1. **Opening Prayer**
+The team held its first official meeting to establish the group project foundation. We opened with prayer and discussed our Week 1 experiences learning .NET Blazor, sharing challenges and discoveries. The team reviewed the project requirements and timeline for the Week 7 deliverable, discussed peer review expectations, and established our collaboration tools.
 
-   - Meeting opened with prayer to invite the Spirit
+We successfully created our GitHub repository and Trello board for project management. Team members practiced cloning the repository locally. The meeting concluded with a structured brainstorming session where members pitched potential project ideas (detailed below), and we agreed to finalize our project selection by next week.
 
-2. **.NET Blazor Discussion**
+**Meeting Participants:**
 
-   - Team members shared challenges and discoveries from Week 1 learning activities
-   - Discussion topics included:
-     - [Add specific topics discussed]
-     - [Add discoveries made]
-     - [Add challenges encountered]
+- Kendahl Chae Bingham (Team Leader - Week 1)
+- Shayla Foley
+- Judy Hanson
+- Michael Effiong Akpan
+- Adetokunbo Olutola Osibo
+- Gabriel Enrique Torrejon Aguilera
+- Curtis Guelable Siahe
+- Djimy Francillon
+- Iyen Samuel Evbosaru
+- Maxwell Balla Nvani
 
-3. **Project Requirements Review**
-
-   - Reviewed the project description and scope (Week 7 deliverable)
-   - Discussed project timeline and milestones
-   - Reviewed peer review expectations
-
-4. **Brainstorming Session**
-
-   - Conducted structured brainstorming for web/mobile application ideas
-   - All team members encouraged to pitch ideas
-   - Details discussed for each proposal (see Project Ideas section below)
-
-5. **Project Organization Setup**
-
-   - ✅ Created GitHub Repository
-   - ✅ Team members cloned repository locally
-   - ✅ Created README.md with team member names
-   - ✅ Created Trello Board for project management
-     - Trello Board URL: [Insert URL]
-
-6. **Next Steps & Action Items**
-   - [Add specific action items assigned to team members]
-   - Decided on project selection deadline
-   - Selected next week's team leader: [Insert Name]
+**Total Present:** 10/10
 
 ---
 
-## 👥 Meeting Participants
+## 2. Group Repository URL (2 pts)
 
-### Attendees
+**GitHub Repository:** https://github.com/kendychae/CSE325-Team4-GroupProject
 
-- ✅ Kendahl Chae Bingham (Team Leader - Week 1)
-- ✅ Shayla Foley
-- ✅ Judy Hanson
-- ✅ Michael Effiong Akpan
-- ✅ Adetokunbo Olutola Osibo
-- ✅ Gabriel Enrique Torrejon Aguilera
-- ✅ Curtis Guelable Siahe
-- ✅ Djimy Francillon
-- ✅ Iyen Samuel Evbosaru
-- ✅ Maxwell Balla Nvani
-
-**Total Present:** [X/10]  
-**Absent:** [List any absent members]
+**Trello Board:** https://trello.com/b/ZF7fZpJP/cse325-team-4
 
 ---
 
-## 🔗 Project Repository URL
+## 3. Local Clone Screenshot (2 pts)
 
-**GitHub Repository:** `https://github.com/[username]/CSE325-Team4-GroupProject`
-
-### Repository Setup Details
-
-- Repository created by: Kendahl Chae Bingham (Team Leader)
-- Repository type: Public/Private [specify]
-- Initial files included:
-  - ✅ README.md with all team member names
-  - ✅ .gitignore configured for .NET projects
-  - ✅ docs/ folder for weekly submissions
-  - ✅ Professional project structure
-
----
-
-## 💻 Local Clone Verification
-
-### Instructions for Screenshot
-
-Each team member should submit a screenshot showing:
-
-1. Terminal/Command Prompt with `git clone` command
+**Instructions:** Each team member should submit a screenshot showing:
+1. Terminal with `git clone` command executed
 2. Successfully cloned repository in local directory
 3. File explorer showing project files
 
-### Example Commands Used
-
+**Clone Command:**
 ```bash
-git clone https://github.com/[username]/CSE325-Team4-GroupProject.git
+git clone https://github.com/kendychae/CSE325-Team4-GroupProject.git
 cd CSE325-Team4-GroupProject
-dir  # or ls for Mac/Linux
 ```
 
-**[Insert Screenshot Here]**
+**[INSERT YOUR SCREENSHOT HERE]**
 
 ---
 
-## 💡 Project Ideas Under Consideration
+## 4. Project Proposals (3 pts)
 
-Below are the application proposals our team is considering for the semester project. We will finalize our selection by next week's meeting.
+Below are 2-4 .NET project ideas with functionality and scope estimates:
 
 ### Project Idea #1: [Application Name]
 
-**Type:** Web Application / Mobile Application / Both
+**Type:** Web Application / Mobile Application
 
-**Brief Description:**
-[Provide 2-3 sentence overview of the application concept]
+**Description:**  
+[2-3 sentence overview of the application concept]
 
 **Key Features:**
+- [Feature 1 with brief description]
+- [Feature 2 with brief description]
+- [Feature 3 with brief description]
+- [Feature 4 with brief description]
 
-- [Feature 1 - describe functionality]
-- [Feature 2 - describe functionality]
-- [Feature 3 - describe functionality]
-- [Feature 4 - describe functionality]
-- [Additional features...]
+**Scope & Functionality:**
+- **Complexity:** Low / Medium / High
+- **Estimated Timeline:** [Weeks needed]
+- **Target Users:** [Who will use this]
+- **Technologies:** Blazor (Server/WASM), ASP.NET Core, [Database type]
+
+---
+
+### Project Idea #2: [Application Name]
+
+**Type:** Web Application / Mobile Application
+
+**Description:**  
+[2-3 sentence overview of the application concept]
+
+**Key Features:**
+- [Feature 1 with brief description]
+- [Feature 2 with brief description]
+- [Feature 3 with brief description]
+- [Feature 4 with brief description]
+
+**Scope & Functionality:**
+- **Complexity:** Low / Medium / High
+- **Estimated Timeline:** [Weeks needed]
+- **Target Users:** [Who will use this]
+- **Technologies:** Blazor (Server/WASM), ASP.NET Core, [Database type]
 
 **Target Audience:**
 [Describe the intended users - demographics, needs, use cases]

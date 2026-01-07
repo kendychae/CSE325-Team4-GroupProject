@@ -20,12 +20,14 @@ Use this template when proposing a new idea:
 [Who would use this application?]
 
 **Key Features:**
+
 - Feature 1
 - Feature 2
 - Feature 3
 - Feature 4
 
 **Technical Considerations:**
+
 - [Database requirements]
 - [API integrations needed]
 - [Complexity level: Simple/Medium/Complex]
@@ -33,7 +35,7 @@ Use this template when proposing a new idea:
 **Why This Project?**  
 [Explain the value/problem it solves]
 
-**Team Interest Level:** 👍 [X/7]
+**Team Interest Level:** 👍 [X/10]
 
 ---
 
@@ -51,16 +53,18 @@ Use this template when proposing a new idea:
 [Audience]
 
 **Key Features:**
+
 - [Feature]
 - [Feature]
 
 **Technical Considerations:**
+
 - [Consideration]
 
 **Why This Project?**  
 [Rationale]
 
-**Team Interest Level:** 👍 [X/7]
+**Team Interest Level:** 👍 [X/10]
 
 ---
 
@@ -76,30 +80,33 @@ Use this template when proposing a new idea:
 [Audience]
 
 **Key Features:**
+
 - [Feature]
 - [Feature]
 
 **Technical Considerations:**
+
 - [Consideration]
 
 **Why This Project?**  
 [Rationale]
 
-**Team Interest Level:** 👍 [X/7]
+**Team Interest Level:** 👍 [X/10]
 
 ---
 
 ## 🗳️ Voting & Selection
 
 ### Voting Process
+
 - Each team member votes for their top 3 choices
 - Ranking: 3 points (first choice), 2 points (second), 1 point (third)
 - Final selection based on highest total points and team consensus
 
 ### Voting Results
 
-| Idea | Votes | Points | Rank |
-|------|-------|--------|------|
+| Idea        | Votes   | Points  | Rank   |
+| ----------- | ------- | ------- | ------ |
 | [Idea name] | [Count] | [Total] | [Rank] |
 | [Idea name] | [Count] | [Total] | [Rank] |
 
