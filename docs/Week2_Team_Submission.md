@@ -8,16 +8,19 @@ Our team met on January 14, 2026 via Microsoft Teams to establish our group proj
 
 **Participants:**
 
-- Kendahl Chae Bingham
-- Shayla Foley
-- Judy Hanson
-- Michael Effiong Akpan
 - Adetokunbo Olutola Osibo
-- Gabriel Enrique Torrejon Aguilera
+- Ange Junior Gohouri
+- Boitumelo Hebert Meletse
+- Brenden Taylor Lyon
 - Curtis Guelable Siahe
 - Djimy Francillon
+- Gabriel Enrique Torrejon Aguilera
 - Iyen Samuel Evbosaru
+- Judy Hanson
+- Kendahl Chae Bingham
 - Maxwell Balla Nvani
+- Michael Effiong Akpan
+- Shayla Foley
 
 ---
 

@@ -15,15 +15,18 @@ This repository contains the collaborative group project for CSE 325 - .NET Soft
 ## 👥 Team Members - Team 4
 
 - **Kendahl Chae Bingham** (Week 1 Team Leader)
-- **Shayla Foley**
-- **Judy Hanson**
-- **Michael Effiong Akpan**
 - **Adetokunbo Olutola Osibo**
-- **Gabriel Enrique Torrejon Aguilera**
+- **Ange Junior Gohouri**
+- **Boitumelo Hebert Meletse**
+- **Brenden Taylor Lyon**
 - **Curtis Guelable Siahe**
 - **Djimy Francillon**
+- **Gabriel Enrique Torrejon Aguilera**
 - **Iyen Samuel Evbosaru**
+- **Judy Hanson**
 - **Maxwell Balla Nvani**
+- **Michael Effiong Akpan**
+- **Shayla Foley**
 
 ## 🎯 Project Goals
 
