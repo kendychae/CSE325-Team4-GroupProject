@@ -2,116 +2,78 @@
 
 ---
 
-## 1. Meeting Summary (3 pts)
+## 1. Meeting Summary
 
-Our team met on January 14, 2026 via Microsoft Teams to establish our group project. We discussed our Week 1 Blazor learning experiences, reviewed the project requirements and Week 7 deliverable timeline, and set up our collaboration tools (GitHub repository and Trello board). We concluded with brainstorming project ideas for the semester.
+Our team met on January 14, 2026 via Microsoft Teams to plan our group project. We discussed project ideas, decided on a .NET portal for service acts, and reviewed setup steps for the repository.
 
 **Participants:**
 
-- Adetokunbo Olutola Osibo
-- Ange Junior Gohouri
-- Boitumelo Hebert Meletse
-- Brenden Taylor Lyon
-- Curtis Guelable Siahe
-- Djimy Francillon
-- Gabriel Enrique Torrejon Aguilera
-- Iyen Samuel Evbosaru
-- Judy Hanson
 - Kendahl Chae Bingham
-- Maxwell Balla Nvani
-- Michael Effiong Akpan
 - Shayla Foley
+- Iyen Samuel Evbosaru
+- ANGE JUNIOR GOHOURI
+- Gabriel Enrique Torrejon Aguilera
+- Boitumelo Hebert Meletse
+- Adetokunbo Olutola Osibo
+- Judy Hanson
+- Maxwell Balla Nvani
+- Brenden Taylor Lyon
 
 ---
 
-## 2. Group Repository URL (2 pts)
+## 2. Group Repository URL
 
 https://github.com/kendychae/CSE325-Team4-GroupProject
 
 ---
 
-## 3. Local Clone Screenshot (2 pts)
+## 3. Local Clone Screenshot
 
-[INSERT YOUR SCREENSHOT HERE]
-
----
-
-## 4. Project Proposals (3 pts)
-
-### Project Idea #1: [Application Name]
-
-**Type:** Web Application / Mobile Application
-
-### Project Idea #1: [Application Name]
-
-**Description:** [Brief 2-3 sentence description of the application]
-
-**Key Features:**
-
-- [Feature 1]
-- [Feature 2]
-- [Feature 3]
-- [Feature 4]
-
-**Functionality & Scope Estimate:**
-
-- Complexity: [Low/Medium/High]
-- Timeline: [X weeks]
-- Technologies: Blazor, ASP.NET Core, [Database]
+![Local clone screenshot goes here](local_clone_screenshot.png)
 
 ---
 
-### Project Idea #2: [Application Name]
+## 4. Project Proposals
 
-**Description:** [Brief 2-3 sentence description of the application]
+### Project Idea #1: Service Acts Portal (Chosen Project)
+
+**Description:**
+A web portal where users can find, post, and track service opportunities in their community or campus. Users can log in, browse available service acts, sign up to participate, and record completed service.
 
 **Key Features:**
 
-- [Feature 1]
-- [Feature 2]
-- [Feature 3]
-- [Feature 4]
+- User registration/login
+- Browse and search service opportunities
+- Post new service acts
+- Sign up for service events
+- Track and record completed service
 
 **Functionality & Scope Estimate:**
 
-- Complexity: [Low/Medium/High]
-- Timeline: [X weeks]
-- Technologies: Blazor, ASP.NET Core, [Database]
+- Complexity: Medium
+- Timeline: 5 weeks
+- Technologies: .NET 8, Blazor, Entity Framework Core, SQL database
 
 ---
 
-### Project Idea #3 (Optional): [Application Name]
+### Project Idea #2: Bookstore Web App
 
-**Description:** [Brief 2-3 sentence description of the application]
+**Description:**
+A web application for browsing, searching, and purchasing books online. Users can view book details, add books to a shopping cart, and place orders. Admins can manage inventory and update book listings.
 
 **Key Features:**
 
-- [Feature 1]
-- [Feature 2]
-- [Feature 3]
-- [Feature 4]
+- User registration/login
+- Browse and search books
+- Book details page
+- Shopping cart and checkout
+- Order history for users
+- Admin inventory management
 
 **Functionality & Scope Estimate:**
 
-- Complexity: [Low/Medium/High]
-- Timeline: [X weeks]
-- Technologies: Blazor, ASP.NET Core, [Database]
+- Complexity: Medium
+- Timeline: 5 weeks
+- Technologies: .NET 8, Blazor, Entity Framework Core, SQL database
 
 ---
-
-### Project Idea #4 (Optional): [Application Name]
-
-**Description:** [Brief 2-3 sentence description of the application]
-
-**Key Features:**
-
-- [Feature 1]
-- [Feature 2]
-- [Feature 3]
-- [Feature 4]
-
-**Functionality & Scope Estimate:**
-
-- Complexity: [Low/Medium/High]
-- Timeline: [X weeks]
-- Technologies: Blazor, ASP.NET Core, [Database]
