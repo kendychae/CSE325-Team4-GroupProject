@@ -1,0 +1,20 @@
+@page
+@model ServiceActsAdminUI.Pages.ServiceActs.EditModel
+@{
+    ViewData["Title"] = "Edit Service Act";
+}
+
+<h1>Edit Service Act</h1>
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="ServiceAct.Name"></label>
+        <input asp-for="ServiceAct.Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ServiceAct.Description"></label>
+        <input asp-for="ServiceAct.Description" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancel</a>
+</form>

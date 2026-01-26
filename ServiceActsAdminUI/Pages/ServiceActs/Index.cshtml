@@ -1,0 +1,33 @@
+@page
+@model ServiceActsAdminUI.Pages.ServiceActs.IndexModel
+@{
+    ViewData["Title"] = "Manage Service Acts";
+}
+
+<h1>Manage Service Acts</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var act in Model.ServiceActs)
+    {
+        <tr>
+            <td>@act.Name</td>
+            <td>@act.Description</td>
+            <td>
+                <a asp-page="Edit" asp-route-id="@act.Id">Edit</a> |
+                <form method="post" asp-page-handler="Delete" asp-route-id="@act.Id" style="display:inline">
+                    <button type="submit" class="btn btn-link">Delete</button>
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+<a asp-page="Create" class="btn btn-primary">Add New Service Act</a>
