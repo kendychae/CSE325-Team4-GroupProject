@@ -1,0 +1,24 @@
+.numberone {
+    text-decoration: underline;
+    color: red;;
+}
+h1, .welcome-msg{
+    text-align: center;
+}
+.explore-button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    font-size: 1.25rem;
+    color: #fff;
+    background-color: #1b6ec2;
+    border: none;
+    border-radius: 0.3rem;
+    text-decoration: none;
+    margin-top: 1rem;
+    text-align: center;
+}
+.explore-button:hover {
+    background-color: #1861ac;
+    text-decoration: none;
+    color: #fff;
+}
