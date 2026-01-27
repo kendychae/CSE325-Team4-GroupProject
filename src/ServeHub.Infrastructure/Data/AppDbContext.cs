@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ServeHub.Domain.Entities;
 
 namespace ServeHub.Infrastructure.Data;
@@ -18,6 +19,10 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        var dateTimeOffsetConverter = new ValueConverter<DateTimeOffset, DateTime>(
+            value => value.UtcDateTime,
+            value => new DateTimeOffset(DateTime.SpecifyKind(value, DateTimeKind.Utc)));
+
         // User configuration
         modelBuilder.Entity<User>(entity =>
         {
@@ -36,6 +41,8 @@ public class AppDbContext : DbContext
             entity.Property(e => e.Description).IsRequired().HasMaxLength(2000);
             entity.Property(e => e.Location).IsRequired().HasMaxLength(200);
             entity.Property(e => e.Category).IsRequired().HasMaxLength(100);
+            entity.Property(e => e.Date)
+                .HasConversion(dateTimeOffsetConverter);
             
             entity.HasOne(e => e.Creator)
                 .WithMany()
@@ -48,6 +55,8 @@ public class AppDbContext : DbContext
         {
             entity.HasKey(e => e.Id);
             entity.HasIndex(e => new { e.UserId, e.OpportunityId }).IsUnique();
+            entity.Property(e => e.SignupDate)
+                .HasConversion(dateTimeOffsetConverter);
             
             entity.HasOne(e => e.User)
                 .WithMany()
@@ -65,6 +74,8 @@ public class AppDbContext : DbContext
         {
             entity.HasKey(e => e.Id);
             entity.HasIndex(e => new { e.UserId, e.OpportunityId }).IsUnique();
+            entity.Property(e => e.CompletionDate)
+                .HasConversion(dateTimeOffsetConverter);
             
             entity.HasOne(e => e.User)
                 .WithMany()
