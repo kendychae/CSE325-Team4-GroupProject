@@ -31,6 +31,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 var jwtKey = builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT Key not configured");
 if (string.IsNullOrWhiteSpace(jwtKey) || jwtKey == "CHANGE_ME")
 {
+    // Fail fast if a real JWT key is not provided via user secrets or environment variables.
     throw new InvalidOperationException("JWT Key not configured. Set Jwt:Key using user secrets or environment variables.");
 }
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -90,6 +91,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowBlazor", policy =>
     {
+        // Pull CORS origins from configuration so environments can override without code changes.
         var origins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? Array.Empty<string>();
         if (origins.Length > 0)
         {
@@ -103,6 +105,7 @@ builder.Services.AddCors(options =>
 // Add Rate Limiting
 builder.Services.AddRateLimiter(options =>
 {
+    // Fixed window limiter per IP to protect auth endpoints from basic abuse.
     options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context =>
     {
         var ip = context.Connection.RemoteIpAddress?.ToString() ?? "unknown";
@@ -126,10 +129,12 @@ if (app.Environment.IsDevelopment())
     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     if ((await dbContext.Database.GetPendingMigrationsAsync()).Any())
     {
+        // Prefer migrations when they exist to keep schema evolution consistent.
         await dbContext.Database.MigrateAsync();
     }
     else
     {
+        // Fallback for first-run local dev when no migrations exist yet.
         await dbContext.Database.EnsureCreatedAsync();
     }
 }

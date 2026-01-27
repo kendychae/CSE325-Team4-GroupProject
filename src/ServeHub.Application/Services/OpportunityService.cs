@@ -150,6 +150,7 @@ public class OpportunityService : IOpportunityService
         {
             UserId = userId,
             OpportunityId = opportunityId,
+            // Store UTC to keep timestamps consistent across time zones.
             SignupDate = DateTimeOffset.UtcNow
         };
 
@@ -175,6 +176,7 @@ public class OpportunityService : IOpportunityService
         {
             UserId = userId,
             OpportunityId = opportunityId,
+            // Store UTC to keep timestamps consistent across time zones.
             CompletionDate = DateTimeOffset.UtcNow
         };
 

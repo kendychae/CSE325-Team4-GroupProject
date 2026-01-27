@@ -8,6 +8,7 @@ namespace ServeHub.API.Controllers.v1;
 
 [ApiController]
 [Route("api/v1/[controller]")]
+// 
 public class OpportunitiesController : ControllerBase
 {
     private readonly IOpportunityService _opportunityService;

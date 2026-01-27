@@ -28,6 +28,7 @@ public class UserService : IUserService
             throw new InvalidOperationException("Email already exists");
         }
 
+        // Use BCrypt to hash passwords; no custom crypto implementation needed.
         var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
         var user = new User
@@ -56,6 +57,7 @@ public class UserService : IUserService
     {
         var user = await _userRepository.GetByEmailAsync(request.Email);
 
+        // Verify using the same BCrypt algorithm used at registration.
         if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
         {
             _logger.LogWarning("Invalid login attempt for email: {Email}", request.Email);

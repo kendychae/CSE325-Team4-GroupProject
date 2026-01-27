@@ -35,6 +35,7 @@ public class ExceptionHandlingMiddleware
 
         var (statusCode, message) = exception switch
         {
+            // Map known exception types to consistent HTTP responses.
             UnauthorizedAccessException => (HttpStatusCode.Forbidden, exception.Message),
             KeyNotFoundException => (HttpStatusCode.NotFound, exception.Message),
             InvalidOperationException => (HttpStatusCode.BadRequest, exception.Message),
@@ -47,6 +48,7 @@ public class ExceptionHandlingMiddleware
         {
             error = message,
             statusCode = (int)statusCode,
+            // Surface correlation metadata for debugging across logs and clients.
             traceId = context.TraceIdentifier,
             requestId = context.Request.Headers["X-Request-ID"].FirstOrDefault() ?? string.Empty,
             timestamp = DateTimeOffset.UtcNow

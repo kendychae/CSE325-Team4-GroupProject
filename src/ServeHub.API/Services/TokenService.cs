@@ -22,6 +22,7 @@ public class TokenService : ITokenService
 
         var claims = new[]
         {
+            // Include both JWT 'sub' and NameIdentifier for compatibility with ASP.NET claims mapping.
             new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
             new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, email),
