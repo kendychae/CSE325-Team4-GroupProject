@@ -1,3 +1,5 @@
+where tp go fo azure account
+
 # W04 Team Activity: Project Checkpoint Submission Guide
 
 ## 1. Meeting Summary (5 pts)
