@@ -1,6 +1,6 @@
-@ServeHub.API_HostAddress = http://localhost:5267
+@ServeHub_API_HostAddress = http://localhost:5267
 
-GET {{ServeHub.API_HostAddress}}/weatherforecast/
+GET {{ServeHub_API_HostAddress}}/api/v1/opportunities
 Accept: application/json
 
 ###

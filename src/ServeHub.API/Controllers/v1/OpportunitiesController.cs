@@ -1,6 +1,6 @@
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ServeHub.API.Extensions;
 using ServeHub.Application.DTOs.Opportunities;
 using ServeHub.Application.Interfaces;
 
@@ -17,12 +17,6 @@ public class OpportunitiesController : ControllerBase
         _opportunityService = opportunityService;
     }
 
-    private int? GetUserId()
-    {
-        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        return userIdClaim != null ? int.Parse(userIdClaim) : null;
-    }
-
     [HttpGet]
     public async Task<ActionResult<List<ServiceOpportunityListDto>>> GetAll()
     {
@@ -33,11 +27,11 @@ public class OpportunitiesController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<ServiceOpportunityDetailDto>> GetById(int id)
     {
-        var userId = GetUserId();
+        var userId = User.GetUserIdOrNull();
         var opportunity = await _opportunityService.GetByIdAsync(id, userId);
         
         if (opportunity == null)
-            return NotFound();
+            throw new KeyNotFoundException("Opportunity not found");
 
         return Ok(opportunity);
     }
@@ -46,7 +40,7 @@ public class OpportunitiesController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<ServiceOpportunityDetailDto>> Create([FromBody] CreateServiceOpportunityDto dto)
     {
-        var userId = GetUserId();
+        var userId = User.GetUserIdOrNull();
         if (!userId.HasValue)
             return Unauthorized();
 
@@ -58,7 +52,7 @@ public class OpportunitiesController : ControllerBase
     [HttpPut("{id}")]
     public async Task<ActionResult<ServiceOpportunityDetailDto>> Update(int id, [FromBody] UpdateServiceOpportunityDto dto)
     {
-        var userId = GetUserId();
+        var userId = User.GetUserIdOrNull();
         if (!userId.HasValue)
             return Unauthorized();
 
@@ -70,7 +64,7 @@ public class OpportunitiesController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(int id)
     {
-        var userId = GetUserId();
+        var userId = User.GetUserIdOrNull();
         if (!userId.HasValue)
             return Unauthorized();
 
@@ -82,7 +76,7 @@ public class OpportunitiesController : ControllerBase
     [HttpPost("{id}/signup")]
     public async Task<ActionResult> SignUp(int id)
     {
-        var userId = GetUserId();
+        var userId = User.GetUserIdOrNull();
         if (!userId.HasValue)
             return Unauthorized();
 
@@ -94,7 +88,7 @@ public class OpportunitiesController : ControllerBase
     [HttpPost("{id}/complete")]
     public async Task<ActionResult> Complete(int id)
     {
-        var userId = GetUserId();
+        var userId = User.GetUserIdOrNull();
         if (!userId.HasValue)
             return Unauthorized();
 

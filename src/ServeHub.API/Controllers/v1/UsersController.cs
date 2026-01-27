@@ -1,6 +1,6 @@
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ServeHub.API.Extensions;
 using ServeHub.Application.DTOs.History;
 using ServeHub.Application.Interfaces;
 
@@ -21,12 +21,11 @@ public class UsersController : ControllerBase
     [HttpGet("me/history")]
     public async Task<ActionResult<List<ServiceHistoryDto>>> GetMyHistory()
     {
-        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (userIdClaim == null)
+        var userId = User.GetUserIdOrNull();
+        if (!userId.HasValue)
             return Unauthorized();
 
-        var userId = int.Parse(userIdClaim);
-        var history = await _opportunityService.GetUserHistoryAsync(userId);
+        var history = await _opportunityService.GetUserHistoryAsync(userId.Value);
         
         return Ok(history);
     }

@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using ServeHub.Application.DTOs.History;
 using ServeHub.Application.DTOs.Opportunities;
 using ServeHub.Application.Interfaces;
@@ -8,10 +9,14 @@ namespace ServeHub.Application.Services;
 public class OpportunityService : IOpportunityService
 {
     private readonly IOpportunityRepository _opportunityRepository;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<OpportunityService> _logger;
 
-    public OpportunityService(IOpportunityRepository opportunityRepository)
+    public OpportunityService(IOpportunityRepository opportunityRepository, IUnitOfWork unitOfWork, ILogger<OpportunityService> logger)
     {
         _opportunityRepository = opportunityRepository;
+        _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
     public async Task<List<ServiceOpportunityListDto>> GetAllAsync()
@@ -67,6 +72,8 @@ public class OpportunityService : IOpportunityService
         };
 
         await _opportunityRepository.CreateAsync(opportunity);
+        await _unitOfWork.SaveChangesAsync();
+        _logger.LogInformation("Opportunity created: {OpportunityId} by {UserId}", opportunity.Id, creatorUserId);
 
         return new ServiceOpportunityDetailDto
         {
@@ -98,6 +105,8 @@ public class OpportunityService : IOpportunityService
         opportunity.Category = dto.Category;
 
         await _opportunityRepository.UpdateAsync(opportunity);
+        await _unitOfWork.SaveChangesAsync();
+        _logger.LogInformation("Opportunity updated: {OpportunityId} by {UserId}", opportunity.Id, userId);
 
         return new ServiceOpportunityDetailDto
         {
@@ -123,6 +132,8 @@ public class OpportunityService : IOpportunityService
             throw new UnauthorizedAccessException("Only the creator can delete this opportunity");
 
         await _opportunityRepository.DeleteAsync(opportunity);
+        await _unitOfWork.SaveChangesAsync();
+        _logger.LogInformation("Opportunity deleted: {OpportunityId} by {UserId}", opportunity.Id, userId);
     }
 
     public async Task SignUpAsync(int opportunityId, int userId)
@@ -139,10 +150,12 @@ public class OpportunityService : IOpportunityService
         {
             UserId = userId,
             OpportunityId = opportunityId,
-            SignupDate = DateTime.UtcNow
+            SignupDate = DateTimeOffset.UtcNow
         };
 
         await _opportunityRepository.SignUpAsync(signUp);
+        await _unitOfWork.SaveChangesAsync();
+        _logger.LogInformation("User {UserId} signed up for opportunity {OpportunityId}", userId, opportunityId);
     }
 
     public async Task CompleteServiceAsync(int opportunityId, int userId)
@@ -162,10 +175,12 @@ public class OpportunityService : IOpportunityService
         {
             UserId = userId,
             OpportunityId = opportunityId,
-            CompletionDate = DateTime.UtcNow
+            CompletionDate = DateTimeOffset.UtcNow
         };
 
         await _opportunityRepository.CompleteServiceAsync(completedService);
+        await _unitOfWork.SaveChangesAsync();
+        _logger.LogInformation("User {UserId} completed opportunity {OpportunityId}", userId, opportunityId);
     }
 
     public async Task<List<ServiceHistoryDto>> GetUserHistoryAsync(int userId)

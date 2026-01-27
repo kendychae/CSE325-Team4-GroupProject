@@ -1,6 +1,1 @@
-﻿namespace ServeHub.Infrastructure;
-
-public class Class1
-{
-
-}
+﻿// Intentionally left blank. Placeholder file removed.

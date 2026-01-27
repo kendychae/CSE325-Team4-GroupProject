@@ -32,21 +32,18 @@ public class OpportunityRepository : IOpportunityRepository
     public async Task<ServiceOpportunity> CreateAsync(ServiceOpportunity opportunity)
     {
         _context.ServiceOpportunities.Add(opportunity);
-        await _context.SaveChangesAsync();
         return opportunity;
     }
 
     public async Task<ServiceOpportunity> UpdateAsync(ServiceOpportunity opportunity)
     {
         _context.ServiceOpportunities.Update(opportunity);
-        await _context.SaveChangesAsync();
         return opportunity;
     }
 
     public async Task DeleteAsync(ServiceOpportunity opportunity)
     {
         _context.ServiceOpportunities.Remove(opportunity);
-        await _context.SaveChangesAsync();
     }
 
     public async Task<bool> IsUserSignedUpAsync(int userId, int opportunityId)
@@ -58,14 +55,12 @@ public class OpportunityRepository : IOpportunityRepository
     public async Task<SignUp> SignUpAsync(SignUp signUp)
     {
         _context.SignUps.Add(signUp);
-        await _context.SaveChangesAsync();
         return signUp;
     }
 
     public async Task<CompletedService> CompleteServiceAsync(CompletedService completedService)
     {
         _context.CompletedServices.Add(completedService);
-        await _context.SaveChangesAsync();
         return completedService;
     }
 

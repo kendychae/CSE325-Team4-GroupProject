@@ -1,6 +1,1 @@
-﻿namespace ServeHub.Domain;
-
-public class Class1
-{
-
-}
+﻿// Intentionally left blank. Placeholder file removed.

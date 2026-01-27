@@ -1,5 +1,6 @@
 using System.Net;
 using System.Text.Json;
+using System.Linq;
 
 namespace ServeHub.API.Middleware;
 
@@ -45,7 +46,10 @@ public class ExceptionHandlingMiddleware
         var response = new
         {
             error = message,
-            statusCode = (int)statusCode
+            statusCode = (int)statusCode,
+            traceId = context.TraceIdentifier,
+            requestId = context.Request.Headers["X-Request-ID"].FirstOrDefault() ?? string.Empty,
+            timestamp = DateTimeOffset.UtcNow
         };
 
         await context.Response.WriteAsync(JsonSerializer.Serialize(response));

@@ -1,7 +1,7 @@
 using ServeHub.Application.DTOs.Auth;
 using ServeHub.Application.Interfaces;
 using ServeHub.Domain.Entities;
-using System.Security.Cryptography;
+using Microsoft.Extensions.Logging;
 
 namespace ServeHub.Application.Services;
 
@@ -9,21 +9,26 @@ public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
     private readonly ITokenService _tokenService;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<UserService> _logger;
 
-    public UserService(IUserRepository userRepository, ITokenService tokenService)
+    public UserService(IUserRepository userRepository, ITokenService tokenService, IUnitOfWork unitOfWork, ILogger<UserService> logger)
     {
         _userRepository = userRepository;
         _tokenService = tokenService;
+        _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
     public async Task<AuthResponseDto> RegisterAsync(RegisterRequestDto request)
     {
         if (await _userRepository.EmailExistsAsync(request.Email))
         {
+            _logger.LogWarning("Registration attempt with existing email: {Email}", request.Email);
             throw new InvalidOperationException("Email already exists");
         }
 
-        var passwordHash = HashPassword(request.Password);
+        var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
         var user = new User
         {
@@ -33,8 +38,10 @@ public class UserService : IUserService
         };
 
         await _userRepository.CreateAsync(user);
+        await _unitOfWork.SaveChangesAsync();
 
         var token = _tokenService.GenerateToken(user.Id, user.Email, user.Name);
+        _logger.LogInformation("User registered: {UserId}", user.Id);
 
         return new AuthResponseDto
         {
@@ -49,12 +56,14 @@ public class UserService : IUserService
     {
         var user = await _userRepository.GetByEmailAsync(request.Email);
 
-        if (user == null || !VerifyPassword(request.Password, user.PasswordHash))
+        if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
         {
+            _logger.LogWarning("Invalid login attempt for email: {Email}", request.Email);
             throw new UnauthorizedAccessException("Invalid email or password");
         }
 
         var token = _tokenService.GenerateToken(user.Id, user.Email, user.Name);
+        _logger.LogInformation("User logged in: {UserId}", user.Id);
 
         return new AuthResponseDto
         {
@@ -63,47 +72,6 @@ public class UserService : IUserService
             Name = user.Name,
             Email = user.Email
         };
-    }
-
-    private static string HashPassword(string password)
-    {
-        const int iterations = 100_000;
-        byte[] salt = RandomNumberGenerator.GetBytes(16);
-        byte[] hash = Rfc2898DeriveBytes.Pbkdf2(
-            password,
-            salt,
-            iterations,
-            HashAlgorithmName.SHA256,
-            32);
-
-        return $"{iterations}.{Convert.ToBase64String(salt)}.{Convert.ToBase64String(hash)}";
-    }
-
-
-    private static bool VerifyPassword(string password, string storedHash)
-    {
-        if (string.IsNullOrWhiteSpace(storedHash))
-        {
-            return false;
-        }
-
-        var parts = storedHash.Split('.', 3);
-        if (parts.Length != 3 || !int.TryParse(parts[0], out int iterations))
-        {
-            return false;
-        }
-
-        byte[] salt = Convert.FromBase64String(parts[1]);
-        byte[] expectedHash = Convert.FromBase64String(parts[2]);
-
-        byte[] actualHash = Rfc2898DeriveBytes.Pbkdf2(
-            password,
-            salt,
-            iterations,
-            HashAlgorithmName.SHA256,
-            expectedHash.Length);
-
-        return CryptographicOperations.FixedTimeEquals(actualHash, expectedHash);
     }
 
 }
