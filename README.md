@@ -38,6 +38,44 @@ This repository contains the collaborative group project for CSE 325 - .NET Soft
 
 ## 🚀 Getting Started
 
+### Project Initialization (For New Developers)
+
+1. **Clone the repository:**
+	```bash
+	git clone https://github.com/kendychae/CSE325-Team4-GroupProject.git
+	cd CSE325-Team4-GroupProject
+	```
+2. **Restore dependencies:**
+	- Open the solution in Visual Studio or VS Code.
+	- Run `dotnet restore ServeHub.sln` to restore all NuGet packages.
+3. **Database setup:**
+	- Update the connection string in `src/ServeHub.API/appsettings.Development.json` as needed for your local SQL Server.
+	- Run database migrations (if any) or let the API auto-create the database on first run.
+4. **Run the API:**
+	- In the terminal: `dotnet run --project src/ServeHub.API/ServeHub.API.csproj`
+	- The API will be available at `https://localhost:PORT` (see launchSettings.json for port).
+5. **Run the Blazor UI:**
+	- In a new terminal: `dotnet run --project ServiceActsAdminUI/ServiceActsAdminUI.csproj`
+	- The UI will be available at `https://localhost:5025` (or as configured).
+6. **Access the app:**
+	- Open your browser to the Blazor UI URL. You should see the home page and be able to navigate.
+
+### User Guide (Basic)
+
+- **Login/Register:** Use the authentication features to create an account and log in.
+- **CRUD Operations:** Use the navigation to access, create, update, and delete main entities (e.g., service opportunities).
+- **Error Handling:** Friendly error messages will be shown for invalid actions or server errors.
+- **Accessibility:** The UI is designed to be accessible and responsive for all users.
+
+### Contributing (For Team Members)
+
+- Always create a new branch for your feature or fix.
+- Follow the project board for assigned tasks.
+- Write clear code comments and update documentation as needed.
+- Test your changes before submitting a pull request.
+
+---
+
 ### Prerequisites
 
 - [.NET 8.0 SDK](https://dotnet.microsoft.com/download) or later
