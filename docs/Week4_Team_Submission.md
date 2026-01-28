@@ -1,33 +1,48 @@
-where tp go fo azure account
+W04 Team Activity: Project Checkpoint Submission Guide
 
-# W04 Team Activity: Project Checkpoint Submission Guide
+1. Meeting Summary (5 pts)
 
-## 1. Meeting Summary (5 pts)
+Summary:
+We went over previous tasks accomplished and merged the branches, we found errors and worked on where to push the errors in the code that need to be replaced. We worked out some details about where the errors are and what needed to be replaced.
 
-- **Summary:**  
-  _[Briefly describe what your team discussed and accomplished during the meeting.]_
+Participants:
 
-- **Participants:**
-  - [Name 1]
-  - [Name 2]
-  - [Name 3]
-  - [Name 4]
-  - [Add/remove as needed]
+Brenden Taylor Lyon
 
----
+Adetokumbo Olutola Osibo
 
-## 2. GitHub Project Board and Work Items (5 pts)
+Boitumelo Herbert Meletse
 
-- **Project Board URL:**  
-  [Paste your GitHub Project Board link here]
+Curtis Guelable Siahe
 
-- **Work Item Assignments:**  
-  _List at least one work item assigned to each group member. Example:_
-  - [Name 1]: [Work Item Title/Link]
-  - [Name 2]: [Work Item Title/Link]
-  - [Name 3]: [Work Item Title/Link]
-  - [Name 4]: [Work Item Title/Link]
+Gabriel Enrique Torrejon Aguilar
 
----
+Iyen Samuel Evbosaru
 
-**Total Points: 10**
+Judy Hanson
+
+Kendahl Chae Bingham
+
+Maxwell Balla Nvani
+
+Shayla Foley
+
+2. GitHub Project Board and Work Items (5 pts)
+
+Project Board URL:
+https://github.com/users/kendychae/projects/2
+
+Work Item Assignments:
+List at least one work item assigned to each group member. Example:
+
+Kendahl: admin management for service acts
+
+Tolaji : API documentation
+
+Maxwell: Project Initialization
+
+Shayla : browse and search service acts
+
+Brenden : sign up for a service event
+
+Total Points: 10
