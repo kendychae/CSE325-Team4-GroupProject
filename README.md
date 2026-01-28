@@ -14,7 +14,7 @@ This repository contains the collaborative group project for CSE 325 - .NET Soft
 
 ## 👥 Team Members - Team 4
 
-- **Kendahl Chae Bingham** (Week 1 Team Leader)
+- **Kendahl Chae Bingham**
 - **Adetokunbo Olutola Osibo**
 - **Ange Junior Gohouri**
 - **Boitumelo Hebert Meletse**
@@ -85,13 +85,14 @@ CSE325-Team4-GroupProject/
 
 ## 📊 Project Management
 
-We use [Trello](https://trello.com/) for project management and task tracking.
+We use GitHub Projects for project management and task tracking.
 
-**Trello Board:** https://trello.com/b/ZF7fZpJP/cse325-team-4
+**GitHub Project Board:** https://github.com/users/kendychae/projects/2/views/1
 
 ## 📝 Weekly Submissions
 
 - [Week 2 Submission](docs/Week2_Team_Submission.md) - Planning & Repository Setup
+- [Week 3 Submission](docs/Week3_Team_Submission.md) - Project Proposal & Requirements
 
 ## 🧪 Testing
 

@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSE325-Team4-GroupProject", "CSE325-Team4-GroupProject.csproj", "{EEAF76B2-8F6E-0064-C2A7-D04AF9EFC283}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceActsAdminUI", "ServiceActsAdminUI\ServiceActsAdminUI.csproj", "{598802F0-E91A-5E46-7CAF-16F49C6AF8D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -10,15 +10,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EEAF76B2-8F6E-0064-C2A7-D04AF9EFC283}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EEAF76B2-8F6E-0064-C2A7-D04AF9EFC283}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EEAF76B2-8F6E-0064-C2A7-D04AF9EFC283}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EEAF76B2-8F6E-0064-C2A7-D04AF9EFC283}.Release|Any CPU.Build.0 = Release|Any CPU
+		{598802F0-E91A-5E46-7CAF-16F49C6AF8D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{598802F0-E91A-5E46-7CAF-16F49C6AF8D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{598802F0-E91A-5E46-7CAF-16F49C6AF8D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{598802F0-E91A-5E46-7CAF-16F49C6AF8D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {0BDC7C11-0E78-4FA1-998F-8BFDDCA5D6A2}
+		SolutionGuid = {6F09B75A-322C-4E02-96B5-117862981453}
 	EndGlobalSection
 EndGlobal
