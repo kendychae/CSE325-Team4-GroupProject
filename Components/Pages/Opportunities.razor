@@ -1,0 +1,61 @@
+@page "/opportunities"
+@rendermode InteractiveServer
+
+<PageTitle>Service Opportunities</PageTitle>
+
+<input
+    type="search"
+    class="form-control mb-3"
+    placeholder="Search opportunities..."
+    @bind="searchText"
+    @bind:event="oninput" />
+
+
+
+
+<h1>Service Opportunities</h1>
+
+<p>Discover a variety of volunteering opportunities available in your community. Browse through different categories, locations, and causes to find the perfect fit for your skills and interests.</p>
+
+@if (FilteredOpportunities.Any())
+{
+    <ul class="list-group">
+        @foreach (var opportunity in FilteredOpportunities)
+        {
+            <li class="list-group-item d-flex align-items-center flex-column ">
+                <strong>@opportunity.Title</strong><br />
+                <small>@opportunity.Description</small>
+                <button>Sign Up</button>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p class="text-muted">No opportunities found.</p>
+}
+
+@code {
+    private string searchText = string.Empty;
+
+    private List<Opportunity> opportunities = new()
+    {
+        new Opportunity { Title = "Frontend Developer", Description = "React / Blazor role" },
+        new Opportunity { Title = "Backend Engineer", Description = "ASP.NET Core APIs" },
+        new Opportunity { Title = "Internship", Description = "Entry-level position" }
+    };
+
+    private IEnumerable<Opportunity> FilteredOpportunities =>
+        string.IsNullOrWhiteSpace(searchText)
+            ? opportunities
+            : opportunities.Where(o =>
+                o.Title.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
+                o.Description.Contains(searchText, StringComparison.OrdinalIgnoreCase));
+    public class Opportunity
+    {
+        public string Title { get; set; } = "";
+        public string Description { get; set; } = "";
+    }
+
+}
+

@@ -1,0 +1,46 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <div class="top-row px-4">
+            <NavLink class="ml-md-auto" href="#" target="_blank">Login</NavLink>
+            <a href="#" target="_blank">About</a>
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+        
+    </main>
+</div>
+<hr class="footer-separation-line" />
+<footer class="footer-container text-white pt-4">
+    <div>
+        <h4 class="text-center bold">ServeHub - Volunteering Service Portal</h4>
+        <nav class="footer-nav">
+            <NavLink  href="/">
+                Home
+            </NavLink>
+            <NavLink  href="counter">
+                Service Opportunities
+            </NavLink>
+            <NavLink  href="weather">
+                Terms of Service
+            </NavLink>
+        </nav>
+    </div>
+    <p class="text-center m-0 p-4">
+        &copy; @DateTime.Now.Year - ServeHub - All rights reserved.<br />
+        Last updated: @DateTime.Now.ToString("MMMM dd, yyyy")
+    </p>
+</footer>
+
+<div id="blazor-error-ui" data-nosnippet>
+    An unhandled error has occurred.
+    <a href="." class="reload">Reload</a>
+    <span class="dismiss">🗙</span>
+</div>
