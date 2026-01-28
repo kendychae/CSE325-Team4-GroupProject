@@ -41,24 +41,24 @@ This repository contains the collaborative group project for CSE 325 - .NET Soft
 ### Project Initialization (For New Developers)
 
 1. **Clone the repository:**
-	```bash
-	git clone https://github.com/kendychae/CSE325-Team4-GroupProject.git
-	cd CSE325-Team4-GroupProject
-	```
+   ```bash
+   git clone https://github.com/kendychae/CSE325-Team4-GroupProject.git
+   cd CSE325-Team4-GroupProject
+   ```
 2. **Restore dependencies:**
-	- Open the solution in Visual Studio or VS Code.
-	- Run `dotnet restore ServeHub.sln` to restore all NuGet packages.
+   - Open the solution in Visual Studio or VS Code.
+   - Run `dotnet restore ServeHub.sln` to restore all NuGet packages.
 3. **Database setup:**
-	- Update the connection string in `src/ServeHub.API/appsettings.Development.json` as needed for your local SQL Server.
-	- Run database migrations (if any) or let the API auto-create the database on first run.
+   - Update the connection string in `src/ServeHub.API/appsettings.Development.json` as needed for your local SQL Server.
+   - Run database migrations (if any) or let the API auto-create the database on first run.
 4. **Run the API:**
-	- In the terminal: `dotnet run --project src/ServeHub.API/ServeHub.API.csproj`
-	- The API will be available at `https://localhost:PORT` (see launchSettings.json for port).
+   - In the terminal: `dotnet run --project src/ServeHub.API/ServeHub.API.csproj`
+   - The API will be available at `https://localhost:PORT` (see launchSettings.json for port).
 5. **Run the Blazor UI:**
-	- In a new terminal: `dotnet run --project ServiceActsAdminUI/ServiceActsAdminUI.csproj`
-	- The UI will be available at `https://localhost:5025` (or as configured).
+   - In a new terminal: `dotnet run --project ServiceActsAdminUI/ServiceActsAdminUI.csproj`
+   - The UI will be available at `https://localhost:5025` (or as configured).
 6. **Access the app:**
-	- Open your browser to the Blazor UI URL. You should see the home page and be able to navigate.
+   - Open your browser to the Blazor UI URL. You should see the home page and be able to navigate.
 
 ### User Guide (Basic)
 
