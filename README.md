@@ -51,9 +51,72 @@ git clone https://github.com/kendychae/CSE325-Team4-GroupProject.git
 cd CSE325-Team4-GroupProject
 ```
 
-### Initial Setup
+### Initial Setup & Onboarding
 
-Instructions for building and running the application will be added once the project structure is established.
+#### 1. Clone the Repository
+
+```
+git clone https://github.com/kendychae/CSE325-Team4-GroupProject.git
+cd CSE325-Team4-GroupProject
+```
+
+#### 2. Open the Solution
+
+- In **Visual Studio 2022**: Open the `ServiceActsAdminUI/ServiceActsAdminUI.csproj` file or the solution file if present.
+- In **VS Code**: Open the project folder. Install the C# Dev Kit extension if prompted.
+
+#### 3. Restore Dependencies
+
+Run the following command in the root directory or use Visual Studio's restore option:
+
+```
+dotnet restore ServiceActsAdminUI/ServiceActsAdminUI.csproj
+```
+
+#### 4. Build & Run the Application
+
+```
+dotnet run --project ServiceActsAdminUI/ServiceActsAdminUI.csproj
+```
+
+The app should be available at `https://localhost:5001` or the port specified in the output.
+
+#### 5. API Project (if present)
+
+If you need to run the API separately:
+
+```
+dotnet run --project ServiceActsApi/ServiceActsApi.csproj
+```
+
+#### 6. Making Changes
+
+- Create a new branch from `develop` for your feature or fix.
+- Commit changes with clear messages.
+- Push your branch and open a Pull Request to `develop`.
+
+#### 7. Troubleshooting
+
+- Ensure you have the correct .NET SDK version installed.
+- If you encounter build errors, try `dotnet clean` then `dotnet build`.
+- For dependency issues, run `dotnet restore` again.
+
+#### 8. Additional Resources
+
+- See the `docs/` folder for weekly submissions and architecture notes.
+- Ask in the team chat or open an issue for help.
+
+---
+
+## 👤 New Developer Quick Start
+
+1. Clone the repo and open in your IDE
+2. Restore dependencies and build the project
+3. Run the UI and API projects as needed
+4. Review the `README.md` and `docs/` for project context
+5. Use the GitHub Project Board for tasks
+6. Follow the branching and PR workflow
+7. Reach out to the team for onboarding help
 
 ## 📁 Project Structure
 
