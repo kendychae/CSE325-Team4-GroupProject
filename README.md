@@ -156,10 +156,40 @@ We use GitHub Projects for project management and task tracking.
 
 - [Week 2 Submission](docs/Week2_Team_Submission.md) - Planning & Repository Setup
 - [Week 3 Submission](docs/Week3_Team_Submission.md) - Project Proposal & Requirements
+- [Week 4 Submission](docs/Week4_Team_Submission.md) - Project Checkpoint & Initialization
 
 ## 🧪 Testing
 
-Testing guidelines and instructions will be added as the project develops.
+We use .NET's built-in testing tools for unit and integration tests. All test projects should be placed in the `tests/` directory.
+
+### How to Run Tests
+
+1. Restore dependencies (if not already done):
+   ```
+   dotnet restore
+   ```
+2. Run all tests in the solution:
+   ```
+   dotnet test
+   ```
+3. To run tests for a specific project:
+   ```
+   dotnet test path/to/YourTestProject.csproj
+   ```
+
+### Writing Tests
+
+- Add new test projects to the `tests/` folder.
+- Use xUnit, NUnit, or MSTest (xUnit recommended for .NET projects).
+- Place your test classes and methods following .NET conventions.
+
+### Guidelines
+
+- Write tests for all new features and bug fixes.
+- Use descriptive names for test methods.
+- Run all tests before submitting a pull request.
+
+See the [Microsoft Testing Documentation](https://docs.microsoft.com/en-us/dotnet/core/testing/) for more details.
 
 ## 📚 Documentation
 
