@@ -1,0 +1,72 @@
+@page "/services"
+@using ServiceActsAdminUI.Models
+
+<PageTitle>Service Opportunities</PageTitle>
+
+<div class="service-page">
+    <h3>Volunteer Service Opportunities</h3>
+
+    <input class="service-search"
+           placeholder="Search by title or category..."
+           @bind="searchText"
+           @bind:event="oninput" />
+
+    <div class="service-list">
+        @foreach (var service in FilteredServices)
+        {
+            <div class="service-card">
+                <h4>@service.Title</h4>
+                <p class="description">@service.Description</p>
+
+                <div class="meta">
+                    <span><strong>Location:</strong> @service.Location</span>
+                    <span><strong>Date:</strong> @service.Date.ToShortDateString()</span>
+                    <span><strong>Category:</strong> @service.Category</span>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+@code {
+    private string searchText = "";
+
+    // Mock data (temporary)
+    private List<ServiceOpportunity> services = new()
+    {
+        new ServiceOpportunity
+        {
+            Id = 1,
+            Title = "Campus Clean-Up",
+            Description = "Help clean up the campus grounds.",
+            Location = "Main Quad",
+            Date = DateTime.Today.AddDays(3),
+            Category = "Environment"
+        },
+        new ServiceOpportunity
+        {
+            Id = 2,
+            Title = "Food Bank Sorting",
+            Description = "Sort donated food items.",
+            Location = "City Food Bank",
+            Date = DateTime.Today.AddDays(5),
+            Category = "Community"
+        },
+        new ServiceOpportunity
+        {
+            Id = 3,
+            Title = "Tutoring Night",
+            Description = "Tutor local middle school students.",
+            Location = "Library",
+            Date = DateTime.Today.AddDays(7),
+            Category = "Education"
+        }
+    };
+
+    private IEnumerable<ServiceOpportunity> FilteredServices =>
+        services.Where(s =>
+            string.IsNullOrWhiteSpace(searchText) ||
+            s.Title.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
+            s.Category.Contains(searchText, StringComparison.OrdinalIgnoreCase));
+}
