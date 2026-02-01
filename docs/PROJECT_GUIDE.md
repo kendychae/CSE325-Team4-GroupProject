@@ -9,6 +9,7 @@
 The W7 requirements specifically state: _"Plan, design, develop, and deploy **a .NET Blazor web application**"_ (singular, unified application).
 
 Our new architecture provides:
+
 - ✅ **Single unified application** - meets the literal requirement
 - ✅ **Simpler deployment** - one application to deploy
 - ✅ **Built-in authentication** - ASP.NET Core Identity (no JWT complexity)
@@ -17,22 +18,22 @@ Our new architecture provides:
 
 ## 📊 W7 Requirements Checklist
 
-| Requirement | Status | Location/Evidence |
-|-------------|--------|-------------------|
-| ✅ Blazor Web Application | Complete | Blazor Server with .NET 10 |
-| ✅ User Authentication | Complete | ASP.NET Core Identity (Program.cs, Data/ApplicationUser.cs) |
-| ✅ CRUD Functionality | Complete | Services layer (Services/) for opportunities & registrations |
-| ✅ Database Integration | Complete | Entity Framework Core + SQL Server (Data/ApplicationDbContext.cs) |
-| ✅ Testing Ready | Ready | Can add xUnit test project |
-| ✅ Trello Board | Pending | Team to set up |
-| ✅ GitHub Repository | Complete | https://github.com/kendychae/CSE325-Team4-GroupProject |
-| ✅ Documentation | Complete | README.md, GETTING_STARTED.md |
-| ✅ Cloud Deployment Ready | Ready | Configured for Azure/AWS |
-| ✅ Performance | Complete | Server-side rendering |
-| ✅ Accessibility | Complete | WCAG 2.1 Level AA markup |
-| ✅ Responsive Design | Complete | Bootstrap 5 mobile-first |
-| ✅ Branding | Complete | Consistent color scheme & layout |
-| ✅ Navigation | Complete | Clear hierarchy in NavMenu |
+| Requirement               | Status   | Location/Evidence                                                 |
+| ------------------------- | -------- | ----------------------------------------------------------------- |
+| ✅ Blazor Web Application | Complete | Blazor Server with .NET 10                                        |
+| ✅ User Authentication    | Complete | ASP.NET Core Identity (Program.cs, Data/ApplicationUser.cs)       |
+| ✅ CRUD Functionality     | Complete | Services layer (Services/) for opportunities & registrations      |
+| ✅ Database Integration   | Complete | Entity Framework Core + SQL Server (Data/ApplicationDbContext.cs) |
+| ✅ Testing Ready          | Ready    | Can add xUnit test project                                        |
+| ✅ Trello Board           | Pending  | Team to set up                                                    |
+| ✅ GitHub Repository      | Complete | https://github.com/kendychae/CSE325-Team4-GroupProject            |
+| ✅ Documentation          | Complete | README.md, GETTING_STARTED.md                                     |
+| ✅ Cloud Deployment Ready | Ready    | Configured for Azure/AWS                                          |
+| ✅ Performance            | Complete | Server-side rendering                                             |
+| ✅ Accessibility          | Complete | WCAG 2.1 Level AA markup                                          |
+| ✅ Responsive Design      | Complete | Bootstrap 5 mobile-first                                          |
+| ✅ Branding               | Complete | Consistent color scheme & layout                                  |
+| ✅ Navigation             | Complete | Clear hierarchy in NavMenu                                        |
 
 ## 🏗️ Architecture
 
@@ -124,15 +125,18 @@ Navigate to: `https://localhost:5001`
 ### Creating a New Feature
 
 1. **Pull latest changes**
+
    ```bash
    git checkout main
    git pull origin main
    ```
 
 2. **Create a feature branch**
+
    ```bash
    git checkout -b feature/your-feature-name
    ```
+
    Examples:
    - `feature/add-categories-filter`
    - `feature/user-profile-page`
@@ -143,12 +147,14 @@ Navigate to: `https://localhost:5001`
    - Test locally by running `dotnet run`
 
 4. **Commit your changes**
+
    ```bash
    git add .
    git commit -m "Clear description of what you changed"
    ```
 
 5. **Push to GitHub**
+
    ```bash
    git push origin feature/your-feature-name
    ```
@@ -179,6 +185,7 @@ Navigate to: `https://localhost:5001`
 3. Add to navigation in `NavMenu.razor`
 
 Example:
+
 ```razor
 @page "/my-page"
 @rendermode InteractiveServer
@@ -213,6 +220,7 @@ Example:
 ### Manual Testing Checklist
 
 Before pushing code:
+
 - [ ] Application builds without errors: `dotnet build`
 - [ ] Application runs without crashes: `dotnet run`
 - [ ] New feature works as expected
@@ -246,18 +254,21 @@ dotnet ef migrations list
 ### 🚧 Features To Implement (Team Tasks)
 
 #### Priority 1 - Authentication Pages (Week 6)
+
 - [ ] `/Account/Register` - User registration page
 - [ ] `/Account/Login` - User login page
 - [ ] `/Account/Logout` - Logout handler
 - [ ] `/Account/Profile` - User profile page
 
 #### Priority 2 - CRUD Operations (Week 6)
+
 - [ ] `/Opportunities/Create` - Create new opportunity form
 - [ ] `/Opportunities/Edit/{id}` - Edit opportunity form
 - [ ] `/Opportunities/Delete/{id}` - Delete confirmation
 - [ ] `/My-Registrations` - User's registration history
 
 #### Priority 3 - Enhanced Features (Week 7)
+
 - [ ] Category filtering on opportunities page
 - [ ] Search functionality
 - [ ] Date range filtering
@@ -265,6 +276,7 @@ dotnet ef migrations list
 - [ ] Email notifications (optional)
 
 #### Priority 4 - Testing & Deployment (Week 7)
+
 - [ ] Unit tests for services
 - [ ] Integration tests
 - [ ] Deploy to Azure/AWS
@@ -276,12 +288,14 @@ dotnet ef migrations list
 Each team member must participate in the final video demonstration:
 
 **Requirements:**
+
 - **Length**: 5-7 minutes
 - **Platform**: YouTube upload
 - **Content**: Show operational functionality
 - **Participation**: Each member presents a portion using their own camera
 
 **What to Demonstrate:**
+
 1. Home page and navigation
 2. Browse opportunities
 3. User registration/login
@@ -297,6 +311,7 @@ Each team member must participate in the final video demonstration:
 ### Issue: "Cannot connect to database"
 
 **Solution:**
+
 ```bash
 # Check if LocalDB is running
 sqllocaldb info
@@ -310,6 +325,7 @@ sqllocaldb start MSSQLLocalDB
 ### Issue: "Migration already applied"
 
 **Solution:**
+
 ```bash
 # Remove last migration
 dotnet ef migrations remove
@@ -322,6 +338,7 @@ dotnet ef database update
 ### Issue: "Package restore failed"
 
 **Solution:**
+
 ```bash
 # Clear NuGet cache
 dotnet nuget locals all --clear
@@ -334,6 +351,7 @@ dotnet restore
 
 **Solution:**
 Edit `Properties/launchSettings.json` and change ports:
+
 ```json
 "applicationUrl": "https://localhost:7001;http://localhost:5001"
 ```
@@ -341,26 +359,31 @@ Edit `Properties/launchSettings.json` and change ports:
 ## 📚 Resources
 
 ### Official Documentation
+
 - [Blazor Documentation](https://learn.microsoft.com/en-us/aspnet/core/blazor/)
 - [Entity Framework Core](https://learn.microsoft.com/en-us/ef/core/)
 - [ASP.NET Core Identity](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity)
 
 ### Tutorials
+
 - [Blazor Tutorial](https://dotnet.microsoft.com/learn/aspnet/blazor-tutorial/intro)
 - [EF Core Tutorial](https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app)
 
 ### Bootstrap
+
 - [Bootstrap 5 Documentation](https://getbootstrap.com/docs/5.3/)
 - [Bootstrap Icons](https://icons.getbootstrap.com/)
 
 ## 👥 Team Communication
 
 ### Daily Standup Questions
+
 1. What did you work on since last meeting?
 2. What are you working on next?
 3. Are there any blockers?
 
 ### Weekly Team Meeting Agenda
+
 1. Review progress on Trello board
 2. Demo completed features
 3. Assign new tasks
@@ -368,6 +391,7 @@ Edit `Properties/launchSettings.json` and change ports:
 5. Plan next sprint
 
 ### Communication Channels
+
 - **GitHub Issues**: For bugs and feature requests
 - **Pull Requests**: For code reviews
 - **Team Chat**: For quick questions
@@ -376,12 +400,14 @@ Edit `Properties/launchSettings.json` and change ports:
 ## 🎯 Next Steps
 
 ### Week 6 Goals
+
 1. **All team members**: Complete authentication pages
 2. **All team members**: Implement at least one CRUD operation
 3. **Team**: Set up Trello board
 4. **Team**: Begin testing and quality assurance
 
 ### Week 7 Goals
+
 1. **Complete all CRUD operations**
 2. **Deploy to cloud** (Azure App Service recommended)
 3. **Record demonstration video**

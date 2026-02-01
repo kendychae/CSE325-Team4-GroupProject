@@ -47,7 +47,7 @@ public class RegistrationService : IRegistrationService
         // Check if already registered
         var existing = await _context.ServiceRegistrations
             .FirstOrDefaultAsync(r => r.UserId == userId && r.OpportunityId == opportunityId);
-        
+
         if (existing != null)
             throw new InvalidOperationException("User is already registered for this opportunity");
 
@@ -55,10 +55,10 @@ public class RegistrationService : IRegistrationService
         var opportunity = await _context.ServiceOpportunities
             .Include(o => o.Registrations)
             .FirstOrDefaultAsync(o => o.Id == opportunityId);
-        
+
         if (opportunity == null)
             throw new InvalidOperationException("Opportunity not found");
-        
+
         if (opportunity.CurrentVolunteers >= opportunity.MaxVolunteers)
             throw new InvalidOperationException("This opportunity is full");
 
@@ -71,10 +71,10 @@ public class RegistrationService : IRegistrationService
         };
 
         _context.ServiceRegistrations.Add(registration);
-        
+
         // Update volunteer count
         opportunity.CurrentVolunteers++;
-        
+
         await _context.SaveChangesAsync();
         return registration;
     }
@@ -84,18 +84,18 @@ public class RegistrationService : IRegistrationService
         var registration = await _context.ServiceRegistrations
             .Include(r => r.Opportunity)
             .FirstOrDefaultAsync(r => r.Id == id);
-        
+
         if (registration == null)
             return false;
 
         _context.ServiceRegistrations.Remove(registration);
-        
+
         // Update volunteer count
         if (registration.Opportunity != null)
         {
             registration.Opportunity.CurrentVolunteers--;
         }
-        
+
         await _context.SaveChangesAsync();
         return true;
     }

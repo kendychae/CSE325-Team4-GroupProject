@@ -15,6 +15,7 @@ ServeHub is a comprehensive volunteer management web application built with Blaz
 ### 🎯 Application Purpose
 
 ServeHub connects volunteers with meaningful service opportunities in their communities. The platform enables:
+
 - Organizations to post and manage volunteer opportunities
 - Volunteers to discover, register for, and track service activities
 - Community engagement through accessible and user-friendly volunteer coordination
@@ -41,18 +42,18 @@ This project fully meets all Week 7 Group Project specifications:
 
 ### Core Requirements Met
 
-| Requirement | Status | Implementation |
-|------------|--------|----------------|
-| **Blazor Web Application** | ✅ Complete | Monolithic Blazor Server architecture |
-| **User Authentication** | ✅ Complete | ASP.NET Core Identity with secure registration/login |
-| **CRUD Functionality** | ✅ Complete | Full Create, Read, Update, Delete for service opportunities |
-| **Database Integration** | ✅ Complete | Entity Framework Core with SQL Server |
-| **Performance Optimized** | ✅ Complete | Server-side rendering, efficient data queries |
-| **Responsive Design** | ✅ Complete | Mobile-first Bootstrap 5 implementation |
-| **Accessibility** | ✅ Complete | WCAG 2.1 Level AA compliant markup |
-| **GitHub Repository** | ✅ Complete | Version control with collaborative workflow |
-| **Documentation** | ✅ Complete | Comprehensive README and getting started guide |
-| **Cloud Deployment Ready** | ✅ Ready | Configured for Azure/AWS deployment |
+| Requirement                | Status      | Implementation                                              |
+| -------------------------- | ----------- | ----------------------------------------------------------- |
+| **Blazor Web Application** | ✅ Complete | Monolithic Blazor Server architecture                       |
+| **User Authentication**    | ✅ Complete | ASP.NET Core Identity with secure registration/login        |
+| **CRUD Functionality**     | ✅ Complete | Full Create, Read, Update, Delete for service opportunities |
+| **Database Integration**   | ✅ Complete | Entity Framework Core with SQL Server                       |
+| **Performance Optimized**  | ✅ Complete | Server-side rendering, efficient data queries               |
+| **Responsive Design**      | ✅ Complete | Mobile-first Bootstrap 5 implementation                     |
+| **Accessibility**          | ✅ Complete | WCAG 2.1 Level AA compliant markup                          |
+| **GitHub Repository**      | ✅ Complete | Version control with collaborative workflow                 |
+| **Documentation**          | ✅ Complete | Comprehensive README and getting started guide              |
+| **Cloud Deployment Ready** | ✅ Ready    | Configured for Azure/AWS deployment                         |
 
 ### Design Standards
 
@@ -66,24 +67,28 @@ This project fully meets all Week 7 Group Project specifications:
 ## 🚀 Key Features
 
 ### 1. Service Opportunity Management
+
 - **Create Opportunities**: Organizations can post volunteer opportunities with details
 - **Browse & Search**: Users can discover opportunities by category, date, and location
 - **View Details**: Comprehensive information about each opportunity
 - **Update & Delete**: Opportunity creators can manage their postings
 
 ### 2. Volunteer Registration System
+
 - **Easy Registration**: One-click registration for opportunities
 - **Capacity Management**: Automatic tracking of volunteer spots
 - **Registration History**: Users can view their past and upcoming commitments
 - **Cancellation Support**: Ability to cancel registrations when needed
 
 ### 3. User Authentication & Security
+
 - **Secure Registration**: ASP.NET Core Identity with password requirements
 - **Login System**: Persistent sessions with cookie authentication
 - **Role-Based Access**: Protected routes for authenticated users
 - **Profile Management**: User account information and settings
 
 ### 4. Modern User Interface
+
 - **Responsive Design**: Optimized for desktop, tablet, and mobile devices
 - **Bootstrap 5**: Professional styling with modern components
 - **Interactive Components**: Real-time updates without page refreshes
@@ -151,23 +156,27 @@ ServeHub/
 ### Quick Start
 
 1. **Clone the Repository**
+
    ```bash
    git clone https://github.com/kendychae/CSE325-Team4-GroupProject.git
    cd CSE325-Team4-GroupProject
    ```
 
 2. **Restore Dependencies**
+
    ```bash
    dotnet restore
    ```
 
 3. **Setup Database**
+
    ```bash
    dotnet ef migrations add InitialCreate
    dotnet ef database update
    ```
 
 4. **Run the Application**
+
    ```bash
    dotnet run
    ```
@@ -229,6 +238,7 @@ dotnet test --collect:"XPlat Code Coverage"
 ## 🌐 Deployment
 
 The application is configured for deployment to:
+
 - **Azure App Service** (Recommended for .NET applications)
 - **AWS Elastic Beanstalk**
 - **Docker containers**
@@ -267,6 +277,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Contact
 
 For questions or support:
+
 - Open an issue on [GitHub](https://github.com/kendychae/CSE325-Team4-GroupProject/issues)
 - Contact team lead: Kendahl Chae Bingham
 - Course communication channels
@@ -283,6 +294,7 @@ For questions or support:
 **Last Updated**: February 2026  
 **Version**: 2.0.0 - Monolithic Blazor Architecture  
 **Status**: Active Development
+
 - If you encounter build errors, try `dotnet clean` then `dotnet build`.
 - For dependency issues, run `dotnet restore` again.
 

@@ -11,10 +11,12 @@ The project foundation is built and ready. All team members can now start implem
 ### 🔐 Authentication & User Management (4-5 members)
 
 #### Task 1: User Registration Page
-**Assignee**: _____________________  
+
+**Assignee**: **********\_**********  
 **File**: `Components/Pages/Account/Register.razor`  
 **Route**: `/Account/Register`  
 **Requirements**:
+
 - Email field (validation)
 - Password field (min 6 chars, uppercase, lowercase, digit)
 - Confirm password field
@@ -29,10 +31,12 @@ The project foundation is built and ready. All team members can now start implem
 ---
 
 #### Task 2: User Login Page
-**Assignee**: _____________________  
+
+**Assignee**: **********\_**********  
 **File**: `Components/Pages/Account/Login.razor`  
 **Route**: `/Account/Login`  
 **Requirements**:
+
 - Email field
 - Password field
 - "Remember me" checkbox
@@ -47,10 +51,12 @@ The project foundation is built and ready. All team members can now start implem
 ---
 
 #### Task 3: Logout Functionality
-**Assignee**: _____________________  
+
+**Assignee**: **********\_**********  
 **File**: `Components/Pages/Account/Logout.razor`  
 **Route**: `/Account/Logout`  
 **Requirements**:
+
 - Call `SignInManager.SignOutAsync()`
 - Redirect to home page
 - Show confirmation message (optional)
@@ -60,10 +66,12 @@ The project foundation is built and ready. All team members can now start implem
 ---
 
 #### Task 4: User Profile Page
-**Assignee**: _____________________  
+
+**Assignee**: **********\_**********  
 **File**: `Components/Pages/Account/Profile.razor`  
 **Route**: `/Account/Profile`  
 **Requirements**:
+
 - Display user information
 - Edit first name, last name
 - Update profile image URL (optional)
@@ -78,10 +86,12 @@ The project foundation is built and ready. All team members can now start implem
 ### 📝 CRUD Operations (4-5 members)
 
 #### Task 5: Create Opportunity Page
-**Assignee**: _____________________  
+
+**Assignee**: **********\_**********  
 **File**: `Components/Pages/Opportunities/Create.razor`  
 **Route**: `/opportunities/create`  
 **Requirements**:
+
 - Form with all opportunity fields:
   - Title (required, max 200 chars)
   - Description (required, max 2000 chars)
@@ -103,10 +113,12 @@ The project foundation is built and ready. All team members can now start implem
 ---
 
 #### Task 6: Edit Opportunity Page
-**Assignee**: _____________________  
+
+**Assignee**: **********\_**********  
 **File**: `Components/Pages/Opportunities/Edit.razor`  
 **Route**: `/opportunities/edit/{id:int}`  
 **Requirements**:
+
 - Load existing opportunity by ID
 - Pre-fill form with current values
 - Allow updates to all fields
@@ -122,10 +134,12 @@ The project foundation is built and ready. All team members can now start implem
 ---
 
 #### Task 7: Delete Opportunity Confirmation
-**Assignee**: _____________________  
+
+**Assignee**: **********\_**********  
 **File**: `Components/Pages/Opportunities/Delete.razor`  
 **Route**: `/opportunities/delete/{id:int}`  
 **Requirements**:
+
 - Load opportunity details
 - Show confirmation message: "Are you sure you want to delete..."
 - Delete button (red), Cancel button
@@ -139,10 +153,12 @@ The project foundation is built and ready. All team members can now start implem
 ---
 
 #### Task 8: My Registrations Page
-**Assignee**: _____________________  
+
+**Assignee**: **********\_**********  
 **File**: `Components/Pages/MyRegistrations.razor`  
 **Route**: `/my-registrations`  
 **Requirements**:
+
 - Display current user's registrations
 - Use `IRegistrationService.GetUserRegistrationsAsync()`
 - Show opportunity details for each registration
@@ -159,9 +175,11 @@ The project foundation is built and ready. All team members can now start implem
 ### 🎨 Enhancement Features (2-3 members)
 
 #### Task 9: Category Filter on Opportunities Page
-**Assignee**: _____________________  
+
+**Assignee**: **********\_**********  
 **File**: `Components/Pages/Opportunities.razor` (update existing)  
 **Requirements**:
+
 - Add dropdown filter above opportunities list
 - Use `IServiceOpportunityService.GetCategoriesAsync()`
 - Filter opportunities by selected category
@@ -173,9 +191,11 @@ The project foundation is built and ready. All team members can now start implem
 ---
 
 #### Task 10: Search Functionality
-**Assignee**: _____________________  
+
+**Assignee**: **********\_**********  
 **File**: `Components/Pages/Opportunities.razor` (update existing)  
 **Requirements**:
+
 - Add search box
 - Search by title, description, location
 - Real-time filtering (as user types)
@@ -187,9 +207,11 @@ The project foundation is built and ready. All team members can now start implem
 ---
 
 #### Task 11: Date Range Filter
-**Assignee**: _____________________  
+
+**Assignee**: **********\_**********  
 **File**: `Components/Pages/Opportunities.razor` (update existing)  
 **Requirements**:
+
 - Add start date and end date input
 - Filter opportunities between dates
 - Show only future opportunities by default
@@ -202,9 +224,11 @@ The project foundation is built and ready. All team members can now start implem
 ### 🧪 Testing & Quality (2 members)
 
 #### Task 12: Unit Tests
-**Assignee**: _____________________  
+
+**Assignee**: **********\_**********  
 **File**: Create new test project  
 **Requirements**:
+
 - Create xUnit test project
 - Test `ServiceOpportunityService` methods
 - Test `RegistrationService` methods
@@ -216,9 +240,11 @@ The project foundation is built and ready. All team members can now start implem
 ---
 
 #### Task 13: Integration Tests
-**Assignee**: _____________________  
+
+**Assignee**: **********\_**********  
 **File**: Add to test project  
 **Requirements**:
+
 - Test database operations
 - Test authentication flows
 - Use in-memory database
@@ -231,8 +257,10 @@ The project foundation is built and ready. All team members can now start implem
 ### 🚀 Deployment & Documentation (2 members)
 
 #### Task 14: Azure Deployment
-**Assignee**: _____________________  
+
+**Assignee**: **********\_**********  
 **Requirements**:
+
 - Create Azure App Service
 - Configure Azure SQL Database
 - Set up connection strings
@@ -245,8 +273,10 @@ The project foundation is built and ready. All team members can now start implem
 ---
 
 #### Task 15: Video Demonstration
+
 **Assignee**: ALL TEAM MEMBERS (each presents a portion)  
 **Requirements**:
+
 - Record 5-7 minute video
 - Each member uses own camera
 - Demonstrate all features:
@@ -268,11 +298,13 @@ The project foundation is built and ready. All team members can now start implem
 ## 📅 Recommended Schedule
 
 ### Week 6 (Current Week)
+
 - **Monday-Tuesday**: Set up development environments, assign tasks
 - **Wednesday-Friday**: Work on authentication + CRUD pages
 - **Weekend**: Complete assigned features, test locally
 
 ### Week 7 (Final Week)
+
 - **Monday-Tuesday**: Complete remaining features, fix bugs
 - **Wednesday**: Deploy to cloud, final testing
 - **Thursday**: Record video demonstration
@@ -302,17 +334,20 @@ The project foundation is built and ready. All team members can now start implem
 ### Required Skills by Task
 
 **Beginner-Friendly Tasks:**
+
 - Task 3 (Logout) - Simple, good starter
 - Task 9 (Category Filter) - Builds on existing page
 - Task 11 (Date Filter) - Similar to Task 9
 
 **Intermediate Tasks:**
+
 - Task 1, 2 (Register/Login) - Forms with validation
 - Task 4 (Profile) - Data editing
 - Task 7 (Delete) - Simple confirmation
 - Task 10 (Search) - Client-side filtering
 
 **Advanced Tasks:**
+
 - Task 5, 6 (Create/Edit) - Complex forms
 - Task 8 (My Registrations) - Multiple queries
 - Task 12, 13 (Testing) - Requires testing knowledge

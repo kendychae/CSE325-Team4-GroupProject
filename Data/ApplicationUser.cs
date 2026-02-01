@@ -13,7 +13,7 @@ public class ApplicationUser : IdentityUser
     public string? ProfileImageUrl { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? LastLoginAt { get; set; }
-    
+
     // Navigation properties
     public virtual ICollection<ServiceOpportunity> CreatedOpportunities { get; set; } = new List<ServiceOpportunity>();
     public virtual ICollection<ServiceRegistration> Registrations { get; set; } = new List<ServiceRegistration>();

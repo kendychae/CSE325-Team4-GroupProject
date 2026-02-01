@@ -60,6 +60,7 @@ dotnet run
 Or press **F5** in Visual Studio to run with debugging.
 
 The application will be available at:
+
 - HTTPS: `https://localhost:5001`
 - HTTP: `http://localhost:5000`
 
@@ -146,6 +147,7 @@ ServeHub/
 ### Creating a New Feature
 
 1. Create a new branch:
+
    ```bash
    git checkout -b feature/your-feature-name
    ```
@@ -153,12 +155,14 @@ ServeHub/
 2. Make your changes and test locally
 
 3. Commit your changes:
+
    ```bash
    git add .
    git commit -m "Description of your changes"
    ```
 
 4. Push to GitHub:
+
    ```bash
    git push origin feature/your-feature-name
    ```
@@ -187,11 +191,13 @@ dotnet test
 If you get database connection errors:
 
 1. Verify SQL Server LocalDB is installed:
+
    ```bash
    sqllocaldb info
    ```
 
 2. Create a new instance if needed:
+
    ```bash
    sqllocaldb create MSSQLLocalDB
    ```
@@ -206,11 +212,13 @@ If you get database connection errors:
 If you encounter build errors:
 
 1. Clean the solution:
+
    ```bash
    dotnet clean
    ```
 
 2. Restore packages:
+
    ```bash
    dotnet restore
    ```
@@ -234,6 +242,7 @@ If the default ports are in use, update `Properties/launchSettings.json` to use 
 ## Support
 
 For questions or issues:
+
 - Open an issue on GitHub
 - Contact the team via the project's communication channel
 - Refer to the course materials and documentation
