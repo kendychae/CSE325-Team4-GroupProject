@@ -22,7 +22,7 @@ ServeHub connects volunteers with meaningful service opportunities in their comm
 
 ## 👥 Team Members - Team 4
 
-- **Kendahl Chae Bingham** - Team Lead
+- **Kendahl Chae Bingham** 
 - **Adetokunbo Olutola Osibo**
 - **Ange Junior Gohouri**
 - **Boitumelo Hebert Meletse**
