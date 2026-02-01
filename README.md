@@ -98,8 +98,8 @@ This project fully meets all Week 7 Group Project specifications:
 
 - **Framework**: .NET 10.0
 - **UI**: Blazor Server with Interactive Server rendering
-- **Authentication**: ASP.NET Core Identity
-- **Database**: Entity Framework Core with SQL Server
+- **Authentication**: ASP.NET Core Identity with CascadingAuthenticationState
+- **Database**: Entity Framework Core with SQL Server or SQLite support
 - **ORM**: Entity Framework Core
 - **Styling**: Bootstrap 5 + Custom CSS
 - **Icons**: Bootstrap Icons
@@ -150,7 +150,9 @@ ServeHub/
 
 - [.NET 10.0 SDK](https://dotnet.microsoft.com/download) or later
 - [Visual Studio 2022](https://visualstudio.microsoft.com/) or [Visual Studio Code](https://code.visualstudio.com/)
-- [SQL Server LocalDB](https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/sql-server-express-localdb) (included with Visual Studio)
+- **Database (Choose One)**:
+  - [SQL Server LocalDB](https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/sql-server-express-localdb) (included with Visual Studio), OR
+  - SQLite (no installation required - included automatically)
 - [Git](https://git-scm.com/downloads)
 
 ### Quick Start
@@ -170,10 +172,28 @@ ServeHub/
 
 3. **Setup Database**
 
+   Choose your database option:
+
+   **Option A: SQL Server (Default)**
+
    ```bash
    dotnet ef migrations add InitialCreate
    dotnet ef database update
    ```
+
+   **Option B: SQLite (No SQL Server Required)**
+   1. Edit `appsettings.json` and change the connection string:
+      ```json
+      "ConnectionStrings": {
+        "_DefaultConnection_SQLServer": "Server=(localdb)\\mssqllocaldb;...",
+        "DefaultConnection": "Data Source=ServeHub.db"
+      }
+      ```
+   2. Run migrations:
+      ```bash
+      dotnet ef migrations add InitialCreate
+      dotnet ef database update
+      ```
 
 4. **Run the Application**
 

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ServeHub.Components;
@@ -11,10 +12,28 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 // Add Database Context
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-    ?? "Server=(localdb)\\mssqllocaldb;Database=ServeHubDb;Trusted_Connection=true;MultipleActiveResultSets=true";
+// Supports both SQL Server and SQLite
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+if (string.IsNullOrEmpty(connectionString))
+{
+    // Default to SQL Server LocalDB
+    connectionString = "Server=(localdb)\\mssqllocaldb;Database=ServeHubDb;Trusted_Connection=true;MultipleActiveResultSets=true";
+}
+
+// Automatically detect database provider based on connection string
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+{
+    if (connectionString.Contains("Data Source=") && connectionString.EndsWith(".db"))
+    {
+        // Use SQLite
+        options.UseSqlite(connectionString);
+    }
+    else
+    {
+        // Use SQL Server
+        options.UseSqlServer(connectionString);
+    }
+});
 
 // Add Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
@@ -35,6 +54,9 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 })
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
+
+// Add Authentication State Provider for Blazor
+builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
 
 // Configure authentication cookie
 builder.Services.ConfigureApplicationCookie(options =>

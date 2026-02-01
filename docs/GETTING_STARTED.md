@@ -6,7 +6,8 @@ Before you begin, ensure you have the following installed:
 
 - [.NET 10.0 SDK](https://dotnet.microsoft.com/download) or later
 - [Visual Studio 2022](https://visualstudio.microsoft.com/) or [Visual Studio Code](https://code.visualstudio.com/)
-- [SQL Server LocalDB](https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/sql-server-express-localdb) (included with Visual Studio) or SQL Server
+- **Database Option 1:** [SQL Server LocalDB](https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/sql-server-express-localdb) (included with Visual Studio) or SQL Server
+- **Database Option 2:** SQLite (no installation required - included via NuGet)
 
 ## Initial Setup
 
@@ -23,15 +24,28 @@ cd CSE325-Team4-GroupProject
 dotnet restore
 ```
 
-### 3. Update Database Connection String (Optional)
+### 3. Configure Database
 
-If you're not using SQL Server LocalDB, update the connection string in `appsettings.json`:
+The application supports both SQL Server and SQLite. Choose one:
+
+#### Option A: SQL Server LocalDB (Default)
+
+No configuration needed. The application is pre-configured to use SQL Server LocalDB.
+
+#### Option B: SQLite (No SQL Server Installation Required)
+
+1. Open `appsettings.json`
+2. Comment out the SQL Server connection string
+3. Rename `_SQLiteConnection` to `DefaultConnection`:
 
 ```json
 "ConnectionStrings": {
-  "DefaultConnection": "Server=YOUR_SERVER;Database=ServeHubDb;Trusted_Connection=true;MultipleActiveResultSets=true"
+  "_DefaultConnection_SQLServer": "Server=(localdb)\\mssqllocaldb;Database=ServeHubDb;Trusted_Connection=true;MultipleActiveResultSets=true",
+  "DefaultConnection": "Data Source=ServeHub.db"
 }
 ```
+
+The application automatically detects which database provider to use based on the connection string format.
 
 ### 4. Create the Database
 
@@ -188,7 +202,36 @@ dotnet test
 
 ### Database Connection Issues
 
-If you get database connection errors:
+#### SQL Server LocalDB Not Installed
+
+If you get "SQL Server LocalDB not found" errors:
+
+**Option 1: Install SQL Server Express**
+
+1. Download [SQL Server Express](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
+2. Run the installer
+3. Restart your development environment
+
+**Option 2: Switch to SQLite (Recommended for Quick Setup)**
+
+1. Open `appsettings.json`
+2. Comment out the SQL Server connection and use SQLite:
+   ```json
+   "ConnectionStrings": {
+     "_DefaultConnection_SQLServer": "Server=(localdb)\\mssqllocaldb;Database=ServeHubDb;Trusted_Connection=true;MultipleActiveResultSets=true",
+     "DefaultConnection": "Data Source=ServeHub.db"
+   }
+   ```
+3. Delete any existing migrations folder (if present)
+4. Run migrations again:
+   ```bash
+   dotnet ef migrations add InitialCreate
+   dotnet ef database update
+   ```
+
+#### Verify SQL Server LocalDB
+
+If you want to use SQL Server:
 
 1. Verify SQL Server LocalDB is installed:
 
@@ -205,6 +248,26 @@ If you get database connection errors:
 3. Start the instance:
    ```bash
    sqllocaldb start MSSQLLocalDB
+   ```
+
+### Authentication/Authorization Errors
+
+If you see errors like "requires a cascading parameter of type Task<AuthenticationState>":
+
+✅ **This has been fixed!** The application now includes:
+
+- `CascadingAuthenticationState` wrapper in `App.razor`
+- `IdentityRevalidatingAuthenticationStateProvider` service registration
+- All required authentication services properly configured
+
+If you still encounter issues:
+
+1. Make sure you're using the latest code from the repository
+2. Clean and rebuild the project:
+   ```bash
+   dotnet clean
+   dotnet restore
+   dotnet build
    ```
 
 ### Build Errors
