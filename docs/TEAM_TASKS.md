@@ -12,7 +12,7 @@ The project foundation is built and ready. All team members can now start implem
 
 #### Task 1: User Registration Page
 
-**Assignee**: **********\_**********  
+**Assignee**: ****\*\*****\_****\*\*****  
 **File**: `Components/Pages/Account/Register.razor`  
 **Route**: `/Account/Register`  
 **Requirements**:
@@ -32,7 +32,7 @@ The project foundation is built and ready. All team members can now start implem
 
 #### Task 2: User Login Page
 
-**Assignee**: **********\_**********  
+**Assignee**: ****\*\*****\_****\*\*****  
 **File**: `Components/Pages/Account/Login.razor`  
 **Route**: `/Account/Login`  
 **Requirements**:
@@ -52,7 +52,7 @@ The project foundation is built and ready. All team members can now start implem
 
 #### Task 3: Logout Functionality
 
-**Assignee**: **********\_**********  
+**Assignee**: ****\*\*****\_****\*\*****  
 **File**: `Components/Pages/Account/Logout.razor`  
 **Route**: `/Account/Logout`  
 **Requirements**:
@@ -67,7 +67,7 @@ The project foundation is built and ready. All team members can now start implem
 
 #### Task 4: User Profile Page
 
-**Assignee**: **********\_**********  
+**Assignee**: ****\*\*****\_****\*\*****  
 **File**: `Components/Pages/Account/Profile.razor`  
 **Route**: `/Account/Profile`  
 **Requirements**:
@@ -87,7 +87,7 @@ The project foundation is built and ready. All team members can now start implem
 
 #### Task 5: Create Opportunity Page
 
-**Assignee**: **********\_**********  
+**Assignee**: ****\*\*****\_****\*\*****  
 **File**: `Components/Pages/Opportunities/Create.razor`  
 **Route**: `/opportunities/create`  
 **Requirements**:
@@ -114,7 +114,7 @@ The project foundation is built and ready. All team members can now start implem
 
 #### Task 6: Edit Opportunity Page
 
-**Assignee**: **********\_**********  
+**Assignee**: ****\*\*****\_****\*\*****  
 **File**: `Components/Pages/Opportunities/Edit.razor`  
 **Route**: `/opportunities/edit/{id:int}`  
 **Requirements**:
@@ -135,7 +135,7 @@ The project foundation is built and ready. All team members can now start implem
 
 #### Task 7: Delete Opportunity Confirmation
 
-**Assignee**: **********\_**********  
+**Assignee**: ****\*\*****\_****\*\*****  
 **File**: `Components/Pages/Opportunities/Delete.razor`  
 **Route**: `/opportunities/delete/{id:int}`  
 **Requirements**:
@@ -154,7 +154,7 @@ The project foundation is built and ready. All team members can now start implem
 
 #### Task 8: My Registrations Page
 
-**Assignee**: **********\_**********  
+**Assignee**: ****\*\*****\_****\*\*****  
 **File**: `Components/Pages/MyRegistrations.razor`  
 **Route**: `/my-registrations`  
 **Requirements**:
@@ -176,7 +176,7 @@ The project foundation is built and ready. All team members can now start implem
 
 #### Task 9: Category Filter on Opportunities Page
 
-**Assignee**: **********\_**********  
+**Assignee**: ****\*\*****\_****\*\*****  
 **File**: `Components/Pages/Opportunities.razor` (update existing)  
 **Requirements**:
 
@@ -192,7 +192,7 @@ The project foundation is built and ready. All team members can now start implem
 
 #### Task 10: Search Functionality
 
-**Assignee**: **********\_**********  
+**Assignee**: ****\*\*****\_****\*\*****  
 **File**: `Components/Pages/Opportunities.razor` (update existing)  
 **Requirements**:
 
@@ -208,7 +208,7 @@ The project foundation is built and ready. All team members can now start implem
 
 #### Task 11: Date Range Filter
 
-**Assignee**: **********\_**********  
+**Assignee**: ****\*\*****\_****\*\*****  
 **File**: `Components/Pages/Opportunities.razor` (update existing)  
 **Requirements**:
 
@@ -225,7 +225,7 @@ The project foundation is built and ready. All team members can now start implem
 
 #### Task 12: Unit Tests
 
-**Assignee**: **********\_**********  
+**Assignee**: ****\*\*****\_****\*\*****  
 **File**: Create new test project  
 **Requirements**:
 
@@ -241,7 +241,7 @@ The project foundation is built and ready. All team members can now start implem
 
 #### Task 13: Integration Tests
 
-**Assignee**: **********\_**********  
+**Assignee**: ****\*\*****\_****\*\*****  
 **File**: Add to test project  
 **Requirements**:
 
@@ -258,7 +258,7 @@ The project foundation is built and ready. All team members can now start implem
 
 #### Task 14: Azure Deployment
 
-**Assignee**: **********\_**********  
+**Assignee**: ****\*\*****\_****\*\*****  
 **Requirements**:
 
 - Create Azure App Service
@@ -425,7 +425,7 @@ A task is complete when:
 4. **Review others' PRs** - Help catch bugs early
 5. **Ask for help** - Don't struggle alone for hours
 6. **Document as you go** - Add comments to complex code
-7. **Stay organized** - Use Trello board for task tracking
+7. **Stay organized** - Use GitHub Project Board for task tracking
 
 ---
 

@@ -249,7 +249,7 @@ Deployment documentation will be provided in Week 7.
 ## 📊 Project Management
 
 - **GitHub Repository**: [CSE325-Team4-GroupProject](https://github.com/kendychae/CSE325-Team4-GroupProject)
-- **Trello Board**: [Link to be added]
+- **GitHub Project Board**: [ServeHub Project Board](https://github.com/users/kendychae/projects/2)
 - **Communication**: Microsoft Teams / Discord (Course Channel)
 
 ## 🤝 Contributing
@@ -272,7 +272,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **Course**: CSE 325 - .NET Software Development  
 **Institution**: Brigham Young University-Idaho  
 **Semester**: Winter 2026  
-**Instructor**: [Instructor Name]
+**Instructor**: Parker Ericson
 
 ## 📞 Contact
 

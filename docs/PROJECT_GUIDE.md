@@ -25,7 +25,7 @@ Our new architecture provides:
 | ✅ CRUD Functionality     | Complete | Services layer (Services/) for opportunities & registrations      |
 | ✅ Database Integration   | Complete | Entity Framework Core + SQL Server (Data/ApplicationDbContext.cs) |
 | ✅ Testing Ready          | Ready    | Can add xUnit test project                                        |
-| ✅ Trello Board           | Pending  | Team to set up                                                    |
+| ✅ GitHub Project Board   | Complete | https://github.com/users/kendychae/projects/2                     |
 | ✅ GitHub Repository      | Complete | https://github.com/kendychae/CSE325-Team4-GroupProject            |
 | ✅ Documentation          | Complete | README.md, GETTING_STARTED.md                                     |
 | ✅ Cloud Deployment Ready | Ready    | Configured for Azure/AWS                                          |
@@ -384,7 +384,7 @@ Edit `Properties/launchSettings.json` and change ports:
 
 ### Weekly Team Meeting Agenda
 
-1. Review progress on Trello board
+1. Review progress on GitHub Project Board (https://github.com/users/kendychae/projects/2)
 2. Demo completed features
 3. Assign new tasks
 4. Discuss challenges
@@ -403,7 +403,7 @@ Edit `Properties/launchSettings.json` and change ports:
 
 1. **All team members**: Complete authentication pages
 2. **All team members**: Implement at least one CRUD operation
-3. **Team**: Set up Trello board
+3. **Team**: Use GitHub Project Board for task tracking (https://github.com/users/kendychae/projects/2)
 4. **Team**: Begin testing and quality assurance
 
 ### Week 7 Goals

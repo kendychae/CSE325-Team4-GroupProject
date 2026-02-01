@@ -288,7 +288,7 @@ This project demonstrates:
 
 ### This Week (Week 6)
 
-1. **Set up Trello board** - Organize tasks
+1. **Use GitHub Project Board** - Track tasks at https://github.com/users/kendychae/projects/2
 2. **Assign authentication pages** - 4 team members
 3. **Assign CRUD pages** - 4 team members
 4. **Set up development environments** - Everyone
