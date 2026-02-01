@@ -1,0 +1,108 @@
+@page "/about"
+
+<PageTitle>About - ServeHub</PageTitle>
+
+<div class="container mt-4">
+    <h1>About ServeHub</h1>
+    
+    <div class="row mt-4">
+        <div class="col-lg-8">
+            <h3>Our Mission</h3>
+            <p class="lead">
+                ServeHub is a comprehensive volunteer management platform designed to connect individuals 
+                with meaningful service opportunities in their communities.
+            </p>
+            
+            <h3 class="mt-4">What We Do</h3>
+            <p>
+                We provide a centralized platform where:
+            </p>
+            <ul>
+                <li>Organizations can post volunteer opportunities</li>
+                <li>Volunteers can discover and register for service projects</li>
+                <li>Communities can track and manage volunteer engagement</li>
+                <li>Users can build a history of their service contributions</li>
+            </ul>
+            
+            <h3 class="mt-4">Our Values</h3>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="bi bi-heart-fill text-danger"></i> Service</h5>
+                            <p class="card-text">We believe in the power of community service to transform lives and strengthen communities.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="bi bi-people-fill text-primary"></i> Community</h5>
+                            <p class="card-text">Building connections and fostering collaboration among volunteers and organizations.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="bi bi-star-fill text-warning"></i> Excellence</h5>
+                            <p class="card-text">Committed to providing the best volunteer experience through quality opportunities and support.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="bi bi-shield-check-fill text-success"></i> Integrity</h5>
+                            <p class="card-text">Maintaining trust and transparency in all our volunteer programs and partnerships.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <h3 class="mt-4">Get Involved</h3>
+            <p>
+                Ready to make a difference? <a href="/opportunities">Browse our current opportunities</a> and 
+                find the perfect way to serve your community.
+            </p>
+            
+            <AuthorizeView>
+                <NotAuthorized>
+                    <p>
+                        <a href="/Account/Register" class="btn btn-primary">Create an Account</a> to get started with ServeHub today!
+                    </p>
+                </NotAuthorized>
+            </AuthorizeView>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h5 class="card-title">Contact Us</h5>
+                    <p class="card-text">
+                        Have questions or want to partner with us?
+                    </p>
+                    <div class="mb-2">
+                        <i class="bi bi-envelope-fill"></i> info@servehub.com
+                    </div>
+                    <div class="mb-2">
+                        <i class="bi bi-telephone-fill"></i> (555) 123-4567
+                    </div>
+                    <div class="mb-2">
+                        <i class="bi bi-geo-alt-fill"></i> Your Community, USA
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card bg-primary text-white mt-3">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Project Information</h5>
+                    <p class="card-text">
+                        This is a student project for CSE 325 - .NET Software Development at BYU-Idaho
+                    </p>
+                    <p class="small">Winter 2026 Semester</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

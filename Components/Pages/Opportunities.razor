@@ -1,0 +1,108 @@
+@page "/opportunities"
+@using ServeHub.Services
+@using ServeHub.Models
+@inject IServiceOpportunityService OpportunityService
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+
+<PageTitle>Service Opportunities - ServeHub</PageTitle>
+
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1>Service Opportunities</h1>
+            <p class="lead">Find and join volunteer opportunities in your community</p>
+        </div>
+        <div class="col-md-4 text-end">
+            <AuthorizeView>
+                <Authorized>
+                    <a href="/opportunities/create" class="btn btn-primary">
+                        <i class="bi bi-plus-circle"></i> Create Opportunity
+                    </a>
+                </Authorized>
+            </AuthorizeView>
+        </div>
+    </div>
+
+    @if (isLoading)
+    {
+        <div class="text-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    }
+    else if (opportunities == null || !opportunities.Any())
+    {
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> No service opportunities available at this time.
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @foreach (var opportunity in opportunities)
+            {
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        @if (!string.IsNullOrEmpty(opportunity.ImageUrl))
+                        {
+                            <img src="@opportunity.ImageUrl" class="card-img-top" alt="@opportunity.Title" style="height: 200px; object-fit: cover;">
+                        }
+                        else
+                        {
+                            <div class="card-img-top bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 200px;">
+                                <i class="bi bi-heart-fill" style="font-size: 3rem;"></i>
+                            </div>
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title">@opportunity.Title</h5>
+                            <p class="card-text">
+                                @(opportunity.Description.Length > 100 
+                                    ? opportunity.Description.Substring(0, 100) + "..." 
+                                    : opportunity.Description)
+                            </p>
+                            <div class="mb-2">
+                                <i class="bi bi-geo-alt"></i> @opportunity.Location
+                            </div>
+                            <div class="mb-2">
+                                <i class="bi bi-calendar-event"></i> @opportunity.StartDate.ToString("MMM dd, yyyy")
+                            </div>
+                            <div class="mb-2">
+                                <i class="bi bi-people"></i> @opportunity.CurrentVolunteers / @opportunity.MaxVolunteers volunteers
+                            </div>
+                            @if (!string.IsNullOrEmpty(opportunity.Category))
+                            {
+                                <span class="badge bg-info">@opportunity.Category</span>
+                            }
+                        </div>
+                        <div class="card-footer">
+                            <a href="/opportunities/@opportunity.Id" class="btn btn-primary btn-sm w-100">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private List<ServiceOpportunity>? opportunities;
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            opportunities = await OpportunityService.GetActiveOpportunitiesAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading opportunities: {ex.Message}");
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+}

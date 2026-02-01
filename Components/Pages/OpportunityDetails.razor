@@ -1,0 +1,223 @@
+@page "/opportunities/{id:int}"
+@using ServeHub.Services
+@using ServeHub.Models
+@using ServeHub.Data
+@using Microsoft.AspNetCore.Identity
+@inject IServiceOpportunityService OpportunityService
+@inject IRegistrationService RegistrationService
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject UserManager<ApplicationUser> UserManager
+@rendermode InteractiveServer
+
+<PageTitle>@(opportunity?.Title ?? "Opportunity Details") - ServeHub</PageTitle>
+
+<div class="container mt-4">
+    @if (isLoading)
+    {
+        <div class="text-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    }
+    else if (opportunity == null)
+    {
+        <div class="alert alert-danger">
+            <i class="bi bi-exclamation-triangle"></i> Opportunity not found.
+        </div>
+        <a href="/opportunities" class="btn btn-secondary">Back to Opportunities</a>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-md-8">
+                @if (!string.IsNullOrEmpty(opportunity.ImageUrl))
+                {
+                    <img src="@opportunity.ImageUrl" class="img-fluid rounded mb-3" alt="@opportunity.Title" style="max-height: 400px; width: 100%; object-fit: cover;">
+                }
+
+                <h1>@opportunity.Title</h1>
+                
+                @if (!string.IsNullOrEmpty(opportunity.Category))
+                {
+                    <span class="badge bg-info mb-3">@opportunity.Category</span>
+                }
+
+                <p class="lead">@opportunity.Description</p>
+
+                <hr />
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h5><i class="bi bi-geo-alt-fill"></i> Location</h5>
+                        <p>@opportunity.Location</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h5><i class="bi bi-calendar-event-fill"></i> Date & Time</h5>
+                        <p>
+                            <strong>Start:</strong> @opportunity.StartDate.ToString("f")<br />
+                            <strong>End:</strong> @opportunity.EndDate.ToString("f")
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h5><i class="bi bi-people-fill"></i> Volunteers</h5>
+                        <p>@opportunity.CurrentVolunteers / @opportunity.MaxVolunteers registered</p>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" 
+                                 style="width: @((double)opportunity.CurrentVolunteers / opportunity.MaxVolunteers * 100)%" 
+                                 aria-valuenow="@opportunity.CurrentVolunteers" 
+                                 aria-valuemin="0" 
+                                 aria-valuemax="@opportunity.MaxVolunteers">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    <div class="alert alert-danger">@errorMessage</div>
+                }
+
+                @if (!string.IsNullOrEmpty(successMessage))
+                {
+                    <div class="alert alert-success">@successMessage</div>
+                }
+            </div>
+
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Registration</h5>
+                        <AuthorizeView>
+                            <Authorized>
+                                @if (isRegistered)
+                                {
+                                    <p class="text-success"><i class="bi bi-check-circle-fill"></i> You are registered!</p>
+                                    <button class="btn btn-danger w-100" @onclick="CancelRegistration">
+                                        Cancel Registration
+                                    </button>
+                                }
+                                else if (opportunity.CurrentVolunteers >= opportunity.MaxVolunteers)
+                                {
+                                    <p class="text-warning">This opportunity is full.</p>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-primary w-100" @onclick="RegisterForOpportunity">
+                                        Register Now
+                                    </button>
+                                }
+                            </Authorized>
+                            <NotAuthorized>
+                                <p>Please <a href="/Account/Login">log in</a> to register for this opportunity.</p>
+                            </NotAuthorized>
+                        </AuthorizeView>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <a href="/opportunities" class="btn btn-secondary">Back to Opportunities</a>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private ServiceOpportunity? opportunity;
+    private bool isLoading = true;
+    private bool isRegistered = false;
+    private string? errorMessage;
+    private string? successMessage;
+    private string? currentUserId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            opportunity = await OpportunityService.GetOpportunityByIdAsync(Id);
+            
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+
+            if (user.Identity?.IsAuthenticated == true)
+            {
+                var appUser = await UserManager.GetUserAsync(user);
+                if (appUser != null)
+                {
+                    currentUserId = appUser.Id;
+                    
+                    // Check if user is already registered
+                    var registrations = await RegistrationService.GetUserRegistrationsAsync(currentUserId);
+                    isRegistered = registrations.Any(r => r.OpportunityId == Id);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error loading opportunity: {ex.Message}";
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private async Task RegisterForOpportunity()
+    {
+        if (string.IsNullOrEmpty(currentUserId))
+        {
+            errorMessage = "You must be logged in to register.";
+            return;
+        }
+
+        try
+        {
+            await RegistrationService.RegisterForOpportunityAsync(currentUserId, Id);
+            isRegistered = true;
+            successMessage = "Successfully registered for this opportunity!";
+            errorMessage = null;
+            
+            // Refresh opportunity to update volunteer count
+            opportunity = await OpportunityService.GetOpportunityByIdAsync(Id);
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Registration failed: {ex.Message}";
+        }
+    }
+
+    private async Task CancelRegistration()
+    {
+        if (string.IsNullOrEmpty(currentUserId))
+            return;
+
+        try
+        {
+            var registrations = await RegistrationService.GetUserRegistrationsAsync(currentUserId);
+            var registration = registrations.FirstOrDefault(r => r.OpportunityId == Id);
+            
+            if (registration != null)
+            {
+                await RegistrationService.CancelRegistrationAsync(registration.Id);
+                isRegistered = false;
+                successMessage = "Registration cancelled successfully.";
+                errorMessage = null;
+                
+                // Refresh opportunity to update volunteer count
+                opportunity = await OpportunityService.GetOpportunityByIdAsync(Id);
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Cancellation failed: {ex.Message}";
+        }
+    }
+}
