@@ -24,6 +24,67 @@
         </div>
     </div>
 
+    <!-- Search and Filter Section -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label for="searchInput" class="form-label">Search</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        <input type="text" 
+                               class="form-control" 
+                               id="searchInput"
+                               placeholder="Search by title, description, or location..." 
+                               @bind="searchTerm"
+                               @bind:event="oninput"
+                               @onkeyup="ApplyFilters" />
+                        @if (!string.IsNullOrEmpty(searchTerm))
+                        {
+                            <button class="btn btn-outline-secondary" type="button" @onclick="ClearSearch">
+                                <i class="bi bi-x"></i>
+                            </button>
+                        }
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="categoryFilter" class="form-label">Category</label>
+                    <select class="form-select" id="categoryFilter" @bind="selectedCategory" @bind:after="ApplyFilters">
+                        <option value="">All Categories</option>
+                        @foreach (var category in categories)
+                        {
+                            <option value="@category">@category</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="startDateFilter" class="form-label">Start Date From</label>
+                    <input type="date" class="form-control" id="startDateFilter" @bind="startDateFilter" @bind:after="ApplyFilters" />
+                </div>
+
+                <div class="col-md-2 d-flex align-items-end">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="showPastEvents" @bind="showPastEvents" @bind:after="ApplyFilters">
+                        <label class="form-check-label" for="showPastEvents">
+                            Show past events
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            @if (filteredOpportunities != null && allOpportunities != null)
+            {
+                <div class="mt-2">
+                    <small class="text-muted">
+                        Showing @filteredOpportunities.Count of @allOpportunities.Count opportunities
+                    </small>
+                </div>
+            }
+        </div>
+    </div>
+
     @if (isLoading)
     {
         <div class="text-center">
@@ -32,16 +93,20 @@
             </div>
         </div>
     }
-    else if (opportunities == null || !opportunities.Any())
+    else if (filteredOpportunities == null || !filteredOpportunities.Any())
     {
         <div class="alert alert-info">
-            <i class="bi bi-info-circle"></i> No service opportunities available at this time.
+            <i class="bi bi-info-circle"></i> No service opportunities match your search criteria.
+            @if (!string.IsNullOrEmpty(searchTerm) || !string.IsNullOrEmpty(selectedCategory) || startDateFilter != null)
+            {
+                <button class="btn btn-link" @onclick="ClearAllFilters">Clear all filters</button>
+            }
         </div>
     }
     else
     {
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-            @foreach (var opportunity in opportunities)
+            @foreach (var opportunity in filteredOpportunities)
             {
                 <div class="col">
                     <div class="card h-100 shadow-sm">
@@ -87,14 +152,40 @@
 </div>
 
 @code {
-    private List<ServiceOpportunity>? opportunities;
+    private List<ServiceOpportunity>? allOpportunities;
+    private List<ServiceOpportunity>? filteredOpportunities;
+    private List<string> categories = new();
     private bool isLoading = true;
 
+    // Filter properties
+    private string searchTerm = string.Empty;
+    private string selectedCategory = string.Empty;
+    private DateTime? startDateFilter = null;
+    private bool showPastEvents = false;
+
+    /// <summary>
+    /// Loads all opportunities and initializes filters
+    /// </summary>
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            opportunities = await OpportunityService.GetActiveOpportunitiesAsync();
+            // Load all opportunities
+            allOpportunities = await OpportunityService.GetActiveOpportunitiesAsync();
+            
+            // Extract unique categories for filter dropdown
+            if (allOpportunities != null)
+            {
+                categories = allOpportunities
+                    .Where(o => !string.IsNullOrEmpty(o.Category))
+                    .Select(o => o.Category!)
+                    .Distinct()
+                    .OrderBy(c => c)
+                    .ToList();
+            }
+
+            // Apply initial filters (show only future events by default)
+            ApplyFilters();
         }
         catch (Exception ex)
         {
@@ -104,5 +195,71 @@
         {
             isLoading = false;
         }
+    }
+
+    /// <summary>
+    /// Applies search, category, and date filters to opportunities list
+    /// </summary>
+    private void ApplyFilters()
+    {
+        if (allOpportunities == null)
+        {
+            filteredOpportunities = null;
+            return;
+        }
+
+        var query = allOpportunities.AsEnumerable();
+
+        // Filter by search term (searches title, description, and location)
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            var search = searchTerm.ToLower();
+            query = query.Where(o =>
+                o.Title.ToLower().Contains(search) ||
+                o.Description.ToLower().Contains(search) ||
+                o.Location.ToLower().Contains(search));
+        }
+
+        // Filter by category
+        if (!string.IsNullOrEmpty(selectedCategory))
+        {
+            query = query.Where(o => o.Category == selectedCategory);
+        }
+
+        // Filter by start date
+        if (startDateFilter.HasValue)
+        {
+            query = query.Where(o => o.StartDate.Date >= startDateFilter.Value.Date);
+        }
+
+        // Filter out past events unless explicitly shown
+        if (!showPastEvents)
+        {
+            query = query.Where(o => o.StartDate > DateTime.Now);
+        }
+
+        filteredOpportunities = query.OrderBy(o => o.StartDate).ToList();
+        StateHasChanged();
+    }
+
+    /// <summary>
+    /// Clears the search input and refreshes results
+    /// </summary>
+    private void ClearSearch()
+    {
+        searchTerm = string.Empty;
+        ApplyFilters();
+    }
+
+    /// <summary>
+    /// Resets all filters to default values
+    /// </summary>
+    private void ClearAllFilters()
+    {
+        searchTerm = string.Empty;
+        selectedCategory = string.Empty;
+        startDateFilter = null;
+        showPastEvents = false;
+        ApplyFilters();
     }
 }

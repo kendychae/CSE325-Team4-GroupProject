@@ -1,0 +1,268 @@
+@page "/opportunities/edit/{id:int}"
+@using Microsoft.AspNetCore.Authorization
+@using System.ComponentModel.DataAnnotations
+@attribute [Authorize]
+@inject IServiceOpportunityService OpportunityService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+
+<PageTitle>Edit Opportunity - ServeHub</PageTitle>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2><i class="bi bi-pencil-square"></i> Edit Service Opportunity</h2>
+            <hr />
+
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle"></i> @errorMessage
+                    <button type="button" class="btn-close" @onclick="@(() => errorMessage = null)"></button>
+                </div>
+            }
+
+            @if (isLoading)
+            {
+                <div class="text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            }
+            else if (!isAuthorized)
+            {
+                <div class="alert alert-danger">
+                    <h4>Access Denied</h4>
+                    <p>You are not authorized to edit this opportunity.</p>
+                    <a href="/opportunities" class="btn btn-primary">Back to Opportunities</a>
+                </div>
+            }
+            else if (opportunityModel != null)
+            {
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <EditForm Model="opportunityModel" OnValidSubmit="HandleUpdate">
+                            <DataAnnotationsValidator />
+
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
+                                <InputText id="title" @bind-Value="opportunityModel.Title" class="form-control" />
+                                <ValidationMessage For="@(() => opportunityModel.Title)" class="text-danger" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Description <span class="text-danger">*</span></label>
+                                <InputTextArea id="description" @bind-Value="opportunityModel.Description" class="form-control" rows="5" />
+                                <ValidationMessage For="@(() => opportunityModel.Description)" class="text-danger" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="location" class="form-label">Location <span class="text-danger">*</span></label>
+                                <InputText id="location" @bind-Value="opportunityModel.Location" class="form-control" />
+                                <ValidationMessage For="@(() => opportunityModel.Location)" class="text-danger" />
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="startDate" class="form-label">Start Date/Time <span class="text-danger">*</span></label>
+                                    <InputDate Type="InputDateType.DateTimeLocal" id="startDate" @bind-Value="opportunityModel.StartDate" class="form-control" />
+                                    <ValidationMessage For="@(() => opportunityModel.StartDate)" class="text-danger" />
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="endDate" class="form-label">End Date/Time <span class="text-danger">*</span></label>
+                                    <InputDate Type="InputDateType.DateTimeLocal" id="endDate" @bind-Value="opportunityModel.EndDate" class="form-control" />
+                                    <ValidationMessage For="@(() => opportunityModel.EndDate)" class="text-danger" />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="maxVolunteers" class="form-label">Max Volunteers <span class="text-danger">*</span></label>
+                                    <InputNumber id="maxVolunteers" @bind-Value="opportunityModel.MaxVolunteers" class="form-control" />
+                                    <ValidationMessage For="@(() => opportunityModel.MaxVolunteers)" class="text-danger" />
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="category" class="form-label">Category</label>
+                                    <InputText id="category" @bind-Value="opportunityModel.Category" class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="imageUrl" class="form-label">Image URL (optional)</label>
+                                <InputText id="imageUrl" @bind-Value="opportunityModel.ImageUrl" class="form-control" />
+                            </div>
+
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-primary" disabled="@isSubmitting">
+                                    @if (isSubmitting)
+                                    {
+                                        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                    }
+                                    <i class="bi bi-save"></i> Save Changes
+                                </button>
+                                <a href="/opportunities/@Id" class="btn btn-outline-secondary">
+                                    <i class="bi bi-x-circle"></i> Cancel
+                                </a>
+                            </div>
+                        </EditForm>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private OpportunityEditModel? opportunityModel;
+    private string? errorMessage;
+    private bool isLoading = true;
+    private bool isSubmitting = false;
+    private bool isAuthorized = false;
+    private string? currentUserId;
+
+    /// <summary>
+    /// Loads opportunity data and verifies user authorization
+    /// </summary>
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // Get current user ID
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            currentUserId = authState.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+            // Load opportunity from database
+            var opportunity = await OpportunityService.GetOpportunityByIdAsync(Id);
+
+            if (opportunity == null)
+            {
+                errorMessage = "Opportunity not found.";
+                return;
+            }
+
+            // Check if current user is the creator
+            if (opportunity.CreatedByUserId != currentUserId)
+            {
+                isAuthorized = false;
+                return;
+            }
+
+            isAuthorized = true;
+
+            // Populate edit model with existing data
+            opportunityModel = new OpportunityEditModel
+            {
+                Title = opportunity.Title,
+                Description = opportunity.Description,
+                Location = opportunity.Location,
+                StartDate = opportunity.StartDate,
+                EndDate = opportunity.EndDate,
+                MaxVolunteers = opportunity.MaxVolunteers,
+                Category = opportunity.Category,
+                ImageUrl = opportunity.ImageUrl
+            };
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error loading opportunity: {ex.Message}";
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    /// <summary>
+    /// Updates opportunity with modified data
+    /// </summary>
+    private async Task HandleUpdate()
+    {
+        isSubmitting = true;
+        errorMessage = null;
+
+        try
+        {
+            // Validation
+            if (opportunityModel!.EndDate <= opportunityModel.StartDate)
+            {
+                errorMessage = "End date must be after start date.";
+                return;
+            }
+
+            // Load existing opportunity
+            var opportunity = await OpportunityService.GetOpportunityByIdAsync(Id);
+
+            if (opportunity == null)
+            {
+                errorMessage = "Opportunity not found.";
+                return;
+            }
+
+            // Update fields
+            opportunity.Title = opportunityModel.Title!;
+            opportunity.Description = opportunityModel.Description!;
+            opportunity.Location = opportunityModel.Location!;
+            opportunity.StartDate = opportunityModel.StartDate;
+            opportunity.EndDate = opportunityModel.EndDate;
+            opportunity.MaxVolunteers = opportunityModel.MaxVolunteers;
+            opportunity.Category = opportunityModel.Category;
+            opportunity.ImageUrl = opportunityModel.ImageUrl;
+
+            // Save changes
+            await OpportunityService.UpdateOpportunityAsync(opportunity);
+
+            // Redirect to details page
+            Navigation.NavigateTo($"/opportunities/{Id}");
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error updating opportunity: {ex.Message}";
+        }
+        finally
+        {
+            isSubmitting = false;
+        }
+    }
+
+    /// <summary>
+    /// Model for edit opportunity form
+    /// </summary>
+    public class OpportunityEditModel
+    {
+        [Required(ErrorMessage = "Title is required")]
+        [StringLength(200, ErrorMessage = "Title must be less than 200 characters")]
+        public string? Title { get; set; }
+
+        [Required(ErrorMessage = "Description is required")]
+        [StringLength(2000, ErrorMessage = "Description must be less than 2000 characters")]
+        public string? Description { get; set; }
+
+        [Required(ErrorMessage = "Location is required")]
+        [StringLength(300, ErrorMessage = "Location must be less than 300 characters")]
+        public string? Location { get; set; }
+
+        [Required(ErrorMessage = "Start date is required")]
+        public DateTime StartDate { get; set; }
+
+        [Required(ErrorMessage = "End date is required")]
+        public DateTime EndDate { get; set; }
+
+        [Required(ErrorMessage = "Max volunteers is required")]
+        [Range(1, 1000, ErrorMessage = "Max volunteers must be between 1 and 1000")]
+        public int MaxVolunteers { get; set; }
+
+        [StringLength(100)]
+        public string? Category { get; set; }
+
+        [Url(ErrorMessage = "Please enter a valid URL")]
+        [StringLength(500)]
+        public string? ImageUrl { get; set; }
+    }
+}

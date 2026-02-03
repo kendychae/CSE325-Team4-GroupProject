@@ -257,14 +257,86 @@ dotnet test --collect:"XPlat Code Coverage"
 
 ## 🌐 Deployment
 
-The application is configured for deployment to:
+### Week 7 Deployment Options
 
-- **Azure App Service** (Recommended for .NET applications)
-- **AWS Elastic Beanstalk**
-- **Docker containers**
-- **IIS on Windows Server**
+The application is ready for cloud deployment and supports multiple platforms:
 
-Deployment documentation will be provided in Week 7.
+#### Option 1: Azure App Service (Recommended)
+
+**Prerequisites:**
+- Azure account (free tier available for students)
+- Azure CLI installed
+
+**Deployment Steps:**
+```bash
+# Login to Azure
+az login
+
+# Create resource group
+az group create --name ServeHub-RG --location eastus
+
+# Create App Service plan
+az appservice plan create --name ServeHub-Plan --resource-group ServeHub-RG --sku B1
+
+# Create web app
+az webapp create --name servehub-app --resource-group ServeHub-RG --plan ServeHub-Plan --runtime "DOTNET|10.0"
+
+# Configure database connection string
+az webapp config connection-string set --name servehub-app --resource-group ServeHub-RG --settings DefaultConnection="[YOUR_AZURE_SQL_CONNECTION]" --connection-string-type SQLAzure
+
+# Deploy from GitHub (set up continuous deployment)
+az webapp deployment source config --name servehub-app --resource-group ServeHub-RG --repo-url https://github.com/kendychae/CSE325-Team4-GroupProject --branch main --manual-integration
+
+# Or deploy using publish profile
+dotnet publish -c Release
+# Upload files from bin/Release/net10.0/publish to Azure
+```
+
+#### Option 2: Docker Container
+
+```bash
+# Build Docker image
+docker build -t servehub:latest .
+
+# Run container locally for testing
+docker run -p 5000:8080 servehub:latest
+
+# Deploy to Azure Container Instances
+az container create --resource-group ServeHub-RG --name servehub-container --image servehub:latest --dns-name-label servehub --ports 80
+```
+
+#### Option 3: IIS on Windows Server
+
+1. Publish the application:
+   ```bash
+   dotnet publish -c Release -o ./publish
+   ```
+2. Install IIS and ASP.NET Core Hosting Bundle
+3. Create IIS site pointing to publish folder
+4. Configure application pool for "No Managed Code"
+5. Set connection strings in web.config
+
+### Post-Deployment Configuration
+
+1. **Database Setup**: Run migrations on production database
+   ```bash
+   dotnet ef database update --connection "[PRODUCTION_CONNECTION_STRING]"
+   ```
+
+2. **Environment Variables**: Set production configurations
+   - `ASPNETCORE_ENVIRONMENT=Production`
+   - Connection strings
+   - Authentication secrets
+
+3. **SSL/HTTPS**: Ensure SSL certificate is configured
+
+4. **Health Checks**: Monitor application health at `/health` endpoint
+
+### Deployed Application URL
+
+**Production Site**: [Coming Soon - Will be updated after W7 deployment]
+
+**Note**: Deployment URL will be added here after cloud deployment is complete.
 
 ## 📊 Project Management
 

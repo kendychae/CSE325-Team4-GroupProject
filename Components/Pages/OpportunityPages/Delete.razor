@@ -1,0 +1,165 @@
+@page "/opportunities/delete/{id:int}"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+@inject IServiceOpportunityService OpportunityService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+
+<PageTitle>Delete Opportunity - ServeHub</PageTitle>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="text-danger"><i class="bi bi-exclamation-triangle"></i> Delete Service Opportunity</h2>
+            <hr />
+
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle"></i> @errorMessage
+                    <button type="button" class="btn-close" @onclick="@(() => errorMessage = null)"></button>
+                </div>
+            }
+
+            @if (isLoading)
+            {
+                <div class="text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            }
+            else if (!isAuthorized)
+            {
+                <div class="alert alert-danger">
+                    <h4>Access Denied</h4>
+                    <p>You are not authorized to delete this opportunity.</p>
+                    <a href="/opportunities" class="btn btn-primary">Back to Opportunities</a>
+                </div>
+            }
+            else if (opportunity != null)
+            {
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="alert alert-warning">
+                            <h5><i class="bi bi-exclamation-triangle"></i> Are you sure you want to delete this opportunity?</h5>
+                            <p>This action cannot be undone.</p>
+                        </div>
+
+                        <h4>@opportunity.Title</h4>
+                        <p class="text-muted"><i class="bi bi-geo-alt"></i> @opportunity.Location</p>
+                        <p>@opportunity.Description</p>
+
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <strong>Start:</strong> @opportunity.StartDate.ToString("MMM dd, yyyy h:mm tt")
+                            </div>
+                            <div class="col-md-6">
+                                <strong>End:</strong> @opportunity.EndDate.ToString("MMM dd, yyyy h:mm tt")
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-md-6">
+                                <strong>Max Volunteers:</strong> @opportunity.MaxVolunteers
+                            </div>
+                            <div class="col-md-6">
+                                <strong>Category:</strong> @(opportunity.Category ?? "N/A")
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <div class="d-flex gap-2 justify-content-end">
+                            <button @onclick="HandleDelete" class="btn btn-danger" disabled="@isDeleting">
+                                @if (isDeleting)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                }
+                                <i class="bi bi-trash"></i> Yes, Delete
+                            </button>
+                            <a href="/opportunities/@Id" class="btn btn-secondary">
+                                <i class="bi bi-x-circle"></i> No, Keep It
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private ServiceOpportunity? opportunity;
+    private string? errorMessage;
+    private bool isLoading = true;
+    private bool isDeleting = false;
+    private bool isAuthorized = false;
+    private string? currentUserId;
+
+    /// <summary>
+    /// Loads opportunity and verifies user authorization to delete
+    /// </summary>
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // Get current user ID
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            currentUserId = authState.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+            // Load opportunity from database
+            opportunity = await OpportunityService.GetOpportunityByIdAsync(Id);
+
+            if (opportunity == null)
+            {
+                errorMessage = "Opportunity not found.";
+                return;
+            }
+
+            // Verify user is the creator
+            if (opportunity.CreatedByUserId != currentUserId)
+            {
+                isAuthorized = false;
+                return;
+            }
+
+            isAuthorized = true;
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error loading opportunity: {ex.Message}";
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    /// <summary>
+    /// Deletes the opportunity and redirects to opportunities list
+    /// </summary>
+    private async Task HandleDelete()
+    {
+        isDeleting = true;
+        errorMessage = null;
+
+        try
+        {
+            // Delete opportunity from database
+            await OpportunityService.DeleteOpportunityAsync(Id);
+
+            // Redirect to opportunities list
+            Navigation.NavigateTo("/opportunities");
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error deleting opportunity: {ex.Message}";
+            isDeleting = false;
+        }
+    }
+}

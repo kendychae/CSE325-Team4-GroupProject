@@ -1,0 +1,255 @@
+@page "/my-registrations"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+@inject IRegistrationService RegistrationService
+@inject IServiceOpportunityService OpportunityService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+
+<PageTitle>My Registrations - ServeHub</PageTitle>
+
+<div class="container mt-4">
+    <h2><i class="bi bi-calendar-check"></i> My Registrations</h2>
+    <hr />
+
+    @if (!string.IsNullOrEmpty(successMessage))
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle"></i> @successMessage
+            <button type="button" class="btn-close" @onclick="@(() => successMessage = null)"></button>
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle"></i> @errorMessage
+            <button type="button" class="btn-close" @onclick="@(() => errorMessage = null)"></button>
+        </div>
+    }
+
+    @if (isLoading)
+    {
+        <div class="text-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- Upcoming Events -->
+        <div class="mb-5">
+            <h3>Upcoming Events</h3>
+            @if (upcomingRegistrations.Any())
+            {
+                <div class="row row-cols-1 row-cols-md-2 g-4">
+                    @foreach (var reg in upcomingRegistrations)
+                    {
+                        <div class="col">
+                            <div class="card h-100 shadow-sm border-primary">
+                                <div class="card-body">
+                                    <h5 class="card-title">@reg.Opportunity.Title</h5>
+                                    <p class="text-muted mb-2">
+                                        <i class="bi bi-geo-alt"></i> @reg.Opportunity.Location
+                                    </p>
+                                    <p class="card-text">@(reg.Opportunity.Description.Length > 150 ? reg.Opportunity.Description.Substring(0, 150) + "..." : reg.Opportunity.Description)</p>
+                                    
+                                    <div class="mb-2">
+                                        <strong><i class="bi bi-calendar"></i> Start:</strong> @reg.Opportunity.StartDate.ToString("MMM dd, yyyy h:mm tt")
+                                    </div>
+                                    <div class="mb-2">
+                                        <strong><i class="bi bi-calendar-check"></i> Registered:</strong> @reg.RegisteredAt.ToString("MMM dd, yyyy")
+                                    </div>
+
+                                    <div class="d-flex gap-2 mt-3">
+                                        <a href="/opportunities/@reg.OpportunityId" class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-eye"></i> View Details
+                                        </a>
+                                        <button @onclick="() => HandleCancelRegistration(reg.Id)" 
+                                                class="btn btn-sm btn-outline-danger"
+                                                disabled="@isCancelling">
+                                            @if (isCancelling && cancellingId == reg.Id)
+                                            {
+                                                <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+                                            }
+                                            <i class="bi bi-x-circle"></i> Cancel Registration
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i> You have no upcoming event registrations.
+                    <a href="/opportunities" class="alert-link">Browse opportunities</a> to get started!
+                </div>
+            }
+        </div>
+
+        <!-- Past Events -->
+        <div class="mb-5">
+            <h3>Past Events</h3>
+            @if (pastRegistrations.Any())
+            {
+                <div class="row row-cols-1 row-cols-md-2 g-4">
+                    @foreach (var reg in pastRegistrations)
+                    {
+                        <div class="col">
+                            <div class="card h-100 shadow-sm">
+                                <div class="card-body opacity-75">
+                                    <h5 class="card-title">@reg.Opportunity.Title</h5>
+                                    <p class="text-muted mb-2">
+                                        <i class="bi bi-geo-alt"></i> @reg.Opportunity.Location
+                                    </p>
+                                    
+                                    <div class="mb-2">
+                                        <strong><i class="bi bi-calendar"></i> Date:</strong> @reg.Opportunity.StartDate.ToString("MMM dd, yyyy")
+                                    </div>
+                                    <div class="mb-2">
+                                        <span class="badge bg-secondary">Completed</span>
+                                    </div>
+
+                                    <a href="/opportunities/@reg.OpportunityId" class="btn btn-sm btn-outline-secondary mt-2">
+                                        <i class="bi bi-eye"></i> View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-secondary">
+                    <i class="bi bi-info-circle"></i> No past event registrations.
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private List<RegistrationWithOpportunity> upcomingRegistrations = new();
+    private List<RegistrationWithOpportunity> pastRegistrations = new();
+    private string? successMessage;
+    private string? errorMessage;
+    private bool isLoading = true;
+    private bool isCancelling = false;
+    private int cancellingId = 0;
+
+    /// <summary>
+    /// Loads user's registrations on page initialization
+    /// </summary>
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadRegistrations();
+    }
+
+    /// <summary>
+    /// Fetches and categorizes user registrations into upcoming and past events
+    /// </summary>
+    private async Task LoadRegistrations()
+    {
+        isLoading = true;
+
+        try
+        {
+            // Get current user ID
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var userId = authState.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                errorMessage = "User not authenticated.";
+                return;
+            }
+
+            // Get all user registrations
+            var registrations = await RegistrationService.GetUserRegistrationsAsync(userId);
+
+            // Load opportunity details for each registration
+            var registrationsWithOpportunities = new List<RegistrationWithOpportunity>();
+
+            foreach (var reg in registrations)
+            {
+                var opportunity = await OpportunityService.GetOpportunityByIdAsync(reg.OpportunityId);
+                if (opportunity != null)
+                {
+                    registrationsWithOpportunities.Add(new RegistrationWithOpportunity
+                    {
+                        Id = reg.Id,
+                        OpportunityId = reg.OpportunityId,
+                        RegisteredAt = reg.RegisteredAt,
+                        Opportunity = opportunity
+                    });
+                }
+            }
+
+            // Separate into upcoming and past events
+            var now = DateTime.Now;
+            upcomingRegistrations = registrationsWithOpportunities
+                .Where(r => r.Opportunity.StartDate > now)
+                .OrderBy(r => r.Opportunity.StartDate)
+                .ToList();
+
+            pastRegistrations = registrationsWithOpportunities
+                .Where(r => r.Opportunity.StartDate <= now)
+                .OrderByDescending(r => r.Opportunity.StartDate)
+                .ToList();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error loading registrations: {ex.Message}";
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    /// <summary>
+    /// Cancels a registration for an upcoming event
+    /// </summary>
+    private async Task HandleCancelRegistration(int registrationId)
+    {
+        isCancelling = true;
+        cancellingId = registrationId;
+        errorMessage = null;
+        successMessage = null;
+
+        try
+        {
+            await RegistrationService.CancelRegistrationAsync(registrationId);
+            successMessage = "Registration cancelled successfully.";
+            
+            // Reload registrations
+            await LoadRegistrations();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error cancelling registration: {ex.Message}";
+        }
+        finally
+        {
+            isCancelling = false;
+            cancellingId = 0;
+        }
+    }
+
+    /// <summary>
+    /// Helper class to combine registration with opportunity details
+    /// </summary>
+    private class RegistrationWithOpportunity
+    {
+        public int Id { get; set; }
+        public int OpportunityId { get; set; }
+        public DateTime RegisteredAt { get; set; }
+        public ServiceOpportunity Opportunity { get; set; } = null!;
+    }
+}
