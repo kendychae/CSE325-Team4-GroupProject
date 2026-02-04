@@ -1,0 +1,91 @@
+@page "/Account/Login"
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject NavigationManager Navigation
+
+<div class="container">
+    <div class="col-md-6">
+        <div class="glass-card">
+            <h3>Welcome Back</h3>
+
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    @errorMessage
+                    <button type="button" class="btn-close" @onclick="@(() => errorMessage = null)"></button>
+                </div>
+            }
+
+            <EditForm Model="loginModel" OnValidSubmit="HandleLogin">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email Address</label>
+                    <InputText id="email" @bind-Value="loginModel.Email" class="form-control" placeholder="Enter your email" />
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <InputText id="password" @bind-Value="loginModel.Password" type="password" class="form-control" placeholder="Enter your password" />
+                </div>
+                <div class="mb-3 form-check">
+                    <InputCheckbox id="rememberMe" @bind-Value="loginModel.RememberMe" class="form-check-input" />
+                    <label for="rememberMe" class="form-check-label">Remember me</label>
+                </div>
+                <div class="button-container">
+                    <button type="submit" class="btn btn-primary">Sign In</button>
+                    <a href="/Account/Register" class="btn btn-link">Create Account</a>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code {
+    private LoginModel loginModel = new();
+    private string? errorMessage = null;
+
+    private async Task HandleLogin()
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(loginModel.Email) || string.IsNullOrWhiteSpace(loginModel.Password))
+            {
+                errorMessage = "Email and password are required.";
+                return;
+            }
+
+            var result = await SignInManager.PasswordSignInAsync(loginModel.Email, loginModel.Password, loginModel.RememberMe, lockoutOnFailure: true);
+            if (result.Succeeded)
+            {
+                Navigation.NavigateTo("/opportunities");
+            }
+            else if (result.IsLockedOut)
+            {
+                errorMessage = "Account locked out. Please try again later.";
+            }
+            else
+            {
+                errorMessage = "Invalid email or password.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"An error occurred: {ex.Message}";
+        }
+    }
+
+    public class LoginModel
+    {
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Invalid email address")]
+        public string? Email { get; set; }
+
+        [Required(ErrorMessage = "Password is required")]
+        public string? Password { get; set; }
+
+        public bool RememberMe { get; set; }
+    }
+}
+
