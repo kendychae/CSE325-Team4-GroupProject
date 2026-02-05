@@ -57,8 +57,20 @@ https://github.com/kendychae/CSE325-Team4-GroupProject/projects
 
 ## Individual Assignment Checklist
 
-- Review any individual assignments made during the meeting.
-- Each group member should submit their own update in Canvas.
+During this week's meeting, the team agreed to assign the remaining development tasks from the [TEAM_TASKS.md](TEAM_TASKS.md) document. Individual assignments will be finalized and tracked on the GitHub Project Board.
+
+**Task Categories Available for Assignment**:
+
+- Authentication & User Management (Tasks 1-4): Registration, Login, Logout, Profile pages
+- CRUD Operations (Tasks 5-8): Create, Edit, Delete opportunities, My Registrations
+- Enhancement Features (Tasks 9-11): Filters, Search functionality
+- Testing & Quality (Tasks 12-13): Unit and Integration tests
+
+Each team member will be assigned specific tasks from the above categories and should:
+
+1. Review their assigned task details in TEAM_TASKS.md
+2. Complete their implementation by next week
+3. Submit individual progress updates in Canvas
 
 ---
 

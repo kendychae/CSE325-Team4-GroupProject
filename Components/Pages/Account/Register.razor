@@ -1,0 +1,131 @@
+@page "/Account/Register"
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
+@inject NavigationManager Navigation
+
+<div class="container">
+    <div class="col-md-6">
+        <div class="glass-card">
+            <h3>Create Account</h3>
+
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    @errorMessage
+                    <button type="button" class="btn-close" @onclick="@(() => errorMessage = null)"></button>
+                </div>
+            }
+
+            @if (registrationSuccess)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    ✓ Registration successful! Redirecting to login...
+                </div>
+            }
+
+            <EditForm Model="registerModel" OnValidSubmit="HandleRegister">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="mb-3">
+                    <label for="firstname" class="form-label">First Name</label>
+                    <InputText id="firstname" @bind-Value="registerModel.FirstName" class="form-control" placeholder="Enter your first name" />
+                </div>
+                <div class="mb-3">
+                    <label for="lastname" class="form-label">Last Name</label>
+                    <InputText id="lastname" @bind-Value="registerModel.LastName" class="form-control" placeholder="Enter your last name" />
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email Address</label>
+                    <InputText id="email" @bind-Value="registerModel.Email" class="form-control" placeholder="Enter your email" />
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <InputText id="password" @bind-Value="registerModel.Password" type="password" class="form-control" placeholder="Create a password (min 6 chars, uppercase, lowercase, digit)" />
+                </div>
+                <div class="mb-3">
+                    <label for="confirmpassword" class="form-label">Confirm Password</label>
+                    <InputText id="confirmpassword" @bind-Value="registerModel.ConfirmPassword" type="password" class="form-control" placeholder="Re-enter your password" />
+                </div>
+                <div class="button-container">
+                    <button type="submit" class="btn btn-primary">Sign Up</button>
+                    <a href="/Account/Login" class="btn btn-link">Already have an account?</a>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code {
+    private RegisterModel registerModel = new();
+    private string? errorMessage = null;
+    private bool registrationSuccess = false;
+
+    private async Task HandleRegister()
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(registerModel.Email) || string.IsNullOrWhiteSpace(registerModel.Password))
+            {
+                errorMessage = "Email and password are required.";
+                return;
+            }
+
+            if (registerModel.Password != registerModel.ConfirmPassword)
+            {
+                errorMessage = "Passwords do not match.";
+                return;
+            }
+
+            // Create a new user
+            var user = new ApplicationUser
+            {
+                UserName = registerModel.Email,
+                Email = registerModel.Email
+            };
+
+            var result = await UserManager.CreateAsync(user, registerModel.Password);
+
+            if (result.Succeeded)
+            {
+                registrationSuccess = true;
+                await Task.Delay(2000); // Wait 2 seconds before redirecting
+                Navigation.NavigateTo("/Account/Login");
+            }
+            else
+            {
+                // Combine all errors into a single message
+                errorMessage = string.Join(" ", result.Errors.Select(e => e.Description));
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"An error occurred during registration: {ex.Message}";
+        }
+    }
+
+    public class RegisterModel
+    {
+        [Required(ErrorMessage = "First name is required")]
+        public string? FirstName { get; set; }
+
+        [Required(ErrorMessage = "Last name is required")]
+        public string? LastName { get; set; }
+
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Invalid email address")]
+        public string? Email { get; set; }
+
+        [Required(ErrorMessage = "Password is required")]
+        [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be at least 6 characters long")]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$", ErrorMessage = "Password must contain at least one uppercase letter, one lowercase letter, and one digit")]
+        public string? Password { get; set; }
+
+        [Required(ErrorMessage = "Please confirm your password")]
+        [Compare("Password", ErrorMessage = "Passwords do not match")]
+        public string? ConfirmPassword { get; set; }
+    }
+}
+
