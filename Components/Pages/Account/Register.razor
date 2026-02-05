@@ -31,23 +31,28 @@
 
                 <div class="mb-3">
                     <label for="firstname" class="form-label">First Name</label>
-                    <InputText id="firstname" @bind-Value="registerModel.FirstName" class="form-control" placeholder="Enter your first name" />
+                    <InputText id="firstname" @bind-Value="registerModel.FirstName" class="form-control"
+                               placeholder="Enter your first name" />
                 </div>
                 <div class="mb-3">
                     <label for="lastname" class="form-label">Last Name</label>
-                    <InputText id="lastname" @bind-Value="registerModel.LastName" class="form-control" placeholder="Enter your last name" />
+                    <InputText id="lastname" @bind-Value="registerModel.LastName" class="form-control"
+                               placeholder="Enter your last name" />
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Email Address</label>
-                    <InputText id="email" @bind-Value="registerModel.Email" class="form-control" placeholder="Enter your email" />
+                    <InputText id="email" @bind-Value="registerModel.Email" class="form-control"
+                               placeholder="Enter your email" />
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
-                    <InputText id="password" @bind-Value="registerModel.Password" type="password" class="form-control" placeholder="Create a password (min 6 chars, uppercase, lowercase, digit)" />
+                    <InputText id="password" @bind-Value="registerModel.Password" type="password" class="form-control"
+                               placeholder="Create a password (min 6 chars, uppercase, lowercase, digit)" />
                 </div>
                 <div class="mb-3">
                     <label for="confirmpassword" class="form-label">Confirm Password</label>
-                    <InputText id="confirmpassword" @bind-Value="registerModel.ConfirmPassword" type="password" class="form-control" placeholder="Re-enter your password" />
+                    <InputText id="confirmpassword" @bind-Value="registerModel.ConfirmPassword" type="password"
+                               class="form-control" placeholder="Re-enter your password" />
                 </div>
                 <div class="button-container">
                     <button type="submit" class="btn btn-primary">Sign Up</button>
@@ -128,4 +133,3 @@
         public string? ConfirmPassword { get; set; }
     }
 }
-
