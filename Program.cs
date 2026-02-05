@@ -23,15 +23,21 @@ if (string.IsNullOrEmpty(connectionString))
 // Automatically detect database provider based on connection string
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    if (connectionString.Contains("Data Source=") && connectionString.EndsWith(".db"))
+    if (builder.Environment.IsDevelopment() && connectionString.Contains(".db"))
     {
-        // Use SQLite
+        // Use SQLite for development
         options.UseSqlite(connectionString);
     }
     else
     {
-        // Use SQL Server
-        options.UseSqlServer(connectionString);
+        // Use SQL Server for production (Azure SQL)
+        options.UseSqlServer(connectionString, sqlOptions =>
+        {
+            sqlOptions.EnableRetryOnFailure(
+                maxRetryCount: 5,
+                maxRetryDelay: TimeSpan.FromSeconds(30),
+                errorNumbersToAdd: null);
+        });
     }
 });
 
@@ -81,15 +87,16 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
+app.UseStatusCodePagesWithReExecute("/not-found");
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseAntiforgery();
 
-app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
