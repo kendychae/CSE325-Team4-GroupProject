@@ -1,0 +1,108 @@
+@page "/opportunities/delete/{Id:int}"
+
+@using System.Security.Claims
+@using ServeHub.Models
+@using Microsoft.AspNetCore.Components.Authorization
+
+@inject IServiceOpportunityService OpportunityService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager Navigation
+
+<h3 class="text-danger">Delete Opportunity</h3>
+
+@if (isLoading)
+{
+    <p>Loading opportunity...</p>
+}
+else if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger">
+        @errorMessage
+    </div>
+}
+else if (opportunity != null)
+{
+    <p>
+        Are you sure you want to delete
+        <strong>@opportunity.Title</strong>?
+    </p>
+
+    <div class="mt-3">
+        <button class="btn btn-danger me-2" @onclick="DeleteOpportunity">
+            Delete
+        </button>
+
+        <button class="btn btn-secondary" @onclick="Cancel">
+            Cancel
+        </button>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private ServiceOpportunity? opportunity;
+    private bool isLoading = true;
+    private string? errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        opportunity = await OpportunityService.GetOpportunityByIdAsync(Id);
+
+        if (opportunity == null)
+        {
+            errorMessage = "Opportunity not found.";
+            isLoading = false;
+            return;
+        }
+
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (!user.Identity?.IsAuthenticated ?? true)
+        {
+            errorMessage = "You must be logged in to delete an opportunity.";
+            isLoading = false;
+            return;
+        }
+
+        var currentUserId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (opportunity.CreatedBy == null ||
+            opportunity.CreatedBy.Id != currentUserId)
+        {
+            errorMessage = "You are not authorized to delete this opportunity.";
+            isLoading = false;
+            return;
+        }
+
+        isLoading = false;
+    }
+
+    private async Task DeleteOpportunity()
+    {
+        if (opportunity!.Registrations != null &&
+            opportunity.Registrations.Any())
+        {
+            errorMessage = "This opportunity cannot be deleted because it has registrations.";
+            return;
+        }
+
+        var success = await OpportunityService.DeleteOpportunityAsync(opportunity.Id);
+
+        if (success)
+        {
+            Navigation.NavigateTo("/opportunities");
+        }
+        else
+        {
+            errorMessage = "Failed to delete the opportunity.";
+        }
+    }
+
+    private void Cancel()
+    {
+        Navigation.NavigateTo("/opportunities");
+    }
+}
