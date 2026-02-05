@@ -52,7 +52,7 @@ The project foundation is built and ready. All team members can now start implem
 
 #### Task 3: Logout Functionality
 
-**Assignee**: \***\*\*\*\*\***\_\***\*\*\*\*\***  
+**Assignee**: Kendahl Chae Bingham ✅  
 **File**: `Components/Pages/Account/Logout.razor`  
 **Route**: `/Account/Logout`  
 **Requirements**:
@@ -61,13 +61,14 @@ The project foundation is built and ready. All team members can now start implem
 - Redirect to home page
 - Show confirmation message (optional)
 
-**Time Estimate**: 1-2 hours
+**Time Estimate**: 1-2 hours  
+**Status**: ✅ COMPLETED
 
 ---
 
 #### Task 4: User Profile Page
 
-**Assignee**: \***\*\*\*\*\***\_\***\*\*\*\*\***  
+**Assignee**: Kendahl Chae Bingham ✅  
 **File**: `Components/Pages/Account/Profile.razor`  
 **Route**: `/Account/Profile`  
 **Requirements**:
@@ -79,7 +80,8 @@ The project foundation is built and ready. All team members can now start implem
 - Save changes button
 - Require authentication (`@attribute [Authorize]`)
 
-**Time Estimate**: 3-4 hours
+**Time Estimate**: 3-4 hours  
+**Status**: ✅ COMPLETED
 
 ---
 

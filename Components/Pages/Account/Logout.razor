@@ -1,0 +1,55 @@
+@page "/Account/Logout"
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject NavigationManager Navigation
+
+<PageTitle>Logout - ServeHub</PageTitle>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            @if (!isLoggedOut)
+            {
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Logging out...</span>
+                </div>
+                <p class="mt-3">Logging you out...</p>
+            }
+            else
+            {
+                <div class="alert alert-success" role="alert">
+                    <h4 class="alert-heading"><i class="bi bi-check-circle"></i> Logged Out Successfully!</h4>
+                    <p>You have been successfully logged out of ServeHub.</p>
+                    <hr>
+                    <p class="mb-0">Redirecting you to the home page...</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private bool isLoggedOut = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // Sign out the user
+            await SignInManager.SignOutAsync();
+            isLoggedOut = true;
+
+            // Wait a moment to show the confirmation message
+            await Task.Delay(1500);
+
+            // Redirect to home page
+            Navigation.NavigateTo("/", true);
+        }
+        catch (Exception ex)
+        {
+            // Log error and redirect anyway
+            Console.WriteLine($"Error during logout: {ex.Message}");
+            Navigation.NavigateTo("/", true);
+        }
+    }
+}
