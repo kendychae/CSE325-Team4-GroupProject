@@ -23,6 +23,32 @@
             </AuthorizeView>
         </div>
     </div>
+    <div class="row mb-4">
+    <div class="col-md-4">
+        <input class="form-control"
+               placeholder="Search opportunities..."
+               @bind="searchTerm"
+               @bind:event="oninput" />
+    </div>
+
+    <div class="col-md-4">
+        <input class="form-control"
+               placeholder="Location"
+               @bind="locationFilter"
+               @bind:event="oninput" />
+    </div>
+
+    <div class="col-md-4">
+        <select class="form-select" @bind="categoryFilter">
+            <option value="">All Categories</option>
+            @foreach (var category in categories)
+            {
+                <option value="@category">@category</option>
+            }
+        </select>
+    </div>
+</div>
+
 
     @if (isLoading)
     {
@@ -41,7 +67,8 @@
     else
     {
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-            @foreach (var opportunity in opportunities)
+            @foreach (var opportunity in FilteredOpportunities)
+
             {
                 <div class="col">
                     <div class="card h-100 shadow-sm">
@@ -90,11 +117,24 @@
     private List<ServiceOpportunity>? opportunities;
     private bool isLoading = true;
 
+    private string searchTerm = string.Empty;
+    private string locationFilter = string.Empty;
+    private string categoryFilter = string.Empty;
+
+    private List<string> categories = new();
+
     protected override async Task OnInitializedAsync()
     {
         try
         {
             opportunities = await OpportunityService.GetActiveOpportunitiesAsync();
+
+            categories = opportunities
+                .Where(o => !string.IsNullOrWhiteSpace(o.Category))
+                .Select(o => o.Category!)
+                .Distinct()
+                .OrderBy(c => c)
+                .ToList();
         }
         catch (Exception ex)
         {
@@ -105,4 +145,18 @@
             isLoading = false;
         }
     }
+
+    private IEnumerable<ServiceOpportunity> FilteredOpportunities =>
+        opportunities?
+            .Where(o =>
+                (string.IsNullOrWhiteSpace(searchTerm) ||
+                    o.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                    o.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) &&
+                (string.IsNullOrWhiteSpace(locationFilter) ||
+                    o.Location.Contains(locationFilter, StringComparison.OrdinalIgnoreCase)) &&
+                (string.IsNullOrWhiteSpace(categoryFilter) ||
+                    o.Category == categoryFilter)
+            )
+        ?? Enumerable.Empty<ServiceOpportunity>();
 }
+
