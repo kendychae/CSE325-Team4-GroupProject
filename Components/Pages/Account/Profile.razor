@@ -1,0 +1,381 @@
+@page "/Account/Profile"
+@using System.ComponentModel.DataAnnotations
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Authorization
+@using ServeHub.Models
+@attribute [Authorize]
+@inject UserManager<ApplicationUser> UserManager
+@inject IRegistrationService RegistrationService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager Navigation
+
+<PageTitle>My Profile - ServeHub</PageTitle>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <h2 class="mb-4">
+                <i class="bi bi-person-circle"></i> My Profile
+            </h2>
+
+            @if (isLoading)
+            {
+                <div class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-3">Loading your profile...</p>
+                </div>
+            }
+            else if (currentUser == null)
+            {
+                <div class="alert alert-danger">
+                    <i class="bi bi-exclamation-triangle"></i> Unable to load user profile.
+                </div>
+            }
+            else
+            {
+                <!-- Success/Error Messages -->
+                @if (!string.IsNullOrEmpty(successMessage))
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="bi bi-check-circle"></i> @successMessage
+                        <button type="button" class="btn-close" @onclick="@(() => successMessage = null)"></button>
+                    </div>
+                }
+
+                @if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="bi bi-exclamation-triangle"></i> @errorMessage
+                        <button type="button" class="btn-close" @onclick="@(() => errorMessage = null)"></button>
+                    </div>
+                }
+
+                <!-- Profile Information Card -->
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="bi bi-person-badge"></i> Profile Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <EditForm Model="profileModel" OnValidSubmit="HandleSaveProfile">
+                            <DataAnnotationsValidator />
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="firstName" class="form-label">First Name</label>
+                                    <InputText id="firstName" @bind-Value="profileModel.FirstName" class="form-control" placeholder="Enter your first name" />
+                                    <ValidationMessage For="@(() => profileModel.FirstName)" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lastName" class="form-label">Last Name</label>
+                                    <InputText id="lastName" @bind-Value="profileModel.LastName" class="form-control" placeholder="Enter your last name" />
+                                    <ValidationMessage For="@(() => profileModel.LastName)" />
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="text" id="email" class="form-control" value="@currentUser.Email" disabled readonly />
+                                <small class="text-muted">Email cannot be changed</small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="profileImageUrl" class="form-label">Profile Image URL (Optional)</label>
+                                <InputText id="profileImageUrl" @bind-Value="profileModel.ProfileImageUrl" class="form-control" placeholder="https://example.com/your-image.jpg" />
+                                <ValidationMessage For="@(() => profileModel.ProfileImageUrl)" />
+                                <small class="text-muted">Enter a URL to an image for your profile picture</small>
+                            </div>
+
+                            @if (!string.IsNullOrWhiteSpace(profileModel.ProfileImageUrl))
+                            {
+                                <div class="mb-3">
+                                    <label class="form-label">Preview</label>
+                                    <div>
+                                        <img src="@profileModel.ProfileImageUrl" alt="Profile Preview" class="profile-image-preview" />
+                                    </div>
+                                </div>
+                            }
+
+                            <div class="mb-3">
+                                <label class="form-label">Member Since</label>
+                                <input type="text" class="form-control" value="@currentUser.CreatedAt.ToString("MMMM dd, yyyy")" disabled readonly />
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary" disabled="@isSaving">
+                                    @if (isSaving)
+                                    {
+                                        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                        <span>Saving...</span>
+                                    }
+                                    else
+                                    {
+                                        <i class="bi bi-save"></i>
+                                        <span> Save Changes</span>
+                                    }
+                                </button>
+                            </div>
+                        </EditForm>
+                    </div>
+                </div>
+
+                <!-- Registration History Card -->
+                <div class="card shadow-sm">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0"><i class="bi bi-calendar-check"></i> My Registrations</h5>
+                    </div>
+                    <div class="card-body">
+                        @if (isLoadingRegistrations)
+                        {
+                            <div class="text-center py-3">
+                                <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                    <span class="visually-hidden">Loading registrations...</span>
+                                </div>
+                            </div>
+                        }
+                        else if (registrations == null || !registrations.Any())
+                        {
+                            <div class="text-center py-4 text-muted">
+                                <i class="bi bi-inbox" style="font-size: 3rem;"></i>
+                                <p class="mt-2">You haven't registered for any opportunities yet.</p>
+                                <a href="/opportunities" class="btn btn-primary">Browse Opportunities</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="registration-stats mb-3">
+                                <div class="row text-center">
+                                    <div class="col-md-4">
+                                        <div class="stat-box">
+                                            <h3 class="text-primary">@registrations.Count</h3>
+                                            <p class="text-muted mb-0">Total Registrations</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="stat-box">
+                                            <h3 class="text-success">@upcomingCount</h3>
+                                            <p class="text-muted mb-0">Upcoming Events</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="stat-box">
+                                            <h3 class="text-secondary">@completedCount</h3>
+                                            <p class="text-muted mb-0">Completed</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr />
+
+                            <h6 class="mb-3">Upcoming Events</h6>
+                            @if (upcomingRegistrations.Any())
+                            {
+                                <div class="list-group mb-4">
+                                    @foreach (var registration in upcomingRegistrations)
+                                    {
+                                        <div class="list-group-item">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <h6 class="mb-1">
+                                                    <a href="/opportunities/@registration.OpportunityId" class="text-decoration-none">
+                                                        @registration.Opportunity?.Title
+                                                    </a>
+                                                </h6>
+                                                <small class="text-muted">
+                                                    @registration.Opportunity?.StartDate.ToString("MMM dd, yyyy")
+                                                </small>
+                                            </div>
+                                            <p class="mb-1 text-muted small">
+                                                <i class="bi bi-geo-alt"></i> @registration.Opportunity?.Location
+                                            </p>
+                                            <small class="text-success">
+                                                <i class="bi bi-check-circle"></i> Registered on @registration.RegisteredAt.ToString("MMM dd, yyyy")
+                                            </small>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <p class="text-muted">No upcoming events.</p>
+                            }
+
+                            <h6 class="mb-3">Past Events</h6>
+                            @if (pastRegistrations.Any())
+                            {
+                                <div class="list-group">
+                                    @foreach (var registration in pastRegistrations.Take(5))
+                                    {
+                                        <div class="list-group-item">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <h6 class="mb-1">
+                                                    <a href="/opportunities/@registration.OpportunityId" class="text-decoration-none text-muted">
+                                                        @registration.Opportunity?.Title
+                                                    </a>
+                                                </h6>
+                                                <small class="text-muted">
+                                                    @registration.Opportunity?.StartDate.ToString("MMM dd, yyyy")
+                                                </small>
+                                            </div>
+                                            <p class="mb-1 text-muted small">
+                                                <i class="bi bi-geo-alt"></i> @registration.Opportunity?.Location
+                                            </p>
+                                            @if (registration.HasAttended)
+                                            {
+                                                <small class="text-success">
+                                                    <i class="bi bi-check-circle-fill"></i> Attended
+                                                </small>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                                @if (pastRegistrations.Count > 5)
+                                {
+                                    <p class="text-center mt-3 text-muted">
+                                        <small>Showing 5 of @pastRegistrations.Count past events</small>
+                                    </p>
+                                }
+                            }
+                            else
+                            {
+                                <p class="text-muted">No past events.</p>
+                            }
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private ApplicationUser? currentUser;
+    private ProfileModel profileModel = new();
+    private List<ServiceRegistration> registrations = new();
+    private bool isLoading = true;
+    private bool isLoadingRegistrations = true;
+    private bool isSaving = false;
+    private string? successMessage;
+    private string? errorMessage;
+
+    private List<ServiceRegistration> upcomingRegistrations => 
+        registrations.Where(r => r.Opportunity != null && r.Opportunity.StartDate > DateTime.UtcNow)
+            .OrderBy(r => r.Opportunity!.StartDate)
+            .ToList();
+
+    private List<ServiceRegistration> pastRegistrations => 
+        registrations.Where(r => r.Opportunity != null && r.Opportunity.StartDate <= DateTime.UtcNow)
+            .OrderByDescending(r => r.Opportunity!.StartDate)
+            .ToList();
+
+    private int upcomingCount => upcomingRegistrations.Count;
+    private int completedCount => pastRegistrations.Count;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+
+            if (user.Identity?.IsAuthenticated == true)
+            {
+                var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (!string.IsNullOrEmpty(userId))
+                {
+                    currentUser = await UserManager.FindByIdAsync(userId);
+                    
+                    if (currentUser != null)
+                    {
+                        // Populate the profile model
+                        profileModel.FirstName = currentUser.FirstName ?? string.Empty;
+                        profileModel.LastName = currentUser.LastName ?? string.Empty;
+                        profileModel.ProfileImageUrl = currentUser.ProfileImageUrl ?? string.Empty;
+
+                        // Load registrations
+                        _ = LoadRegistrationsAsync(userId);
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error loading profile: {ex.Message}";
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private async Task LoadRegistrationsAsync(string userId)
+    {
+        try
+        {
+            isLoadingRegistrations = true;
+            registrations = await RegistrationService.GetUserRegistrationsAsync(userId);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading registrations: {ex.Message}");
+        }
+        finally
+        {
+            isLoadingRegistrations = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task HandleSaveProfile()
+    {
+        try
+        {
+            isSaving = true;
+            errorMessage = null;
+            successMessage = null;
+
+            if (currentUser == null) return;
+
+            // Update user properties
+            currentUser.FirstName = profileModel.FirstName;
+            currentUser.LastName = profileModel.LastName;
+            currentUser.ProfileImageUrl = profileModel.ProfileImageUrl;
+
+            var result = await UserManager.UpdateAsync(currentUser);
+
+            if (result.Succeeded)
+            {
+                successMessage = "Profile updated successfully!";
+            }
+            else
+            {
+                errorMessage = string.Join(", ", result.Errors.Select(e => e.Description));
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error saving profile: {ex.Message}";
+        }
+        finally
+        {
+            isSaving = false;
+        }
+    }
+
+    public class ProfileModel
+    {
+        [Required(ErrorMessage = "First name is required")]
+        [StringLength(100, ErrorMessage = "First name cannot exceed 100 characters")]
+        public string FirstName { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Last name is required")]
+        [StringLength(100, ErrorMessage = "Last name cannot exceed 100 characters")]
+        public string LastName { get; set; } = string.Empty;
+
+        [Url(ErrorMessage = "Please enter a valid URL")]
+        [StringLength(500, ErrorMessage = "URL cannot exceed 500 characters")]
+        public string? ProfileImageUrl { get; set; }
+    }
+}
