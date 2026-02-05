@@ -1,0 +1,63 @@
+/* Profile Page Styles */
+
+.profile-image-preview {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #e9ecef;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stat-box {
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    margin-bottom: 0.5rem;
+}
+
+.stat-box h3 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+}
+
+.stat-box p {
+    font-size: 0.875rem;
+}
+
+.registration-stats {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.list-group-item {
+    border-left: 4px solid #0d6efd;
+    transition: all 0.3s ease;
+}
+
+.list-group-item:hover {
+    background-color: #f8f9fa;
+    transform: translateX(5px);
+}
+
+.card-header {
+    font-weight: 600;
+}
+
+.text-decoration-none:hover {
+    text-decoration: underline !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .stat-box h3 {
+        font-size: 1.5rem;
+    }
+    
+    .profile-image-preview {
+        max-width: 150px;
+        max-height: 150px;
+    }
+}
