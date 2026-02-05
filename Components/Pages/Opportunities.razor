@@ -1,6 +1,7 @@
 @page "/opportunities"
 @using ServeHub.Services
 @using ServeHub.Models
+@using Microsoft.AspNetCore.Components
 @inject IServiceOpportunityService OpportunityService
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
@@ -8,7 +9,7 @@
 <PageTitle>Service Opportunities - ServeHub</PageTitle>
 
 <div class="container mt-4">
-    <div class="row mb-4">
+    <div class="row mb-4 opportunities-header">
         <div class="col-md-8">
             <h1>Service Opportunities</h1>
             <p class="lead">Find and join volunteer opportunities in your community</p>
@@ -16,30 +17,33 @@
         <div class="col-md-4 text-end">
             <AuthorizeView>
                 <Authorized>
-                    <a href="/opportunities/create" class="btn btn-primary">
+                    <a href="/opportunities/create" class="btn btn-primary create-opportunity-btn">
                         <i class="bi bi-plus-circle"></i> Create Opportunity
                     </a>
                 </Authorized>
             </AuthorizeView>
         </div>
     </div>
-    <div class="row mb-4">
-    <div class="col-md-4">
+    
+   <div class="results-count">
+    <div class="col-md-3">
         <input class="form-control"
-               placeholder="Search opportunities..."
+               placeholder="Search title or description..."
                @bind="searchTerm"
                @bind:event="oninput" />
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-3">
         <input class="form-control"
                placeholder="Location"
                @bind="locationFilter"
                @bind:event="oninput" />
     </div>
 
-    <div class="col-md-4">
-        <select class="form-select" @bind="categoryFilter">
+    <div class="col-md-3">
+        <select class="form-select"
+                @bind="categoryFilter"
+                @bind:after="OnCategoryChanged">
             <option value="">All Categories</option>
             @foreach (var category in categories)
             {
@@ -47,7 +51,21 @@
             }
         </select>
     </div>
+
+    <div class="col-md-3 d-flex">
+        <button class="btn btn-outline-secondary w-100"
+                @onclick="ClearFilters">
+            Clear Search
+        </button>
+    </div>
 </div>
+
+<div class="results-count">
+    <strong>@FilteredOpportunities.Count()</strong> result(s) found
+</div>
+
+
+
 
 
     @if (isLoading)
@@ -71,7 +89,7 @@
 
             {
                 <div class="col">
-                    <div class="card h-100 shadow-sm">
+                    <div class="card h-100 shadow-sm opportunity-card">
                         @if (!string.IsNullOrEmpty(opportunity.ImageUrl))
                         {
                             <img src="@opportunity.ImageUrl" class="card-img-top" alt="@opportunity.Title" style="height: 200px; object-fit: cover;">
@@ -121,32 +139,58 @@
     private string locationFilter = string.Empty;
     private string categoryFilter = string.Empty;
 
-    private List<string> categories = new();
+     private List<string> categories = new();
 
     protected override async Task OnInitializedAsync()
+{
+    try
     {
-        try
-        {
-            opportunities = await OpportunityService.GetActiveOpportunitiesAsync();
+        isLoading = true;
 
-            categories = opportunities
-                .Where(o => !string.IsNullOrWhiteSpace(o.Category))
-                .Select(o => o.Category!)
-                .Distinct()
-                .OrderBy(c => c)
-                .ToList();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error loading opportunities: {ex.Message}");
-        }
-        finally
-        {
-            isLoading = false;
-        }
+        opportunities = await OpportunityService.GetActiveOpportunitiesAsync();
+        categories = await OpportunityService.GetCategoriesAsync();
     }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error loading opportunities: {ex.Message}");
+    }
+    finally
+    {
+        isLoading = false;
+    }
+}
 
-    private IEnumerable<ServiceOpportunity> FilteredOpportunities =>
+
+    
+     private async Task OnCategoryChanged()
+{
+    isLoading = true;
+
+    try
+    {
+        opportunities = string.IsNullOrWhiteSpace(categoryFilter)
+            ? await OpportunityService.GetActiveOpportunitiesAsync()
+            : await OpportunityService.GetOpportunitiesByCategoryAsync(categoryFilter);
+    }
+    finally
+    {
+        isLoading = false;
+    }
+}
+
+
+private async Task ClearFilters()
+{
+    searchTerm = string.Empty;
+    locationFilter = string.Empty;
+    categoryFilter = string.Empty;
+
+    isLoading = true;
+    opportunities = await OpportunityService.GetActiveOpportunitiesAsync();
+    isLoading = false;
+}
+
+  private IEnumerable<ServiceOpportunity> FilteredOpportunities =>
         opportunities?
             .Where(o =>
                 (string.IsNullOrWhiteSpace(searchTerm) ||
@@ -158,5 +202,6 @@
                     o.Category == categoryFilter)
             )
         ?? Enumerable.Empty<ServiceOpportunity>();
+ 
 }
 
