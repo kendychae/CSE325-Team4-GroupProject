@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -61,6 +62,24 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
 
+// // Add Razor Pages and Server-side Blazor
+// builder.Services.AddRazorPages();
+// builder.Services.AddServerSideBlazor();
+
+// // Add authorization policies if needed
+// builder.Services.AddAuthorization(options =>
+// {
+//     options.FallbackPolicy = new AuthorizationPolicyBuilder()
+//         .RequireAuthenticatedUser()
+//         .Build();
+// });
+
+// // Configure HTTPS redirection
+// builder.Services.AddHttpsRedirection(options =>
+// {
+//     options.HttpsPort = 443;
+// });
+
 // Add Authentication State Provider for Blazor
 builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
 
@@ -93,10 +112,11 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+    
 }
-app.UseStatusCodePagesWithReExecute("/not-found");
-app.UseHttpsRedirection();
 
+app.UseStatusCodePagesWithReExecute("/not-found");
+// app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseAuthentication();
