@@ -58,3 +58,132 @@ h1:focus {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
     text-align: start;
 }
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+    animation: fadeUp 0.6s ease-out;
+}
+
+/* Feature Icons */
+.feature-icon {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    font-size: 2.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem auto;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+/* Highlight Section */
+.highlight-section {
+    background: #f8f9fc;
+    border: 1px solid #e8e8ef;
+}
+
+/* CTA Icon */
+.cta-icon {
+    font-size: 9rem;
+    opacity: 0.75;
+}
+
+/* Cards */
+.feature-card {
+    border-radius: 0.75rem;
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.12);
+}
+
+/* Animations */
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 0.8s forwards;
+}
+
+.delay-1 { animation-delay: .2s; }
+.delay-2 { animation-delay: .4s; }
+
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.hero-btn {
+    border-width: 2px !important;
+    border-radius: 0.5rem;
+    transition: all .2s ease;
+}
+
+.hero-btn:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+}
+/* Layout Container */
+.layout-container {
+    display: flex;
+    min-height: 100vh;
+    background: #f5f7fa;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background: white;
+    padding: 1rem 0;
+    border-right: 1px solid #e5e7eb;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
+/* Main Content Area */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Top Row */
+.top-row {
+    height: 60px;
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+}
+
+.about-link {
+    color: #6c757d;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.about-link:hover {
+    color: #495057;
+}
+
+/* Content Section */
+.content {
+    padding-top: 1.5rem;
+    padding-bottom: 2rem;
+}
+
+/* Error UI */
+#blazor-error-ui {
+    background: #f8d7da;
+    color: #842029;
+    padding: 0.75rem 1rem;
+    border-top: 1px solid #f5c2c7;
+}

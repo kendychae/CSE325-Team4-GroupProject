@@ -1,13 +1,16 @@
 ﻿@page "/"
+@inject NavigationManager Navigation
 
 <PageTitle>Home - ServeHub</PageTitle>
 
-<div class="hero-section text-center py-5 mb-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+<div class="hero-section text-center py-5 mb-5">
     <div class="container">
-        <h1 class="display-3 fw-bold mb-3">Welcome to ServeHub</h1>
-        <p class="lead mb-4">Connect with meaningful volunteer opportunities and make a difference in your community</p>
-        <div class="d-flex gap-3 justify-content-center">
-            <a href="/opportunities" class="btn btn-light btn-lg px-4">Browse Opportunities</a>
+        <h1 class="display-3 fw-bold mb-3 fade-in">Welcome to ServeHub</h1>
+        <p class="lead mb-4 fade-in delay-1">Connect with meaningful volunteer opportunities and make a difference in your community</p>
+
+        <div class="d-flex gap-3 justify-content-center fade-in delay-2">
+            <a href="/opportunities" class="btn btn-light btn-lg px-4 shadow-sm">Browse Opportunities</a>
+
             <AuthorizeView>
                 <NotAuthorized>
                     <a href="/Account/Register" class="btn btn-outline-light btn-lg px-4">Get Started</a>
@@ -18,97 +21,100 @@
 </div>
 
 <div class="container">
+
+    <!-- Features -->
     <div class="row mb-5">
         <div class="col-md-4 text-center mb-4">
-            <div class="feature-icon bg-primary bg-gradient text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
-                <i class="bi bi-search" style="font-size: 2rem;"></i>
+            <div class="feature-icon bg-primary text-white">
+                <i class="bi bi-search"></i>
             </div>
-            <h3>Discover</h3>
+            <h3 class="fw-semibold">Discover</h3>
             <p class="text-muted">Find volunteer opportunities that match your interests and schedule</p>
         </div>
+
         <div class="col-md-4 text-center mb-4">
-            <div class="feature-icon bg-success bg-gradient text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
-                <i class="bi bi-hand-thumbs-up" style="font-size: 2rem;"></i>
+            <div class="feature-icon bg-success text-white">
+                <i class="bi bi-hand-thumbs-up"></i>
             </div>
-            <h3>Register</h3>
+            <h3 class="fw-semibold">Register</h3>
             <p class="text-muted">Easy registration process to sign up for service opportunities</p>
         </div>
+
         <div class="col-md-4 text-center mb-4">
-            <div class="feature-icon bg-info bg-gradient text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
-                <i class="bi bi-heart-fill" style="font-size: 2rem;"></i>
+            <div class="feature-icon bg-info text-white">
+                <i class="bi bi-heart-fill"></i>
             </div>
-            <h3>Serve</h3>
+            <h3 class="fw-semibold">Serve</h3>
             <p class="text-muted">Make a positive impact and help others in your community</p>
         </div>
     </div>
 
-    <div class="row bg-light rounded-3 p-5 mb-5">
+    <!-- Call to Action -->
+    <div class="row highlight-section rounded-4 p-5 mb-5">
         <div class="col-lg-6 mb-4 mb-lg-0">
-            <h2 class="display-5 fw-bold">Make a Difference Today</h2>
-            <p class="lead">ServeHub connects volunteers with organizations that need help. Whether you have a few hours or want to commit long-term, there's an opportunity waiting for you.</p>
+            <h2 class="display-6 fw-bold mb-3">Make a Difference Today</h2>
+            <p class="lead mb-4">ServeHub connects volunteers with organizations that need help. Whether you have a few hours or want to commit long-term, there's an opportunity waiting for you.</p>
+
             <AuthorizeView>
                 <Authorized>
-                    <a href="/opportunities" class="btn btn-primary btn-lg">View All Opportunities</a>
+                    <a href="/opportunities" class="btn btn-primary btn-lg shadow-sm">View All Opportunities</a>
                 </Authorized>
+
                 <NotAuthorized>
-                    <a href="/Account/Register" class="btn btn-primary btn-lg me-2">Sign Up Now</a>
-                    <a href="/Account/Login" class="btn btn-outline-primary btn-lg">Login</a>
+                <a href="/Account/Register" class="btn btn-outline-light btn-lg px-4 hero-btn">Sign Up Now</a>
+                <a href="/Account/Login" class="btn btn-outline-light btn-lg px-4 hero-btn">Login</a>
                 </NotAuthorized>
             </AuthorizeView>
         </div>
+
         <div class="col-lg-6 d-flex align-items-center justify-content-center">
-            <div class="text-center">
-                <i class="bi bi-people-fill text-primary" style="font-size: 10rem; opacity: 0.7;"></i>
-            </div>
+            <i class="bi bi-people-fill text-primary cta-icon"></i>
         </div>
     </div>
 
+    <!-- Why Choose ServeHub -->
     <div class="row mb-5">
-        <div class="col-12 text-center">
-            <h2 class="mb-4">Why Choose ServeHub?</h2>
+        <div class="col-12 text-center mb-4">
+            <h2 class="fw-bold">Why Choose ServeHub?</h2>
         </div>
+
         <div class="col-md-6 mb-3">
-            <div class="card h-100 border-0 shadow-sm">
+            <div class="card feature-card shadow-sm">
                 <div class="card-body">
-                    <h5 class="card-title"><i class="bi bi-shield-check text-primary"></i> Verified Opportunities</h5>
+                    <h5 class="card-title"><i class="bi bi-shield-check text-primary me-2"></i>Verified Opportunities</h5>
                     <p class="card-text">All service opportunities are verified to ensure authenticity and safety.</p>
                 </div>
             </div>
         </div>
+
         <div class="col-md-6 mb-3">
-            <div class="card h-100 border-0 shadow-sm">
+            <div class="card feature-card shadow-sm">
                 <div class="card-body">
-                    <h5 class="card-title"><i class="bi bi-clock-history text-success"></i> Flexible Scheduling</h5>
+                    <h5 class="card-title"><i class="bi bi-clock-history text-success me-2"></i>Flexible Scheduling</h5>
                     <p class="card-text">Find opportunities that fit your schedule, from one-time events to ongoing commitments.</p>
                 </div>
             </div>
         </div>
+
         <div class="col-md-6 mb-3">
-            <div class="card h-100 border-0 shadow-sm">
+            <div class="card feature-card shadow-sm">
                 <div class="card-body">
-                    <h5 class="card-title"><i class="bi bi-award text-warning"></i> Track Your Impact</h5>
+                    <h5 class="card-title"><i class="bi bi-award text-warning me-2"></i>Track Your Impact</h5>
                     <p class="card-text">Keep track of your volunteer hours and see the difference you're making.</p>
                 </div>
             </div>
         </div>
+
         <div class="col-md-6 mb-3">
-            <div class="card h-100 border-0 shadow-sm">
+            <div class="card feature-card shadow-sm">
                 <div class="card-body">
-                    <h5 class="card-title"><i class="bi bi-globe text-info"></i> Community Focused</h5>
+                    <h5 class="card-title"><i class="bi bi-globe text-info me-2"></i>Community Focused</h5>
                     <p class="card-text">Connect with local organizations and neighbors who share your passion for service.</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<style>
-    .hero-section {
-        border-radius: 0.5rem;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    }
-</style>
-
 
 <h1>Hello, world!</h1>
 
