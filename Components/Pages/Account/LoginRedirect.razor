@@ -1,0 +1,31 @@
+@page "/account/login-redirect"
+@using Microsoft.AspNetCore.Identity
+@using ServeHub.Data
+@inject SignInManager<ApplicationUser> SignInManager
+@inject NavigationManager Navigation
+
+<p>Logging in…</p>
+
+@code {
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string Email { get; set; } = string.Empty;
+    
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string Password { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await SignInManager.PasswordSignInAsync(Email, Password, isPersistent: true, lockoutOnFailure: true);
+
+        if (result.Succeeded)
+        {
+            Navigation.NavigateTo("/dashboard", forceLoad: true);
+        }
+        else
+        {
+            Navigation.NavigateTo("/login?error=invalid", forceLoad: true);
+        }
+    }
+}

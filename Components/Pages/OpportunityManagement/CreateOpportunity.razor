@@ -1,0 +1,86 @@
+@page "/opportunities/create"
+@rendermode InteractiveServer
+@using Microsoft.AspNetCore.Identity
+@using ServeHub.Models
+@using ServeHub.Data
+@inject ApplicationDbContext Db
+@inject NavigationManager Nav
+@inject UserManager<ApplicationUser> UserManager
+@inject AuthenticationStateProvider AuthStateProvider
+
+
+<PageTitle>Create Opportunity</PageTitle>
+
+<h2>Create Service Opportunity</h2>
+
+<div class="create-form-div">
+    <EditForm Model="opportunity" OnValidSubmit="HandleSubmit" FormName="CreateOpportunity" class="create-opportunity-form">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="mb-3">
+            <label class="form-label">Title</label>
+            <InputText class="form-control" @bind-Value="opportunity.Title" />
+            <ValidationMessage For="@(() => opportunity.Title)" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Description</label>
+            <InputTextArea class="form-control" @bind-Value="opportunity.Description" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Location</label>
+            <InputText class="form-control" @bind-Value="opportunity.Location" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Start Date</label>
+            <InputDate class="form-control" @bind-Value="opportunity.StartDate" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">End Date</label>
+            <InputDate class="form-control" @bind-Value="opportunity.EndDate" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Max Volunteers</label>
+            <InputNumber class="form-control" @bind-Value="opportunity.MaxVolunteers" />
+        </div>
+
+        <div class="action-button-container">
+            <button type="submit" class="create-form-create--btn">Create</button>
+            <button type="button" class="create-form-delete-btn"
+                    @onclick='() => Nav.NavigateTo("/dashboard")'>
+                Cancel
+            </button>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    private ServiceOpportunity opportunity = new()
+    {
+        StartDate = DateTime.Today,
+        EndDate = DateTime.Today.AddDays(1)
+    };
+
+    private async Task HandleSubmit()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        var appUser = await UserManager.GetUserAsync(user);
+        if (appUser == null)
+        {
+            // This should never happen since the page is protected by [Authorize]
+            return;
+        }
+        opportunity.CreatedByUserId = appUser.Id;
+
+        Db.ServiceOpportunities.Add(opportunity);
+        await Db.SaveChangesAsync();
+
+        Nav.NavigateTo("/dashboard");
+    }
+}
