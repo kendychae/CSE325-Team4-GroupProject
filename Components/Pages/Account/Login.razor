@@ -1,4 +1,5 @@
 @page "/Account/Login"
+@rendermode InteractiveServer
 @using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
@@ -17,7 +18,7 @@
                 </div>
             }
 
-            <EditForm Model="loginModel" OnValidSubmit="HandleLogin">
+            <EditForm Model="loginModel" OnValidSubmit="RedirectLogin">
                 <DataAnnotationsValidator />
                 <ValidationSummary />
 
@@ -59,7 +60,7 @@
             var result = await SignInManager.PasswordSignInAsync(loginModel.Email, loginModel.Password, loginModel.RememberMe, lockoutOnFailure: true);
             if (result.Succeeded)
             {
-                Navigation.NavigateTo("/opportunities");
+                Navigation.NavigateTo("/opportunities", forceLoad: true);
             }
             else if (result.IsLockedOut)
             {
@@ -75,6 +76,18 @@
             errorMessage = $"An error occurred: {ex.Message}";
         }
     }
+    private void RedirectLogin()
+    {
+        if (string.IsNullOrWhiteSpace(loginModel.Email) || string.IsNullOrWhiteSpace(loginModel.Password))
+        {
+            errorMessage = "Email and password are required.";
+            return;
+        } else {
+            var url = $"/account/login-redirect?Email={Uri.EscapeDataString(loginModel.Email)}&Password={Uri.EscapeDataString(loginModel.Password)}";
+            Navigation.NavigateTo(url, forceLoad: true);
+        }
+    }
+    
 
     public class LoginModel
     {

@@ -1,0 +1,93 @@
+@page "/opportunities/edit/{Id:int}"
+@rendermode InteractiveServer
+@using ServeHub.Models
+@using ServeHub.Data
+@inject ApplicationDbContext Db
+@inject NavigationManager Nav
+
+<PageTitle>Edit Opportunity</PageTitle>
+
+@if (opportunity == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <h2>Edit Service Opportunity</h2>
+
+    <div>
+        <EditForm Model="opportunity" OnValidSubmit="HandleSubmit" class="edit-opportunity-form">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="mb-3">
+                <label class="form-label">Title</label>
+                <InputText class="form-control" @bind-Value="opportunity.Title" />
+                <ValidationMessage For="@(() => opportunity.Title)" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Description</label>
+                <InputTextArea class="form-control" @bind-Value="opportunity.Description" />
+                <ValidationMessage For="@(() => opportunity.Description)" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Location</label>
+                <InputText class="form-control" @bind-Value="opportunity.Location" />
+                <ValidationMessage For="@(() => opportunity.Location)" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Start Date</label>
+                <InputDate class="form-control" @bind-Value="opportunity.StartDate" />
+                <ValidationMessage For="@(() => opportunity.StartDate)" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">End Date</label>
+                <InputDate class="form-control" @bind-Value="opportunity.EndDate" />
+                <ValidationMessage For="@(() => opportunity.EndDate)" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Max Volunteers</label>
+                <InputNumber class="form-control" @bind-Value="opportunity.MaxVolunteers" />
+                <ValidationMessage For="@(() => opportunity.MaxVolunteers)" />
+            </div>
+
+            <div class="action-button-container">
+                <button type="submit" class="create-form-create--btn">Save</button>
+                <button type="button" class="create-form-delete-btn"
+                        @onclick='() => Nav.NavigateTo("/dashboard")'>
+                    Cancel
+                </button>
+            </div>
+        </EditForm>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private ServiceOpportunity? opportunity;
+
+    protected override async Task OnInitializedAsync()
+    {
+        opportunity = await Db.ServiceOpportunities.FindAsync(Id);
+
+        if (opportunity == null)
+        {
+            Nav.NavigateTo("/dashboard");
+        }
+    }
+
+    private async Task HandleSubmit()
+    {
+        opportunity!.UpdatedAt = DateTime.UtcNow;
+        await Db.SaveChangesAsync();
+
+        Nav.NavigateTo("/dashboard");
+    }
+}
