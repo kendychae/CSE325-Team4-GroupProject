@@ -163,11 +163,13 @@ ServeHub/
    ```
 
    **For Command Prompt:**
+
    ```cmd
    set ASPNETCORE_ENVIRONMENT=Development
    ```
 
    **For macOS/Linux:**
+
    ```bash
    export ASPNETCORE_ENVIRONMENT=Development
    ```
@@ -196,6 +198,7 @@ ServeHub/
 If you prefer SQL Server LocalDB instead of SQLite:
 
 1. Edit `appsettings.Development.json` and change:
+
    ```json
    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=ServeHubDb;Trusted_Connection=true;MultipleActiveResultSets=true"
    ```
@@ -280,12 +283,14 @@ dotnet test --collect:"XPlat Code Coverage"
 **Error: "Unable to locate a Local Database Runtime installation"**
 
 Solution: The application is trying to use SQL Server. Make sure:
+
 1. `appsettings.Development.json` has: `"DefaultConnection": "Data Source=ServeHub.db"`
 2. Set environment variable: `$env:ASPNETCORE_ENVIRONMENT = "Development"`
 
 **Error: "Port 5182 is already in use"**
 
 Solution: Kill the existing process:
+
 ```powershell
 # Find the process using port 5182
 Get-Process | Where-Object {$_.ProcessName -like "*ServeHub*" -or $_.ProcessName -like "*dotnet*"}
@@ -297,6 +302,7 @@ Stop-Process -Id PID
 #### Database Issues
 
 **Migration errors:**
+
 ```bash
 # Delete the database file and restart
 Remove-Item ServeHub.db
@@ -304,6 +310,7 @@ dotnet run --project ServeHub.csproj
 ```
 
 **Switch between SQLite and SQL Server:**
+
 - Edit `appsettings.Development.json` to change the `DefaultConnection` value
 - Restart the application
 
@@ -317,6 +324,7 @@ dotnet build
 ```
 
 For more help, see:
+
 - [GETTING_STARTED.md](docs/GETTING_STARTED.md)
 - [ENVIRONMENT_VARIABLES_GUIDE.md](docs/ENVIRONMENT_VARIABLES_GUIDE.md)
 - [MIGRATION_TROUBLESHOOTING.md](docs/MIGRATION_TROUBLESHOOTING.md)
