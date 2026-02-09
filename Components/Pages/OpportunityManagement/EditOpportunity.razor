@@ -63,8 +63,7 @@ else
 
             <div class="action-button-container">
                 <button type="submit" class="create-form-create--btn">Save</button>
-                <button type="button" class="create-form-delete-btn"
-                        @onclick='() => Nav.NavigateTo("/dashboard")'>
+                <button type="button" class="create-form-delete-btn"                        @onclick='() => Nav.NavigateTo("/dashboard")'>
                     Cancel
                 </button>
             </div>
@@ -92,7 +91,7 @@ else
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
         var appUser = await UserManager.GetUserAsync(user);
-        
+
         if (appUser == null || opportunity.CreatedByUserId != appUser.Id)
         {
             Nav.NavigateTo("/dashboard");

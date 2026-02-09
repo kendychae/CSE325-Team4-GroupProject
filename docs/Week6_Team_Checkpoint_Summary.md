@@ -8,13 +8,15 @@
 ## Project Status Summary
 
 ### Completed This Week
-- [X] CRUD Operations - Dashboard with Create, Edit, Delete functionality
-- [X] Enhanced Opportunities page with date range filtering
-- [X] User authentication system (Login, Register, Profile)
-- [X] Azure SQL Database configuration
-- [X] Repository restructuring and code organization
+
+- [x] CRUD Operations - Dashboard with Create, Edit, Delete functionality
+- [x] Enhanced Opportunities page with date range filtering
+- [x] User authentication system (Login, Register, Profile)
+- [x] Azure SQL Database configuration
+- [x] Repository restructuring and code organization
 
 ### Current Status
+
 - Application is fully functional with core features implemented
 - Database configured for Azure SQL Server
 - All Week 7 requirements met
@@ -23,6 +25,7 @@
 ## Technical Accomplishments
 
 ### Features Implemented
+
 1. **User Authentication** ✓
    - Registration with ASP.NET Core Identity
    - Secure login/logout
@@ -43,7 +46,6 @@
    - Filter by category
    - Date range filtering (Start Date From/To)
    - Detailed opportunity view
-   
 4. **Database Integration** ✓
    - Entity Framework Core
    - Azure SQL Database configured
@@ -61,7 +63,7 @@
 
 ## Remaining Tasks for Week 7
 
-- [X] Final code review and testing
+- [x] Final code review and testing
 - [ ] Record group video demonstration (5-7 minutes)
 - [ ] Prepare individual presentations for video
 - [ ] Deploy to Azure App Service (if not already deployed)
@@ -77,6 +79,7 @@
 ## Notes for Video Demonstration
 
 Each team member should be prepared to demonstrate:
+
 - A specific feature they worked on
 - How it meets project requirements
 - Technical implementation details
