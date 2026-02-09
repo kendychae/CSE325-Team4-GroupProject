@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -23,15 +24,21 @@ if (string.IsNullOrEmpty(connectionString))
 // Automatically detect database provider based on connection string
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    if (connectionString.Contains("Data Source=") && connectionString.EndsWith(".db"))
+    if (builder.Environment.IsDevelopment() && connectionString.Contains(".db"))
     {
-        // Use SQLite
+        // Use SQLite for development
         options.UseSqlite(connectionString);
     }
     else
     {
-        // Use SQL Server
-        options.UseSqlServer(connectionString);
+        // Use SQL Server for production (Azure SQL)
+        options.UseSqlServer(connectionString, sqlOptions =>
+        {
+            sqlOptions.EnableRetryOnFailure(
+                maxRetryCount: 5,
+                maxRetryDelay: TimeSpan.FromSeconds(30),
+                errorNumbersToAdd: null);
+        });
     }
 });
 
@@ -55,6 +62,24 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
 
+// // Add Razor Pages and Server-side Blazor
+// builder.Services.AddRazorPages();
+// builder.Services.AddServerSideBlazor();
+
+// // Add authorization policies if needed
+// builder.Services.AddAuthorization(options =>
+// {
+//     options.FallbackPolicy = new AuthorizationPolicyBuilder()
+//         .RequireAuthenticatedUser()
+//         .Build();
+// });
+
+// // Configure HTTPS redirection
+// builder.Services.AddHttpsRedirection(options =>
+// {
+//     options.HttpsPort = 443;
+// });
+
 // Add Authentication State Provider for Blazor
 builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
 
@@ -74,16 +99,24 @@ builder.Services.AddScoped<IRegistrationService, RegistrationService>();
 
 var app = builder.Build();
 
+// Apply migrations automatically at startup
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.Migrate();
+}
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+    
 }
-app.UseStatusCodePagesWithReExecute("/not-found");
-app.UseHttpsRedirection();
 
+app.UseStatusCodePagesWithReExecute("/not-found");
+// app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
