@@ -25,7 +25,7 @@
         </div>
     </div>
     
-   <div class="results-count">
+   <div class="row mb-3">
     <div class="col-md-3">
         <input class="form-control"
                placeholder="Search title or description..."
@@ -57,6 +57,24 @@
                 @onclick="ClearFilters">
             Clear Search
         </button>
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-md-3">
+        <label class="form-label">Start Date (From)</label>
+        <input type="date" 
+               class="form-control"
+               @bind="startDateFilter" 
+               @bind:event="oninput" />
+    </div>
+
+    <div class="col-md-3">
+        <label class="form-label">Start Date (To)</label>
+        <input type="date" 
+               class="form-control"
+               @bind="endDateFilter" 
+               @bind:event="oninput" />
     </div>
 </div>
 
@@ -138,6 +156,8 @@
     private string searchTerm = string.Empty;
     private string locationFilter = string.Empty;
     private string categoryFilter = string.Empty;
+    private DateTime? startDateFilter;
+    private DateTime? endDateFilter;
 
      private List<string> categories = new();
 
@@ -184,6 +204,8 @@ private async Task ClearFilters()
     searchTerm = string.Empty;
     locationFilter = string.Empty;
     categoryFilter = string.Empty;
+    startDateFilter = null;
+    endDateFilter = null;
 
     isLoading = true;
     opportunities = await OpportunityService.GetActiveOpportunitiesAsync();
@@ -199,7 +221,9 @@ private async Task ClearFilters()
                 (string.IsNullOrWhiteSpace(locationFilter) ||
                     o.Location.Contains(locationFilter, StringComparison.OrdinalIgnoreCase)) &&
                 (string.IsNullOrWhiteSpace(categoryFilter) ||
-                    o.Category == categoryFilter)
+                    o.Category == categoryFilter) &&
+                (!startDateFilter.HasValue || o.StartDate >= startDateFilter.Value) &&
+                (!endDateFilter.HasValue || o.StartDate <= endDateFilter.Value)
             )
         ?? Enumerable.Empty<ServiceOpportunity>();
  
