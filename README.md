@@ -10,7 +10,7 @@
 
 ServeHub is a comprehensive volunteer management web application built with Blazor Server and ASP.NET Core. This project fulfills the requirements for CSE 325 - .NET Software Development at Brigham Young University-Idaho (Winter 2026).
 
-**Project Status:** ✅ Active Development - Fully Restructured for W7 Requirements
+**Project Status:** ✅ Active Development - Week 7 Complete
 
 ### 🎯 Application Purpose
 
@@ -19,22 +19,6 @@ ServeHub connects volunteers with meaningful service opportunities in their comm
 - Organizations to post and manage volunteer opportunities
 - Volunteers to discover, register for, and track service activities
 - Community engagement through accessible and user-friendly volunteer coordination
-
-## 👥 Team Members - Team 4
-
-- **Kendahl Chae Bingham** 
-- **Adetokunbo Olutola Osibo**
-- **Ange Junior Gohouri**
-- **Boitumelo Hebert Meletse**
-- **Brenden Taylor Lyon**
-- **Curtis Guelable Siahe**
-- **Djimy Francillon**
-- **Gabriel Enrique Torrejon Aguilera**
-- **Iyen Samuel Evbosaru**
-- **Judy Hanson**
-- **Maxwell Balla Nvani**
-- **Michael Effiong Akpan**
-- **Shayla Foley**
 
 ## ✅ W7 Requirements Compliance
 
@@ -257,14 +241,32 @@ dotnet test --collect:"XPlat Code Coverage"
 
 ## 🌐 Deployment
 
-The application is configured for deployment to:
+### Azure Configuration
 
-- **Azure App Service** (Recommended for .NET applications)
-- **AWS Elastic Beanstalk**
-- **Docker containers**
-- **IIS on Windows Server**
+The application is configured and ready for Azure deployment:
 
-Deployment documentation will be provided in Week 7.
+- **Database**: Azure SQL Database - servehub-sqlserver.database.windows.net
+- **Database Name**: ServeHubDB
+- **Platform**: Azure App Service (recommended) or Azure Container Apps
+
+### Alternative Deployment Options
+
+The application can also be deployed to:
+
+- AWS Elastic Beanstalk
+- Docker containers
+- IIS on Windows Server
+
+### Deployment Setup
+
+For Azure App Service deployment:
+
+1. Create an Azure App Service (Web App)
+2. Configure connection string in App Service Configuration
+3. Deploy using GitHub Actions or Azure DevOps
+4. Verify database migrations are applied
+
+See [ENVIRONMENT_VARIABLES_GUIDE.md](docs/ENVIRONMENT_VARIABLES_GUIDE.md) for detailed configuration instructions.
 
 ## 📊 Project Management
 
@@ -299,8 +301,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 For questions or support:
 
 - Open an issue on [GitHub](https://github.com/kendychae/CSE325-Team4-GroupProject/issues)
-- Contact team lead: Kendahl Chae Bingham
-- Course communication channels
+- Use course communication channels
+- Contact your instructor or TA
 
 ## 🙏 Acknowledgments
 

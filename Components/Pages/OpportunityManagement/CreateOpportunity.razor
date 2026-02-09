@@ -16,7 +16,8 @@
 <h2>Create Service Opportunity</h2>
 
 <div class="create-form-div">
-    <EditForm Model="opportunity" OnValidSubmit="HandleSubmit" FormName="CreateOpportunity" class="create-opportunity-form">
+    <EditForm Model="opportunity" OnValidSubmit="HandleSubmit" FormName="CreateOpportunity"
+              class="create-opportunity-form">
         <DataAnnotationsValidator />
         <ValidationSummary />
 
@@ -53,8 +54,7 @@
 
         <div class="action-button-container">
             <button type="submit" class="create-form-create--btn">Create</button>
-            <button type="button" class="create-form-delete-btn"
-                    @onclick='() => Nav.NavigateTo("/dashboard")'>
+            <button type="button" class="create-form-delete-btn"                    @onclick='() => Nav.NavigateTo("/dashboard")'>
                 Cancel
             </button>
         </div>
