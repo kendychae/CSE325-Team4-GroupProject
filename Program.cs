@@ -119,6 +119,8 @@ app.UseStatusCodePagesWithReExecute("/not-found");
 // app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
 

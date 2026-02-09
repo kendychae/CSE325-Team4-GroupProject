@@ -1,0 +1,133 @@
+@page "/dashboard"
+@rendermode InteractiveServer
+@attribute [Authorize]
+@using Microsoft.EntityFrameworkCore
+@using ServeHub.Models
+@using ServeHub.Data
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+@inject ApplicationDbContext Db
+@inject NavigationManager Nav
+@inject AuthenticationStateProvider AuthStateProvider
+@inject UserManager<ApplicationUser> UserManager
+
+
+<PageTitle>Dashboard</PageTitle>
+
+<h1>Dashboard</h1>
+<p>Welcome <span class="welcome-name">@name!</span> Here you can create, update, and delete service opportunities.</p>
+
+<hr />
+
+<div class="dashboard-top-div">
+    <h3>Service Opportunities</h3>
+    <button class="create-service-btn"
+            @onclick='() => Nav.NavigateTo("/opportunities/create")'>
+        + Create Opportunity
+    </button>
+</div>
+
+
+<div class="dashboard-table-div">
+    @if (isLoading)
+    {
+        <p>Loading opportunities...</p>
+    }
+    else if (!opportunities.Any())
+    {
+        <p>You don't have any service opportunities</p>
+    }
+    else
+    {
+        <table class="opportunities-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Dates</th>
+                    <th>Volunteers</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var opportunity in opportunities)
+                {
+                    <tr>
+                        <td>
+                            <strong>@opportunity.Title</strong><br />
+                        </td>
+                        <td>
+                            @opportunity.StartDate.ToShortDateString()
+                            –
+                            @opportunity.EndDate.ToShortDateString()
+                        </td>
+                        <td>
+                            @opportunity.CurrentVolunteers /
+                            @opportunity.MaxVolunteers
+                        </td>
+                        <td>
+                            @(opportunity.IsActive ? "Active" : "Inactive")
+                        </td>
+                        <td class="text-endd">
+                            <div class="text-end">
+                                <button class="edit-btn"
+                                    @onclick='() => Nav.NavigateTo($"/opportunities/edit/{opportunity.Id}")'>
+                                    Edit
+                                </button>
+                                <button class="delete-btn"
+                                        @onclick="() => DeleteOpportunity(opportunity)">
+                                    Delete
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+@code {
+    private string name = string.Empty;
+    private bool isLoading = true;
+
+    private List<ServiceOpportunity> opportunities = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        var appUser = await UserManager.GetUserAsync(user);
+        
+        if (user.Identity?.IsAuthenticated ?? false)
+        {
+            Console.WriteLine($"Authenticated user: {user.Identity.Name}");
+            name = user.Identity.Name ?? "User";
+        }
+        
+        // Only show opportunities created by the current user
+        if (appUser != null)
+        {
+            opportunities = await Db.ServiceOpportunities
+                .Where(o => o.CreatedByUserId == appUser.Id)
+                .OrderByDescending(o => o.CreatedAt)
+                .ToListAsync();
+        }
+
+        isLoading = false;
+    }
+
+    void EditOpportunity(int opportunityId)
+    {
+        // TODO: Navigate to edit page
+        Console.WriteLine($"Edit opportunity {opportunityId}");
+    }
+
+    async Task DeleteOpportunity(ServiceOpportunity opportunity)
+    {
+        Db.ServiceOpportunities.Remove(opportunity);
+        await Db.SaveChangesAsync();
+
+        opportunities.Remove(opportunity);
+    }
+}
