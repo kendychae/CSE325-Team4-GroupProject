@@ -163,8 +163,12 @@ wwwroot/css/site.css
 
 # Database
 *.db
+*.db-shm
+*.db-wal
 *.sqlite
 *.sqlite3
+*.sqlite3-shm
+*.sqlite3-wal
 
 # Logs
 logs/

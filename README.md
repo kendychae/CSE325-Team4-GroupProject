@@ -139,7 +139,9 @@ ServeHub/
   - SQLite (no installation required - included automatically)
 - [Git](https://git-scm.com/downloads)
 
-### Quick Start
+### Quick Start (SQLite - Recommended for Local Development)
+
+**The project is pre-configured to use SQLite for local development. Follow these simple steps:**
 
 1. **Clone the Repository**
 
@@ -154,39 +156,51 @@ ServeHub/
    dotnet restore
    ```
 
-3. **Setup Database**
+3. **Set Environment Variable (Windows PowerShell)**
 
-   Choose your database option:
-
-   **Option A: SQL Server (Default)**
-
-   ```bash
-   dotnet ef migrations add InitialCreate
-   dotnet ef database update
+   ```powershell
+   $env:ASPNETCORE_ENVIRONMENT = "Development"
    ```
 
-   **Option B: SQLite (No SQL Server Required)**
-   1. Edit `appsettings.json` and change the connection string:
-      ```json
-      "ConnectionStrings": {
-        "_DefaultConnection_SQLServer": "Server=(localdb)\\mssqllocaldb;...",
-        "DefaultConnection": "Data Source=ServeHub.db"
-      }
-      ```
-   2. Run migrations:
-      ```bash
-      dotnet ef migrations add InitialCreate
-      dotnet ef database update
-      ```
+   **For Command Prompt:**
+   ```cmd
+   set ASPNETCORE_ENVIRONMENT=Development
+   ```
+
+   **For macOS/Linux:**
+   ```bash
+   export ASPNETCORE_ENVIRONMENT=Development
+   ```
 
 4. **Run the Application**
 
    ```bash
-   dotnet run
+   dotnet run --project ServeHub.csproj
    ```
 
+   Wait for the message: `Now listening on: http://localhost:5182`
+
 5. **Open in Browser**
-   - Navigate to `https://localhost:5001`
+
+   The application will be available at:
+   - **HTTP**: `http://localhost:5182` ✅ Recommended
+   - **HTTPS**: `https://localhost:7072`
+
+6. **First Time Setup**
+   - The database (ServeHub.db) will be created automatically in the project root
+   - Navigate to **Register** to create your first user account
+   - After login, visit **Dashboard** to create service opportunities
+
+### Alternative Setup (SQL Server LocalDB)
+
+If you prefer SQL Server LocalDB instead of SQLite:
+
+1. Edit `appsettings.Development.json` and change:
+   ```json
+   "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=ServeHubDb;Trusted_Connection=true;MultipleActiveResultSets=true"
+   ```
+
+2. Run the application - migrations apply automatically
 
 For detailed setup instructions, see [GETTING_STARTED.md](docs/GETTING_STARTED.md).
 
@@ -207,14 +221,34 @@ For detailed setup instructions, see [GETTING_STARTED.md](docs/GETTING_STARTED.m
 
 ### Running Locally
 
-```bash
-# Development with hot reload
-dotnet watch run
+**Development Mode (with hot reload):**
 
-# Production build
-dotnet build -c Release
-dotnet run -c Release
+```powershell
+# Windows PowerShell
+$env:ASPNETCORE_ENVIRONMENT = "Development"
+dotnet watch run --project ServeHub.csproj
 ```
+
+The application will automatically rebuild when you make changes to code files.
+
+**Production Build:**
+
+```bash
+# Build for production
+dotnet build -c Release
+
+# Run production build
+dotnet run -c Release --project ServeHub.csproj
+```
+
+### Application URLs
+
+When running locally, the application is available at:
+
+- **Primary URL (HTTP)**: http://localhost:5182
+- **Secondary URL (HTTPS)**: https://localhost:7072
+
+**Note**: The SQLite database file `ServeHub.db` will be created in the project root directory on first run.
 
 ### Database Migrations
 
@@ -238,6 +272,54 @@ dotnet test
 # Run with coverage
 dotnet test --collect:"XPlat Code Coverage"
 ```
+
+### Troubleshooting
+
+#### Application Won't Start
+
+**Error: "Unable to locate a Local Database Runtime installation"**
+
+Solution: The application is trying to use SQL Server. Make sure:
+1. `appsettings.Development.json` has: `"DefaultConnection": "Data Source=ServeHub.db"`
+2. Set environment variable: `$env:ASPNETCORE_ENVIRONMENT = "Development"`
+
+**Error: "Port 5182 is already in use"**
+
+Solution: Kill the existing process:
+```powershell
+# Find the process using port 5182
+Get-Process | Where-Object {$_.ProcessName -like "*ServeHub*" -or $_.ProcessName -like "*dotnet*"}
+
+# Kill specific process (replace PID with actual process ID)
+Stop-Process -Id PID
+```
+
+#### Database Issues
+
+**Migration errors:**
+```bash
+# Delete the database file and restart
+Remove-Item ServeHub.db
+dotnet run --project ServeHub.csproj
+```
+
+**Switch between SQLite and SQL Server:**
+- Edit `appsettings.Development.json` to change the `DefaultConnection` value
+- Restart the application
+
+#### Build Errors
+
+```bash
+# Clean and rebuild
+dotnet clean
+dotnet restore
+dotnet build
+```
+
+For more help, see:
+- [GETTING_STARTED.md](docs/GETTING_STARTED.md)
+- [ENVIRONMENT_VARIABLES_GUIDE.md](docs/ENVIRONMENT_VARIABLES_GUIDE.md)
+- [MIGRATION_TROUBLESHOOTING.md](docs/MIGRATION_TROUBLESHOOTING.md)
 
 ## 🌐 Deployment
 
