@@ -1,9 +1,14 @@
 @page "/opportunities/edit/{Id:int}"
 @rendermode InteractiveServer
+@attribute [Authorize]
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
 @using ServeHub.Models
 @using ServeHub.Data
 @inject ApplicationDbContext Db
 @inject NavigationManager Nav
+@inject UserManager<ApplicationUser> UserManager
+@inject AuthenticationStateProvider AuthStateProvider
 
 <PageTitle>Edit Opportunity</PageTitle>
 
@@ -78,6 +83,17 @@ else
         opportunity = await Db.ServiceOpportunities.FindAsync(Id);
 
         if (opportunity == null)
+        {
+            Nav.NavigateTo("/dashboard");
+            return;
+        }
+
+        // Verify the user owns this opportunity
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        var appUser = await UserManager.GetUserAsync(user);
+        
+        if (appUser == null || opportunity.CreatedByUserId != appUser.Id)
         {
             Nav.NavigateTo("/dashboard");
         }
