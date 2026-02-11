@@ -104,6 +104,10 @@ using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     dbContext.Database.Migrate();
+    
+    // Seed demo data for video demonstration
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+    await DatabaseSeeder.SeedDataAsync(dbContext, userManager);
 }
 
 // Configure the HTTP request pipeline.
