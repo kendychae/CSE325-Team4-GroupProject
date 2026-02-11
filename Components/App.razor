@@ -14,12 +14,12 @@
     <link rel="stylesheet" href="/app.css" />
     <link rel="stylesheet" href="/ServeHub.styles.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
-    <HeadOutlet @rendermode="InteractiveServer" />
+    <HeadOutlet />
 </head>
 
 <body>
     <CascadingAuthenticationState>
-        <Routes @rendermode="InteractiveServer" />
+        <Routes />
     </CascadingAuthenticationState>
     <ReconnectModal />
     <script src="/js/reconnect-modal.js"></script>
