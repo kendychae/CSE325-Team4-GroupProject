@@ -52,5 +52,3 @@
 - **Project Board**: https://github.com/users/kendychae/projects/2
 - **Deployed Site**: [Azure URL]
 - **Video**: [YouTube URL]
-
-
