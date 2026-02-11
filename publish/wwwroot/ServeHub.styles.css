@@ -594,6 +594,70 @@ h3[b-gmqv2mow85] {
         margin-left: 0;
     }
 }
+/* /Components/Pages/Account/Profile.razor.rz.scp.css */
+/* Profile Page Styles */
+
+.profile-image-preview[b-0qhmga3sve] {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #e9ecef;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stat-box[b-0qhmga3sve] {
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    margin-bottom: 0.5rem;
+}
+
+.stat-box h3[b-0qhmga3sve] {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+}
+
+.stat-box p[b-0qhmga3sve] {
+    font-size: 0.875rem;
+}
+
+.registration-stats[b-0qhmga3sve] {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.list-group-item[b-0qhmga3sve] {
+    border-left: 4px solid #0d6efd;
+    transition: all 0.3s ease;
+}
+
+.list-group-item:hover[b-0qhmga3sve] {
+    background-color: #f8f9fa;
+    transform: translateX(5px);
+}
+
+.card-header[b-0qhmga3sve] {
+    font-weight: 600;
+}
+
+.text-decoration-none:hover[b-0qhmga3sve] {
+    text-decoration: underline !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .stat-box h3[b-0qhmga3sve] {
+        font-size: 1.5rem;
+    }
+    
+    .profile-image-preview[b-0qhmga3sve] {
+        max-width: 150px;
+        max-height: 150px;
+    }
+}
 /* /Components/Pages/Account/Register.razor.rz.scp.css */
 /* Glass Morphism Background */
 :host[b-57cu5r6c6q] {
@@ -826,4 +890,302 @@ h3[b-57cu5r6c6q] {
         width: 100%;
         margin-left: 0;
     }
+}
+/* /Components/Pages/Opportunities.razor.rz.scp.css */
+/* Opportunities.razor.css */
+
+/* Card styling */
+.card[b-228j65pn2g] {
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover[b-228j65pn2g] {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Card image */
+.card-img-top[b-228j65pn2g] {
+    height: 200px;
+    object-fit: cover;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+}
+
+/* Placeholder card for missing image */
+.card-img-top.bg-secondary[b-228j65pn2g] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+}
+
+/* Card body */
+.card-body h5[b-228j65pn2g] {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.card-body p[b-228j65pn2g] {
+    font-size: 0.95rem;
+    color: #555;
+}
+
+/* Card footer */
+.card-footer[b-228j65pn2g] {
+    background-color: #f8f9fa;
+    border-top: none;
+    padding: 0.75rem;
+}
+
+/* Buttons */
+.btn-primary[b-228j65pn2g] {
+    background-color: #007bff;
+    border: none;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+.btn-primary:hover[b-228j65pn2g] {
+    background-color: #0069d9;
+}
+
+/* Badges */
+.badge[b-228j65pn2g] {
+    font-size: 0.8rem;
+    padding: 0.35em 0.6em;
+}
+
+/* Grid spacing */
+.row.g-4[b-228j65pn2g] {
+    gap: 1.5rem;
+}
+
+/* Filters and search inputs */
+input.form-control[b-228j65pn2g],
+select.form-select[b-228j65pn2g] {
+    height: 38px;
+    border-radius: 0.5rem;
+    border: 1px solid #ced4da;
+    padding: 0 0.75rem;
+}
+
+input.form-control:focus[b-228j65pn2g],
+select.form-select:focus[b-228j65pn2g] {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    border-color: #80bdff;
+}
+
+/* Loading spinner */
+.spinner-border[b-228j65pn2g] {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* Alerts */
+.alert[b-228j65pn2g] {
+    border-radius: 0.75rem;
+    font-size: 0.95rem;
+}
+
+/* Optional: smaller icons inside cards */
+.card-body i[b-228j65pn2g] {
+    margin-right: 0.25rem;
+    color: #6c757d;
+}
+/* /Components/Pages/OpportunityManagement/CreateOpportunity.razor.rz.scp.css */
+
+[b-bwo2qxa7ak] .create-opportunity-form {
+    border: 2px solid #230b30;
+    border-radius: 8px;
+    padding: 1rem;
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #230b30;
+    color: white;
+}
+.action-button-container[b-bwo2qxa7ak] {
+    display: flex;
+    justify-content: center;
+    gap: 4.5rem;
+    margin-top: 1rem;
+}
+.create-form-create--btn[b-bwo2qxa7ak] {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 0.5rem 1.5rem;
+    font-size: 1.25rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.create-form-create--btn:hover[b-bwo2qxa7ak] {
+    background-color: #218838;
+}
+.create-form-delete-btn[b-bwo2qxa7ak] {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.5rem 1.5rem;
+    font-size: 1.25rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.create-form-delete-btn:hover[b-bwo2qxa7ak] {
+    background-color: #c82333;
+}
+
+.form-label[b-bwo2qxa7ak] {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+[b-bwo2qxa7ak] .form-control {
+    width: 100%;
+    font-size: 1.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.mb-3[b-bwo2qxa7ak] {
+    margin-bottom: 1rem;
+}
+/* /Components/Pages/OpportunityManagement/Dashboard.razor.rz.scp.css */
+.welcome-name[b-huzkfkmto0] {
+    font-weight: bold;
+}
+
+.dashboard-top-div[b-huzkfkmto0] {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 1rem;
+}
+
+.create-service-btn[b-huzkfkmto0] {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.create-service-btn:hover[b-huzkfkmto0] {
+    background-color: #218838;
+}
+
+.delete-btn[b-huzkfkmto0] {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.edit-btn[b-huzkfkmto0] {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.edit-btn:hover[b-huzkfkmto0] {
+    background-color: #0069d9;
+}
+.delete-btn:hover[b-huzkfkmto0] {
+    background-color: #c82333;
+}
+
+.opportunities-table[b-huzkfkmto0] {
+    width: 100%;
+    border-collapse: collapse;
+}
+.dashboard-table-div[b-huzkfkmto0] {
+    overflow-x: auto;
+    max-width: 100%;
+    border: 1px solid #ccc;
+}
+.opportunities-table th[b-huzkfkmto0],
+.opportunities-table td[b-huzkfkmto0] {
+    border: 1px solid #dee2e6;
+    padding: 0.75rem;
+}
+.opportunities-table th[b-huzkfkmto0] {
+    background-color: #f8f9fa;
+    text-align: left;
+}
+.opportunities-table td[b-huzkfkmto0] {
+    vertical-align: top;
+}
+.opportunities-table .text-end[b-huzkfkmto0] {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+.opportunities-table .text-endd[b-huzkfkmto0] {
+    vertical-align: middle;
+}
+/* /Components/Pages/OpportunityManagement/EditOpportunity.razor.rz.scp.css */
+
+[b-clyjrqjfa2] .edit-opportunity-form {
+    border: 2px solid #230b30;
+    border-radius: 8px;
+    padding: 1rem;
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #230b30;
+    color: white;
+}
+.action-button-container[b-clyjrqjfa2] {
+    display: flex;
+    justify-content: center;
+    gap: 4.5rem;
+    margin-top: 1rem;
+}
+.create-form-create--btn[b-clyjrqjfa2] {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 0.5rem 1.5rem;
+    font-size: 1.25rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.create-form-create--btn:hover[b-clyjrqjfa2] {
+    background-color: #218838;
+}
+.create-form-delete-btn[b-clyjrqjfa2] {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.5rem 1.5rem;
+    font-size: 1.25rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.create-form-delete-btn:hover[b-clyjrqjfa2] {
+    background-color: #c82333;
+}
+
+.form-label[b-clyjrqjfa2] {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+[b-clyjrqjfa2] .form-control {
+    width: 100%;
+    font-size: 1.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.mb-3[b-clyjrqjfa2] {
+    margin-bottom: 1rem;
 }

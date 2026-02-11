@@ -24,14 +24,12 @@ if (string.IsNullOrEmpty(connectionString))
 // Automatically detect database provider based on connection string
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    if (builder.Environment.IsDevelopment() && connectionString.Contains(".db"))
+    if (connectionString.Contains("Data Source=") && connectionString.EndsWith(".db"))
     {
-        // Use SQLite for development
         options.UseSqlite(connectionString);
     }
     else
     {
-        // Use SQL Server for production (Azure SQL)
         options.UseSqlServer(connectionString, sqlOptions =>
         {
             sqlOptions.EnableRetryOnFailure(
@@ -100,10 +98,25 @@ builder.Services.AddScoped<IRegistrationService, RegistrationService>();
 var app = builder.Build();
 
 // Apply migrations automatically at startup
+// using (var scope = app.Services.CreateScope())
+// {
+//     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+//     dbContext.Database.Migrate();
+// }
+
 using (var scope = app.Services.CreateScope())
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    dbContext.Database.Migrate();
+    try
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        dbContext.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Database migration failed at startup.");
+        // Don't rethrow — let the app start so you can diagnose via logs
+    }
 }
 
 // Configure the HTTP request pipeline.
