@@ -27,16 +27,18 @@
 
     <div class="row mb-3">
         <div class="col-md-3">
-            <input class="form-control"          placeholder="Search title or description..."      @bind="searchTerm"
-                   @bind:event="oninput" />
+            <input class="form-control" placeholder="Search title or description..."     value="@searchTerm"
+                   @oninput="@(e => { searchTerm = e.Value?.ToString() ?? string.Empty; })" />
         </div>
 
         <div class="col-md-3">
-            <input class="form-control" placeholder="Location"            @bind="locationFilter"               @bind:event="oninput" />
+            <input class="form-control"          placeholder="Location"            value="@locationFilter"
+                   @oninput="@(e => { locationFilter = e.Value?.ToString() ?? string.Empty; })" />
         </div>
 
         <div class="col-md-3">
-            <select class="form-select" @bind="categoryFilter">
+            <select class="form-select"                  value="@categoryFilter"
+                    @onchange="@(e => { categoryFilter = e.Value?.ToString() ?? string.Empty; })">
                 <option value="">All Categories</option>
                 @foreach (var category in categories)
                 {
@@ -46,7 +48,7 @@
         </div>
 
         <div class="col-md-3 d-flex">
-            <button class="btn btn-outline-secondary w-100"      @onclick="ClearFilters">
+            <button class="btn btn-outline-secondary w-100" @onclick="ClearFilters">
                 Clear Search
             </button>
         </div>
@@ -55,12 +57,14 @@
     <div class="row mb-3">
         <div class="col-md-3">
             <label class="form-label">Start Date (From)</label>
-            <input type="date"      class="form-control"            @bind="startDateFilter"          @bind:event="oninput" />
+            <input type="date"         class="form-control"            value="@(startDateFilter?.ToString("yyyy-MM-dd"))"
+                   @onchange="@(e => { startDateFilter = string.IsNullOrWhiteSpace(e.Value?.ToString()) ? null : DateTime.Parse(e.Value.ToString()!); })" />
         </div>
 
         <div class="col-md-3">
             <label class="form-label">Start Date (To)</label>
-            <input type="date"    class="form-control"          @bind="endDateFilter"       @bind:event="oninput" />
+            <input type="date"                 class="form-control"                   value="@(endDateFilter?.ToString("yyyy-MM-dd"))"
+                   @onchange="@(e => { endDateFilter = string.IsNullOrWhiteSpace(e.Value?.ToString()) ? null : DateTime.Parse(e.Value.ToString()!); })" />
         </div>
     </div>
 
@@ -157,7 +161,7 @@
             isLoading = true;
 
             opportunities = await OpportunityService.GetActiveOpportunitiesAsync();
-            
+
             // Get all categories from the loaded opportunities
             categories = opportunities
                 .Where(o => !string.IsNullOrWhiteSpace(o.Category))
