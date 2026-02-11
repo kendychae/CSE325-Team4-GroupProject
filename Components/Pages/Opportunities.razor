@@ -21,17 +21,22 @@
 
     <div class="row mb-3">
         <div class="col-md-3">
-            <input type="text" class="form-control" placeholder="Search title or description..." value="@searchTerm"
+            <label for="search-input" class="visually-hidden">Search opportunities</label>
+            <input id="search-input" type="text" class="form-control" placeholder="Search title or description..."
+                   value="@searchTerm"                   aria-label="Search opportunities by title or description"
                    @oninput="@((ChangeEventArgs e) => { searchTerm = e.Value?.ToString() ?? string.Empty; ApplyFilters(); })" />
         </div>
 
         <div class="col-md-3">
-            <input type="text" class="form-control" placeholder="Location" value="@locationFilter"
+            <label for="location-input" class="visually-hidden">Filter by location</label>
+            <input id="location-input" type="text" class="form-control" placeholder="Location" value="@locationFilter"
+                   aria-label="Filter by location"
                    @oninput="@((ChangeEventArgs e) => { locationFilter = e.Value?.ToString() ?? string.Empty; ApplyFilters(); })" />
         </div>
 
         <div class="col-md-3">
-            <select class="form-select" value="@categoryFilter"
+            <label for="category-select" class="visually-hidden">Filter by category</label>
+            <select id="category-select" class="form-select" value="@categoryFilter"                    aria-label="Filter by category"
                     @onchange="@((ChangeEventArgs e) => { categoryFilter = e.Value?.ToString() ?? string.Empty; ApplyFilters(); })">
                 <option value="">All Categories</option>
                 @foreach (var category in categories)
@@ -42,7 +47,8 @@
         </div>
 
         <div class="col-md-3 d-flex">
-            <button class="btn btn-outline-secondary w-100" @onclick="ClearFilters">
+            <button class="btn btn-outline-secondary w-100" @onclick="ClearFilters"
+                    aria-label="Clear all search filters">
                 Clear Search
             </button>
         </div>
@@ -50,14 +56,16 @@
 
     <div class="row mb-3">
         <div class="col-md-3">
-            <label class="form-label">Start Date (From)</label>
-            <input type="date" class="form-control" value="@startDateFilter?.ToString("yyyy-MM-dd")"
+            <label for="start-date" class="form-label">Start Date (From)</label>
+            <input id="start-date" type="date" class="form-control" value="@startDateFilter?.ToString("yyyy-MM-dd")"
+                   aria-label="Filter by start date from"
                    @onchange="@((ChangeEventArgs e) => { startDateFilter = string.IsNullOrEmpty(e.Value?.ToString()) ? null : DateTime.Parse(e.Value.ToString()!); ApplyFilters(); })" />
         </div>
 
         <div class="col-md-3">
-            <label class="form-label">Start Date (To)</label>
-            <input type="date" class="form-control" value="@endDateFilter?.ToString("yyyy-MM-dd")"
+            <label for="end-date" class="form-label">Start Date (To)</label>
+            <input id="end-date" type="date" class="form-control" value="@endDateFilter?.ToString("yyyy-MM-dd")"
+                   aria-label="Filter by start date to"
                    @onchange="@((ChangeEventArgs e) => { endDateFilter = string.IsNullOrEmpty(e.Value?.ToString()) ? null : DateTime.Parse(e.Value.ToString()!); ApplyFilters(); })" />
         </div>
     </div>

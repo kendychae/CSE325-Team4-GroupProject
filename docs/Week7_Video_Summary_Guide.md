@@ -61,4 +61,3 @@
 - **Project Board**: https://github.com/users/kendychae/projects/2
 - **Deployed Site**: https://servehub-app-b3fac9a8h5cybrfr.spaincentral-01.azurewebsites.net/
 - **Video**: [Zoom Meeting Recording]
-- **Project Board**: https://github.com/users/kendychae/projects/2
