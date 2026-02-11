@@ -27,21 +27,17 @@
 
     <div class="row mb-3">
         <div class="col-md-3">
-            <input class="form-control" placeholder="Search title or description..." 
-                   value="@searchTerm"
-                   @oninput="OnSearchChanged" />
+            <input class="form-control" placeholder="Search title or description..." @bind-value="searchTerm"
+                   @bind-value:event="oninput" />
         </div>
 
         <div class="col-md-3">
-            <input class="form-control" placeholder="Location" 
-                   value="@locationFilter"
-                   @oninput="OnLocationChanged" />
+            <input class="form-control" placeholder="Location" @bind-value="locationFilter"
+                   @bind-value:event="oninput" />
         </div>
 
         <div class="col-md-3">
-            <select class="form-select" 
-                    value="@categoryFilter"
-                    @onchange="OnCategoryChanged">
+            <select class="form-select" @bind="categoryFilter">
                 <option value="">All Categories</option>
                 @foreach (var category in categories)
                 {
@@ -60,16 +56,12 @@
     <div class="row mb-3">
         <div class="col-md-3">
             <label class="form-label">Start Date (From)</label>
-            <input type="date" class="form-control" 
-                   value="@(startDateFilter?.ToString("yyyy-MM-dd"))"
-                   @onchange="OnStartDateChanged" />
+            <input type="date" class="form-control" @bind="startDateFilter" />
         </div>
 
         <div class="col-md-3">
             <label class="form-label">Start Date (To)</label>
-            <input type="date" class="form-control" 
-                   value="@(endDateFilter?.ToString("yyyy-MM-dd"))"
-                   @onchange="OnEndDateChanged" />
+            <input type="date" class="form-control" @bind="endDateFilter" />
         </div>
     </div>
 
@@ -193,39 +185,6 @@
         categoryFilter = string.Empty;
         startDateFilter = null;
         endDateFilter = null;
-        StateHasChanged();
-    }
-
-    private void OnSearchChanged(ChangeEventArgs e)
-    {
-        searchTerm = e.Value?.ToString() ?? string.Empty;
-        StateHasChanged();
-    }
-
-    private void OnLocationChanged(ChangeEventArgs e)
-    {
-        locationFilter = e.Value?.ToString() ?? string.Empty;
-        StateHasChanged();
-    }
-
-    private void OnCategoryChanged(ChangeEventArgs e)
-    {
-        categoryFilter = e.Value?.ToString() ?? string.Empty;
-        StateHasChanged();
-    }
-
-    private void OnStartDateChanged(ChangeEventArgs e)
-    {
-        var dateString = e.Value?.ToString();
-        startDateFilter = string.IsNullOrWhiteSpace(dateString) ? null : DateTime.Parse(dateString);
-        StateHasChanged();
-    }
-
-    private void OnEndDateChanged(ChangeEventArgs e)
-    {
-        var dateString = e.Value?.ToString();
-        endDateFilter = string.IsNullOrWhiteSpace(dateString) ? null : DateTime.Parse(dateString);
-        StateHasChanged();
     }
 
     private IEnumerable<ServiceOpportunity> FilteredOpportunities =>
