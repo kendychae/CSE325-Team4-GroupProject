@@ -117,6 +117,10 @@ using (var scope = app.Services.CreateScope())
         logger.LogError(ex, "Database migration failed at startup.");
         // Don't rethrow — let the app start so you can diagnose via logs
     }
+  
+    // Seed demo data for video demonstration
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+    await DatabaseSeeder.SeedDataAsync(dbContext, userManager);
 }
 
 // Configure the HTTP request pipeline.

@@ -36,7 +36,7 @@
         </div>
 
         <div class="col-md-3">
-            <select class="form-select" @bind="categoryFilter" @bind:after="OnCategoryChanged">
+            <select class="form-select" @bind="categoryFilter">
                 <option value="">All Categories</option>
                 @foreach (var category in categories)
                 {
@@ -157,11 +157,19 @@
             isLoading = true;
 
             opportunities = await OpportunityService.GetActiveOpportunitiesAsync();
-            categories = await OpportunityService.GetCategoriesAsync();
+            
+            // Get all categories from the loaded opportunities
+            categories = opportunities
+                .Where(o => !string.IsNullOrWhiteSpace(o.Category))
+                .Select(o => o.Category!)
+                .Distinct()
+                .OrderBy(c => c)
+                .ToList();
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error loading opportunities: {ex.Message}");
+            opportunities = new List<ServiceOpportunity>();
         }
         finally
         {
@@ -169,36 +177,13 @@
         }
     }
 
-
-
-    private async Task OnCategoryChanged()
-    {
-        isLoading = true;
-
-        try
-        {
-            opportunities = string.IsNullOrWhiteSpace(categoryFilter)
-                ? await OpportunityService.GetActiveOpportunitiesAsync()
-                : await OpportunityService.GetOpportunitiesByCategoryAsync(categoryFilter);
-        }
-        finally
-        {
-            isLoading = false;
-        }
-    }
-
-
-    private async Task ClearFilters()
+    private void ClearFilters()
     {
         searchTerm = string.Empty;
         locationFilter = string.Empty;
         categoryFilter = string.Empty;
         startDateFilter = null;
         endDateFilter = null;
-
-        isLoading = true;
-        opportunities = await OpportunityService.GetActiveOpportunitiesAsync();
-        isLoading = false;
     }
 
     private IEnumerable<ServiceOpportunity> FilteredOpportunities =>
@@ -211,8 +196,8 @@
                       o.Location.Contains(locationFilter, StringComparison.OrdinalIgnoreCase)) &&
                   (string.IsNullOrWhiteSpace(categoryFilter) ||
                       o.Category == categoryFilter) &&
-                  (!startDateFilter.HasValue || o.StartDate >= startDateFilter.Value) &&
-                  (!endDateFilter.HasValue || o.StartDate <= endDateFilter.Value)
+                  (!startDateFilter.HasValue || o.StartDate.Date >= startDateFilter.Value.Date) &&
+                  (!endDateFilter.HasValue || o.StartDate.Date <= endDateFilter.Value.Date)
               )
           ?? Enumerable.Empty<ServiceOpportunity>();
 

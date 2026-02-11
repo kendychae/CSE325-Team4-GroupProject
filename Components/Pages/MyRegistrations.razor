@@ -1,0 +1,209 @@
+@page "/my-registrations"
+@rendermode InteractiveServer
+@attribute [Authorize]
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+@using ServeHub.Models
+@using ServeHub.Services
+@inject IRegistrationService RegistrationService
+@inject AuthenticationStateProvider AuthStateProvider
+@inject UserManager<ApplicationUser> UserManager
+@inject NavigationManager Navigation
+
+<PageTitle>My Registrations - ServeHub</PageTitle>
+
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1>My Volunteer Registrations</h1>
+            <p class="lead">View and manage your service opportunity registrations</p>
+        </div>
+    </div>
+
+    @if (isLoading)
+    {
+        <div class="text-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    }
+    else if (!registrations.Any())
+    {
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> You haven't registered for any service opportunities yet.
+        </div>
+        <a href="/opportunities" class="btn btn-primary">Browse Opportunities</a>
+    }
+    else
+    {
+        <!-- Upcoming Events -->
+        @if (upcomingRegistrations.Any())
+        {
+            <h3 class="mb-3">Upcoming Events</h3>
+            <div class="row row-cols-1 row-cols-md-2 g-4 mb-5">
+                @foreach (var registration in upcomingRegistrations)
+                {
+                    <div class="col">
+                        <div class="card h-100 shadow-sm">
+                            @if (!string.IsNullOrEmpty(registration.Opportunity?.ImageUrl))
+                            {
+                                <img src="@registration.Opportunity.ImageUrl" class="card-img-top" alt="@registration.Opportunity.Title"
+                                     style="height: 150px; object-fit: cover;">
+                            }
+                            <div class="card-body">
+                                <h5 class="card-title">@registration.Opportunity?.Title</h5>
+                                <div class="mb-2">
+                                    <i class="bi bi-geo-alt"></i> @registration.Opportunity?.Location
+                                </div>
+                                <div class="mb-2">
+                                    <i class="bi bi-calendar-event"></i> @registration.Opportunity?.StartDate.ToString("MMM dd, yyyy h:mm tt")
+                                </div>
+                                <div class="mb-2">
+                                    <i class="bi bi-clock"></i> Registered on @registration.RegisteredAt.ToString("MMM dd, yyyy")
+                                </div>
+                                @if (!string.IsNullOrEmpty(registration.Opportunity?.Category))
+                                {
+                                    <span class="badge bg-info">@registration.Opportunity.Category</span>
+                                }
+                            </div>
+                            <div class="card-footer d-flex justify-content-between align-items-center">
+                                <a href="/opportunities/@registration.OpportunityId" class="btn btn-sm btn-outline-primary">
+                                    View Details
+                                </a>
+                                <button class="btn btn-sm btn-outline-danger" @onclick="() => CancelRegistration(registration.Id)">
+                                    Cancel Registration
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
+        <!-- Past Events -->
+        @if (pastRegistrations.Any())
+        {
+            <h3 class="mb-3">Past Events</h3>
+            <div class="row row-cols-1 row-cols-md-2 g-4">
+                @foreach (var registration in pastRegistrations)
+                {
+                    <div class="col">
+                        <div class="card h-100 shadow-sm opacity-75">
+                            @if (!string.IsNullOrEmpty(registration.Opportunity?.ImageUrl))
+                            {
+                                <img src="@registration.Opportunity.ImageUrl" class="card-img-top" alt="@registration.Opportunity.Title"
+                                     style="height: 150px; object-fit: cover; filter: grayscale(50%);">
+                            }
+                            <div class="card-body">
+                                <h5 class="card-title">@registration.Opportunity?.Title</h5>
+                                <div class="mb-2">
+                                    <i class="bi bi-geo-alt"></i> @registration.Opportunity?.Location
+                                </div>
+                                <div class="mb-2">
+                                    <i class="bi bi-calendar-event"></i> @registration.Opportunity?.StartDate.ToString("MMM dd, yyyy")
+                                </div>
+                                @if (!string.IsNullOrEmpty(registration.Opportunity?.Category))
+                                {
+                                    <span class="badge bg-secondary">@registration.Opportunity.Category</span>
+                                }
+                            </div>
+                            <div class="card-footer">
+                                <a href="/opportunities/@registration.OpportunityId" class="btn btn-sm btn-outline-secondary w-100">
+                                    View Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    }
+
+    @if (!string.IsNullOrEmpty(message))
+    {
+        <div class="alert @(isError ? "alert-danger" : "alert-success") alert-dismissible fade show mt-3" role="alert">
+            @message
+            <button type="button" class="btn-close" @onclick="@(() => message = null)"></button>
+        </div>
+    }
+</div>
+
+@code {
+    private List<ServiceRegistration> registrations = new();
+    private bool isLoading = true;
+    private string? message;
+    private bool isError;
+
+    private IEnumerable<ServiceRegistration> upcomingRegistrations =>
+        registrations.Where(r => r.Opportunity != null && r.Opportunity.StartDate > DateTime.Now)
+                    .OrderBy(r => r.Opportunity!.StartDate);
+
+    private IEnumerable<ServiceRegistration> pastRegistrations =>
+        registrations.Where(r => r.Opportunity != null && r.Opportunity.StartDate <= DateTime.Now)
+                    .OrderByDescending(r => r.Opportunity!.StartDate);
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            isLoading = true;
+
+            var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+            
+            if (user.Identity?.IsAuthenticated == true)
+            {
+                var appUser = await UserManager.GetUserAsync(user);
+                if (appUser != null)
+                {
+                    registrations = await RegistrationService.GetUserRegistrationsAsync(appUser.Id);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading registrations: {ex.Message}");
+            message = "Error loading your registrations. Please try again.";
+            isError = true;
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private async Task CancelRegistration(int registrationId)
+    {
+        try
+        {
+            var success = await RegistrationService.CancelRegistrationAsync(registrationId);
+            
+            if (success)
+            {
+                message = "Registration cancelled successfully.";
+                isError = false;
+                
+                // Reload registrations
+                var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+                var user = authState.User;
+                var appUser = await UserManager.GetUserAsync(user);
+                if (appUser != null)
+                {
+                    registrations = await RegistrationService.GetUserRegistrationsAsync(appUser.Id);
+                }
+            }
+            else
+            {
+                message = "Failed to cancel registration. Please try again.";
+                isError = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error cancelling registration: {ex.Message}");
+            message = "An error occurred while cancelling your registration.";
+            isError = true;
+        }
+    }
+}
