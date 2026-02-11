@@ -5,7 +5,16 @@
 1. Delete database: `Remove-Item ServeHub.db`
 2. Run: `dotnet run --project ServeHub.csproj`
 3. Open: http://localhost:5000
-4. Demo login: `demo@servehub.com` / `Demo123!`
+
+## Mock Data - Demo Accounts
+
+**All accounts use password:** `Demo123!`
+
+- `demo@servehub.com` - Demo User
+- `volunteer@servehub.com` - Volunteer User
+- `organizer@servehub.com` - Event Organizer
+
+**Use for video:** `demo@servehub.com` / `Demo123!`
 
 ## Member 1: Browse & Filtering (60s)
 

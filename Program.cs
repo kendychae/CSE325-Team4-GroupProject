@@ -106,9 +106,11 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+    
     try
     {
-        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         dbContext.Database.Migrate();
     }
     catch (Exception ex)
@@ -119,7 +121,6 @@ using (var scope = app.Services.CreateScope())
     }
   
     // Seed demo data for video demonstration
-    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
     await DatabaseSeeder.SeedDataAsync(dbContext, userManager);
 }
 
