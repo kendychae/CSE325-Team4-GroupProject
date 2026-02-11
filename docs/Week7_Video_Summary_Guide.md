@@ -1,140 +1,54 @@
-# Week 7 Video Summary Guide - ServeHub
+# Week 7 Video Guide - ServeHub (5-6 minutes)
 
-## 🎥 Requirements
+## Setup Before Recording
 
-- **Length**: 5-7 minutes
-- **Platform**: YouTube
-- **Each member**: Uses own camera and presents a section
+1. Delete database: `Remove-Item ServeHub.db`
+2. Run: `dotnet run --project ServeHub.csproj`
+3. Open: http://localhost:5000
+4. Demo login: `demo@servehub.com` / `Demo123!`
 
-## 🚀 BEFORE Recording
+## Member 1: Browse & Filtering (60s)
 
-1. **Delete database**: `Remove-Item ServeHub.db`
-2. **Run app**: `dotnet run --project ServeHub.csproj`
-3. **Verify seeding**: Check console shows "Successfully seeded 10 service opportunities!"
-4. **Open browser**: http://localhost:5000
+- Show home page and Opportunities
+- Search "park" → show live filtering
+- Filter by Phoenix location
+- Filter by Environment category
+- Filter by date range
+- Clear filters
 
-## 🎬 Video Sections (5-6 minutes total)
+## Member 2: Authentication (50s)
 
-### Member 1: Intro & Browse Features (60 sec)
-
-**Say**: "ServeHub - Volunteer Management Platform by CSE 325 Team 4"
-
-**Show**:
-
-- Home page - quick overview
-- Navigate to Opportunities page
-- Point out 10 seeded opportunities across different categories
-- Type "park" in search box - show filtering
-- Type "Phoenix" in location - show filtering
-- Select "Environment" category - show filtering
-- Select date range - show filtering
-- Click "Clear Filters" - show reset
-- Point out results count updating
-
-**Covers**: Search, filtering, UI
-
----
-
-### Member 2: Authentication (50 sec)
-
-**Login**: Use `demo@servehub.com` / `Demo123!`
-
-**Show**:
-
-- Login page and form
-- Submit login
-- Notice navigation changes (My Registrations, Dashboard appear)
-- Click Profile - show user info
+- Login with demo account
+- Show navigation changes (My Registrations, Dashboard)
+- Show Profile page
 - Logout
-- Optionally show registration form briefly
 
-**Covers**: User authentication, Identity integration
+## Member 3: Registration (60s)
 
----
+- Login again
+- Click "Community Park Cleanup"
+- Register for opportunity
+- Go to My Registrations → show it appears
+- Cancel registration → show it's removed
 
-### Member 3: Opportunity Details & Registration (60 sec)
+## Member 4: Create & Edit (80s)
 
-**Login again**: `demo@servehub.com` / `Demo123!`
+- Dashboard → Create Opportunity
+- Fill: "Beach Cleanup Day", "Help clean beaches", Scottsdale, future dates, 15 volunteers
+- Submit → verify in dashboard
+- Edit → change title to "Beach & Park Cleanup Day"
+- Save → verify update
 
-**Show**:
+## Member 5: Delete & Wrap (50s)
 
-- Click on "Community Park Cleanup" opportunity
-- Show details page (description, location, dates, volunteers)
-- Click "Register" button
-- Show success message
-- Navigate to "My Registrations"
-- Show registered opportunity appears in "Upcoming Events"
-- Click "Cancel Registration"
-- Show it's removed
+- Delete the created opportunity
+- Confirm deletion → verify removed
+- Show responsive design (resize browser)
+- Closing: "Full CRUD, auth, filters, registrations, Azure-ready"
 
-**Covers**: Registration system, My Registrations page
+## Links for Submission
 
----
-
-### Member 4: CRUD - Create & Edit (80 sec)
-
-**Stay logged in**
-
-**Show**:
-
-- Navigate to Dashboard
-- Click "Create Opportunity"
-- **Fill form**:
-  - Title: "Beach Cleanup Day"
-  - Description: "Help clean our local beaches"
-  - Location: "Scottsdale, AZ"
-  - Start Date: (future date)
-  - End Date: (after start)
-  - Max Volunteers: 15
-- Submit - show it appears in dashboard
-- Click "Edit" on the new opportunity
-- Change title to "Beach & Park Cleanup Day"
-- Save - show updated
-
-**Covers**: Create (C), Read (R), Update (U)
-
----
-
-### Member 5: CRUD - Delete & Wrap-up (50 sec)
-
-**Show**:
-
-- From dashboard, click "Delete" on the opportunity you created
-- Confirm deletion
-- Show it's removed from dashboard
-- Quickly show responsive design (resize browser or use dev tools)
-- Navigate through pages showing mobile view
-
-**Say**: "We've demonstrated authentication, full CRUD operations, search/filters, registrations, and cloud-ready database integration. Thank you!"
-
-**Covers**: Delete (D), Responsive design
-
----
-
-## 📋 Pre-Recording Checklist
-
-- [ ] Fresh database seeded (10 opportunities)
-- [ ] Demo account ready: `demo@servehub.com` / `Demo123!`
-- [ ] Browser cache cleared
-- [ ] All team members tested their section
-- [ ] Camera/mic working for each member
-- [ ] Screen recording software ready
-- [ ] Close unnecessary apps/tabs
-
-## ✅ W7 Requirements Coverage
-
-- ✅ Authentication (login, register, logout, profile)
-- ✅ CRUD complete (create, read, update, delete)
-- ✅ Search & filtering (text, location, category, date)
-- ✅ Database integration (seeded data persists)
-- ✅ My Registrations page
-- ✅ Responsive design
-- ✅ Azure deployment ready
-- ✅ Each member participates with camera
-
-## 📤 Submission Links Needed
-
-1. GitHub repository: `https://github.com/kendychae/CSE325-Team4-GroupProject`
-2. Trello board: [Your Trello link]
-3. Deployed site: [Your Azure App Service URL]
-4. YouTube video: [Your video link after upload]
+- **Repo**: https://github.com/kendychae/CSE325-Team4-GroupProject
+- **Project Board**: https://github.com/users/kendychae/projects/2
+- **Deployed Site**: [Azure URL]
+- **Video**: [YouTube URL]
