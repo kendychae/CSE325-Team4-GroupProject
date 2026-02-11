@@ -19,52 +19,57 @@
         </div>
     </div>
 
-    <div class="row mb-3">
-        <div class="col-md-3">
-            <input type="text" class="form-control" placeholder="Search title or description..." value="@searchTerm"
-                   @oninput="@((ChangeEventArgs e) => { searchTerm = e.Value?.ToString() ?? string.Empty; ApplyFilters(); })" />
+    <!-- Filters Section -->
+    <div class="filters-section mb-4">
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <input type="text" class="form-control" placeholder="Search title or description..." value="@searchTerm"
+                       @oninput="@((ChangeEventArgs e) => { searchTerm = e.Value?.ToString() ?? string.Empty; ApplyFilters(); })" />
+            </div>
+
+            <div class="col-md-3">
+                <input type="text" class="form-control" placeholder="Location" value="@locationFilter"
+                       @oninput="@((ChangeEventArgs e) => { locationFilter = e.Value?.ToString() ?? string.Empty; ApplyFilters(); })" />
+            </div>
+
+            <div class="col-md-3">
+                <select class="form-select" value="@categoryFilter"
+                        @onchange="@((ChangeEventArgs e) => { categoryFilter = e.Value?.ToString() ?? string.Empty; ApplyFilters(); })">
+                    <option value="">All Categories</option>
+                    @foreach (var category in categories)
+                    {
+                        <option value="@category">@category</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-md-3 d-flex">
+                <button class="btn btn-outline-secondary w-100" @onclick="ClearFilters">
+                    Clear Search
+                </button>
+            </div>
         </div>
 
-        <div class="col-md-3">
-            <input type="text" class="form-control" placeholder="Location" value="@locationFilter"
-                   @oninput="@((ChangeEventArgs e) => { locationFilter = e.Value?.ToString() ?? string.Empty; ApplyFilters(); })" />
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label class="form-label">Start Date (From)</label>
+                <input type="date" class="form-control" value="@startDateFilter?.ToString("yyyy-MM-dd")"
+                       @onchange="@((ChangeEventArgs e) => { startDateFilter = string.IsNullOrEmpty(e.Value?.ToString()) ? null : DateTime.Parse(e.Value.ToString()!); ApplyFilters(); })" />
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label">Start Date (To)</label>
+                <input type="date" class="form-control" value="@endDateFilter?.ToString("yyyy-MM-dd")"
+                       @onchange="@((ChangeEventArgs e) => { endDateFilter = string.IsNullOrEmpty(e.Value?.ToString()) ? null : DateTime.Parse(e.Value.ToString()!); ApplyFilters(); })" />
+            </div>
         </div>
 
-        <div class="col-md-3">
-            <select class="form-select" value="@categoryFilter"
-                    @onchange="@((ChangeEventArgs e) => { categoryFilter = e.Value?.ToString() ?? string.Empty; ApplyFilters(); })">
-                <option value="">All Categories</option>
-                @foreach (var category in categories)
-                {
-                    <option value="@category">@category</option>
-                }
-            </select>
-        </div>
-
-        <div class="col-md-3 d-flex">
-            <button class="btn btn-outline-secondary w-100" @onclick="ClearFilters">
-                Clear Search
-            </button>
+        <div class="results-count">
+            <strong>@FilteredOpportunities.Count()</strong> result(s) found
         </div>
     </div>
 
-    <div class="row mb-3">
-        <div class="col-md-3">
-            <label class="form-label">Start Date (From)</label>
-            <input type="date" class="form-control" value="@startDateFilter?.ToString("yyyy-MM-dd")"
-                   @onchange="@((ChangeEventArgs e) => { startDateFilter = string.IsNullOrEmpty(e.Value?.ToString()) ? null : DateTime.Parse(e.Value.ToString()!); ApplyFilters(); })" />
-        </div>
-
-        <div class="col-md-3">
-            <label class="form-label">Start Date (To)</label>
-            <input type="date" class="form-control" value="@endDateFilter?.ToString("yyyy-MM-dd")"
-                   @onchange="@((ChangeEventArgs e) => { endDateFilter = string.IsNullOrEmpty(e.Value?.ToString()) ? null : DateTime.Parse(e.Value.ToString()!); ApplyFilters(); })" />
-        </div>
-    </div>
-
-    <div class="results-count">
-        <strong>@FilteredOpportunities.Count()</strong> result(s) found
-    </div>
+    <!-- Content Section -->
 
 
 
