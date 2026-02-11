@@ -27,17 +27,16 @@
 
     <div class="row mb-3">
         <div class="col-md-3">
-            <input class="form-control" placeholder="Search title or description..." @bind-value="searchTerm"
-                   @bind-value:event="oninput" />
+            <input class="form-control" placeholder="Search title or description..." @bind="searchTerm"
+                   @bind:after="OnFiltersChanged" />
         </div>
 
         <div class="col-md-3">
-            <input class="form-control" placeholder="Location" @bind-value="locationFilter"
-                   @bind-value:event="oninput" />
+            <input class="form-control" placeholder="Location" @bind="locationFilter" @bind:after="OnFiltersChanged" />
         </div>
 
         <div class="col-md-3">
-            <select class="form-select" @bind="categoryFilter">
+            <select class="form-select" @bind="categoryFilter" @bind:after="OnFiltersChanged">
                 <option value="">All Categories</option>
                 @foreach (var category in categories)
                 {
@@ -56,12 +55,12 @@
     <div class="row mb-3">
         <div class="col-md-3">
             <label class="form-label">Start Date (From)</label>
-            <input type="date" class="form-control" @bind="startDateFilter" />
+            <input type="date" class="form-control" @bind="startDateFilter" @bind:after="OnFiltersChanged" />
         </div>
 
         <div class="col-md-3">
             <label class="form-label">Start Date (To)</label>
-            <input type="date" class="form-control" @bind="endDateFilter" />
+            <input type="date" class="form-control" @bind="endDateFilter" @bind:after="OnFiltersChanged" />
         </div>
     </div>
 
@@ -185,6 +184,12 @@
         categoryFilter = string.Empty;
         startDateFilter = null;
         endDateFilter = null;
+        StateHasChanged();
+    }
+
+    private void OnFiltersChanged()
+    {
+        StateHasChanged();
     }
 
     private IEnumerable<ServiceOpportunity> FilteredOpportunities =>
@@ -195,8 +200,7 @@
                       o.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) &&
                   (string.IsNullOrWhiteSpace(locationFilter) ||
                       o.Location.Contains(locationFilter, StringComparison.OrdinalIgnoreCase)) &&
-                  (string.IsNullOrWhiteSpace(categoryFilter) ||
-                      o.Category == categoryFilter) &&
+                  (!string.IsNullOrWhiteSpace(categoryFilter) ? o.Category == categoryFilter : true) &&
                   (!startDateFilter.HasValue || o.StartDate.Date >= startDateFilter.Value.Date) &&
                   (!endDateFilter.HasValue || o.StartDate.Date <= endDateFilter.Value.Date)
               )
