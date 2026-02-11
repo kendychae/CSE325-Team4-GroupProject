@@ -1,219 +1,85 @@
 @page "/opportunities"
-@using ServeHub.Services
-@using ServeHub.Models
-@using Microsoft.AspNetCore.Components
-@inject IServiceOpportunityService OpportunityService
-@inject NavigationManager Navigation
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
 
-<PageTitle>Service Opportunities - ServeHub</PageTitle>
+<h3>Service Opportunities</h3>
 
-<div class="container mt-4">
-    <div class="row mb-4 opportunities-header">
-        <div class="col-md-8">
-            <h1>Service Opportunities</h1>
-            <p class="lead">Find and join volunteer opportunities in your community</p>
-        </div>
-        <div class="col-md-4 text-end">
-            <AuthorizeView>
-                <Authorized>
-                    <a href="/opportunities/create" class="btn btn-primary create-opportunity-btn">
-                        <i class="bi bi-plus-circle"></i> Create Opportunity
-                    </a>
-                </Authorized>
-            </AuthorizeView>
-        </div>
-    </div>
+<div class="filters mb-3">
+    <input @bind="searchTerm" @bind:event="oninput" placeholder="Search title..." class="form-control mb-2" />
+    <input @bind="locationFilter" @bind:event="oninput" placeholder="Location..." class="form-control mb-2" />
+    <select @bind="categoryFilter" class="form-select mb-2">
+        <option value="">All Categories</option>
+        @foreach (var cat in categories)
+        {
+            <option value="@cat">@cat</option>
+        }
+    </select>
 
-    <div class="row mb-3">
-        <div class="col-md-3">
-            <input class="form-control"          placeholder="Search title or description..."      @bind="searchTerm"
-                   @bind:event="oninput" />
-        </div>
+    <label>Start Date (From)</label>
+    <input type="date" @bind="startDateFilter" @bind:event="oninput" class="form-control mb-2" />
 
-        <div class="col-md-3">
-            <input class="form-control" placeholder="Location"            @bind="locationFilter"               @bind:event="oninput" />
-        </div>
+    <label>Start Date (To)</label>
+    <input type="date" @bind="endDateFilter" @bind:event="oninput" class="form-control mb-2" />
 
-        <div class="col-md-3">
-            <select class="form-select" @bind="categoryFilter" @bind:after="OnCategoryChanged">
-                <option value="">All Categories</option>
-                @foreach (var category in categories)
-                {
-                    <option value="@category">@category</option>
-                }
-            </select>
-        </div>
+    <button @onclick="ClearFilters" class="btn btn-outline-secondary mt-2">Clear Filters</button>
+</div>
 
-        <div class="col-md-3 d-flex">
-            <button class="btn btn-outline-secondary w-100"      @onclick="ClearFilters">
-                Clear Search
-            </button>
-        </div>
-    </div>
+<p><strong>@FilteredOpportunities.Count()</strong> result(s) found</p>
 
-    <div class="row mb-3">
-        <div class="col-md-3">
-            <label class="form-label">Start Date (From)</label>
-            <input type="date"      class="form-control"            @bind="startDateFilter"          @bind:event="oninput" />
-        </div>
-
-        <div class="col-md-3">
-            <label class="form-label">Start Date (To)</label>
-            <input type="date"    class="form-control"          @bind="endDateFilter"       @bind:event="oninput" />
-        </div>
-    </div>
-
-    <div class="results-count">
-        <strong>@FilteredOpportunities.Count()</strong> result(s) found
-    </div>
-
-
-
-
-
-    @if (isLoading)
+<div class="row">
+    @foreach (var o in FilteredOpportunities)
     {
-        <div class="text-center">
-            <div class="spinner-border" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-        </div>
-    }
-    else if (opportunities == null || !opportunities.Any())
-    {
-        <div class="alert alert-info">
-            <i class="bi bi-info-circle"></i> No service opportunities available at this time.
-        </div>
-    }
-    else
-    {
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-            @foreach (var opportunity in FilteredOpportunities)
-
-            {
-                <div class="col">
-                    <div class="card h-100 shadow-sm opportunity-card">
-                        @if (!string.IsNullOrEmpty(opportunity.ImageUrl))
-                        {
-                            <img src="@opportunity.ImageUrl" class="card-img-top" alt="@opportunity.Title"
-                                 style="height: 200px; object-fit: cover;">
-                        }
-                        else
-                        {
-                            <div class="card-img-top bg-secondary text-white d-flex align-items-center justify-content-center"
-                                 style="height: 200px;">
-                                <i class="bi bi-heart-fill" style="font-size: 3rem;"></i>
-                            </div>
-                        }
-                        <div class="card-body">
-                            <h5 class="card-title">@opportunity.Title</h5>
-                            <p class="card-text">
-                                @(opportunity.Description.Length > 100
-                                    ? opportunity.Description.Substring(0, 100) + "..."
-                                    : opportunity.Description)
-                            </p>
-                            <div class="mb-2">
-                                <i class="bi bi-geo-alt"></i> @opportunity.Location
-                            </div>
-                            <div class="mb-2">
-                                <i class="bi bi-calendar-event"></i> @opportunity.StartDate.ToString("MMM dd, yyyy")
-                            </div>
-                            <div class="mb-2">
-                                <i class="bi bi-people"></i> @opportunity.CurrentVolunteers / @opportunity.MaxVolunteers
-                                volunteers
-                            </div>
-                            @if (!string.IsNullOrEmpty(opportunity.Category))
-                            {
-                                <span class="badge bg-info">@opportunity.Category</span>
-                            }
-                        </div>
-                        <div class="card-footer">
-                            <a href="/opportunities/@opportunity.Id" class="btn btn-primary btn-sm w-100">View Details</a>
-                        </div>
-                    </div>
+        <div class="col-12 col-md-6 col-lg-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">@o.Title</h5>
+                    <p class="card-text">@o.Location - @o.Category</p>
+                    <p class="card-text"><small>Start: @o.StartDate.ToString("MMM dd, yyyy")</small></p>
                 </div>
-            }
+            </div>
         </div>
     }
 </div>
 
 @code {
-    private List<ServiceOpportunity>? opportunities;
-    private bool isLoading = true;
-
-    private string searchTerm = string.Empty;
-    private string locationFilter = string.Empty;
-    private string categoryFilter = string.Empty;
+    private string searchTerm = "";
+    private string locationFilter = "";
+    private string categoryFilter = "";
     private DateTime? startDateFilter;
     private DateTime? endDateFilter;
 
-    private List<string> categories = new();
+    private List<string> categories = new() { "Environment", "Hunger", "Education", "Animals" };
 
-    protected override async Task OnInitializedAsync()
+    private List<ServiceOpportunity> opportunities = new()
     {
-        try
-        {
-            isLoading = true;
-
-            opportunities = await OpportunityService.GetActiveOpportunitiesAsync();
-            categories = await OpportunityService.GetCategoriesAsync();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error loading opportunities: {ex.Message}");
-        }
-        finally
-        {
-            isLoading = false;
-        }
-    }
-
-
-
-    private async Task OnCategoryChanged()
-    {
-        isLoading = true;
-
-        try
-        {
-            opportunities = string.IsNullOrWhiteSpace(categoryFilter)
-                ? await OpportunityService.GetActiveOpportunitiesAsync()
-                : await OpportunityService.GetOpportunitiesByCategoryAsync(categoryFilter);
-        }
-        finally
-        {
-            isLoading = false;
-        }
-    }
-
-
-    private async Task ClearFilters()
-    {
-        searchTerm = string.Empty;
-        locationFilter = string.Empty;
-        categoryFilter = string.Empty;
-        startDateFilter = null;
-        endDateFilter = null;
-
-        isLoading = true;
-        opportunities = await OpportunityService.GetActiveOpportunitiesAsync();
-        isLoading = false;
-    }
+        new() { Title="Community Park Cleanup", Location="Phoenix", Category="Environment", StartDate=DateTime.Today.AddDays(3) },
+        new() { Title="Food Bank Sorting", Location="Tempe", Category="Hunger", StartDate=DateTime.Today.AddDays(10) },
+        new() { Title="Senior Center Tech Help", Location="Mesa", Category="Education", StartDate=DateTime.Today.AddDays(-2) },
+        new() { Title="Animal Shelter Support", Location="Phoenix", Category="Animals", StartDate=DateTime.Today.AddDays(20) }
+    };
 
     private IEnumerable<ServiceOpportunity> FilteredOpportunities =>
-          opportunities?
-              .Where(o =>
-                  (string.IsNullOrWhiteSpace(searchTerm) ||
-                      o.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                      o.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) &&
-                  (string.IsNullOrWhiteSpace(locationFilter) ||
-                      o.Location.Contains(locationFilter, StringComparison.OrdinalIgnoreCase)) &&
-                  (string.IsNullOrWhiteSpace(categoryFilter) ||
-                      o.Category == categoryFilter) &&
-                  (!startDateFilter.HasValue || o.StartDate >= startDateFilter.Value) &&
-                  (!endDateFilter.HasValue || o.StartDate <= endDateFilter.Value)
-              )
-          ?? Enumerable.Empty<ServiceOpportunity>();
+        opportunities.Where(o =>
+            (string.IsNullOrWhiteSpace(searchTerm) || o.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) &&
+            (string.IsNullOrWhiteSpace(locationFilter) || o.Location.Contains(locationFilter, StringComparison.OrdinalIgnoreCase)) &&
+            (string.IsNullOrWhiteSpace(categoryFilter) || o.Category == categoryFilter) &&
+            (!startDateFilter.HasValue || o.StartDate.Date >= startDateFilter.Value.Date) &&
+            (!endDateFilter.HasValue || o.StartDate.Date <= endDateFilter.Value.Date)
+        );
 
+    private void ClearFilters()
+    {
+        searchTerm = "";
+        locationFilter = "";
+        categoryFilter = "";
+        startDateFilter = null;
+        endDateFilter = null;
+    }
+
+    public class ServiceOpportunity
+    {
+        public string Title { get; set; } = "";
+        public string Location { get; set; } = "";
+        public string Category { get; set; } = "";
+        public DateTime StartDate { get; set; }
+    }
 }
