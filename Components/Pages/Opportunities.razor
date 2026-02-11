@@ -207,7 +207,7 @@
             )
             .ToList();
 
-        StateHasChanged();
+        InvokeAsync(StateHasChanged);
     }
 
     private void ClearFilters()
