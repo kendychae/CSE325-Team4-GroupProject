@@ -1,90 +1,70 @@
-# Week 6 Team Checkpoint Summary Outline
+Week 6 Group Project Checkpoint
 
-## Meeting Information
+# Week 6 Team Submission - Project Checkpoint
 
-**Date**: [To be completed]  
-**Attendees**: [To be completed - list all participants]
+## 1. Summary
 
-## Project Status Summary
+**Meeting Date**: February 11, 2026
 
-### Completed This Week
+During this week's team meeting, we discussed the concerns with the code, finalized some project bug fixes, and determined another date to record the project.
 
-- [x] CRUD Operations - Dashboard with Create, Edit, Delete functionality
-- [x] Enhanced Opportunities page with date range filtering
-- [x] User authentication system (Login, Register, Profile)
-- [x] Azure SQL Database configuration
-- [x] Repository restructuring and code organization
+- **Azure Database Setup**: Discussed the process and requirements for setting up Azure SQL Database for the project. Azure is up and running and we will continue to debug.
+- **Task Assignment Planning**: Final bugs with Filtering. Meeting on Monday to record the project and finalize code. WCAG 2.1 guidelines discussed and will need to be implemented. Azure deployment and account setup fixes.
+- **Project Timeline**: Fix the rest of the code this week. Plan to be finished by Monday.
+- **Final Presentation**: Plan to record the group presentation on Monday.
 
-### Current Status
+**Successes**: Our website looks good. The collaboration in the past week had an almost fully functional site and was a great team effort.
+**Challenges**: Understanding the technical issues with recording next week. Also, making sure all our individual fixes do not break the code.
 
-- Application is fully functional with core features implemented
-- Database configured for Azure SQL Server
-- All Week 7 requirements met
-- Ready for final deployment and video demonstration
+**Next Steps**: Submit finished projects.
 
-## Technical Accomplishments
+## 2. Participants
 
-### Features Implemented
+The following team members attended the live meeting on February 11, 2026:
 
-1. **User Authentication** ✓
-   - Registration with ASP.NET Core Identity
-   - Secure login/logout
-   - User profiles
-   - Protected routes with [Authorize] attributes
+1. Kendahl Chae Bingham
+2. Shayla Foley
+3. Adetokunbo Olutola Osibo
+4. Gabriel Enrique Torrejon Aguilera
+5. Iyen Samuel Evbosaru
+6. Maxwell Balla Nvani
+7. Brenden Taylor Lyon
+8. Ange Junior Gohouri
+9. Boitumelo Hebert Meletse
+10. Curtis Guelable Siahe
 
-2. **CRUD Operations** ✓
-   - Dashboard for managing service opportunities
-   - Create new opportunities
-   - Edit existing opportunities
-   - Delete opportunities with ownership verification
-   - User-specific opportunity filtering
+**Total Attendees**: 10
 
-3. **Service Opportunity Browsing** ✓
-   - Public opportunities listing
-   - Search by title/description
-   - Filter by location
-   - Filter by category
-   - Date range filtering (Start Date From/To)
-   - Detailed opportunity view
-4. **Database Integration** ✓
-   - Entity Framework Core
-   - Azure SQL Database configured
-   - Migration system in place
+## 3. GitHub Project Board URL
 
-## Challenges Encountered
+https://github.com/kendychae/CSE325-Team4-GroupProject/projects
 
-1. **Branch Synchronization**
-   - Issue: Multiple team members working on different branches
-   - Resolution: Merged and resolved conflicts systematically
+## 4. Azure Link
 
-2. **Security Improvements**
-   - Issue: CRUD pages lacked authorization checks
-   - Resolution: Added [Authorize] attributes and ownership verification
-
-## Remaining Tasks for Week 7
-
-- [x] Final code review and testing
-- [ ] Record group video demonstration (5-7 minutes)
-- [ ] Prepare individual presentations for video
-- [ ] Deploy to Azure App Service (if not already deployed)
-- [ ] Complete peer evaluations
-- [ ] Submit final deliverables
-
-## Links
-
-- **GitHub Repository**: https://github.com/kendychae/CSE325-Team4-GroupProject
-- **Project Board**: https://github.com/users/kendychae/projects/2
-- **Deployed Application**: [To be added after deployment]
-
-## Notes for Video Demonstration
-
-Each team member should be prepared to demonstrate:
-
-- A specific feature they worked on
-- How it meets project requirements
-- Technical implementation details
-- User experience and interface
+servehub-app-b3fac9a8h5cybrfr.spaincentral-01.azurewebsites.net
 
 ---
 
-**Next Meeting**: To be scheduled for video recording coordination
+## Individual Assignments
+
+Video Presentation Assignments:
+
+Github Project board and Repository - Ange Junior Gohouri
+
+Detailed code coverage, show Code is clean, Blazor implementation, well organized -
+
+- Maxwell Balla Nvani
+
+Error Handling - Iyen Samuel Evbosaru
+
+User experience -show the app - Gabriel Enrique Torrejon Aguilera
+
+User experience - account setup - Adetokunbo Olutola Osibo
+
+Filter functionality - Shayla Foley
+
+Consistent Branding and Navigation - Boitumelo Hebert Meletse
+
+WCAG 2.1, Level AA, guidelines implemented - Brenden Taylor Lyon
+
+Documentation - Kendahl Chae Bingham
