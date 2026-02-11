@@ -27,16 +27,18 @@
 
     <div class="row mb-3">
         <div class="col-md-3">
-            <input class="form-control" placeholder="Search title or description..." @bind="searchTerm"
-                   @bind:after="OnFiltersChanged" />
+            <input type="text" class="form-control" placeholder="Search title or description..." value="@searchTerm"
+                   @oninput="@((ChangeEventArgs e) => { searchTerm = e.Value?.ToString() ?? string.Empty; ApplyFilters(); })" />
         </div>
 
         <div class="col-md-3">
-            <input class="form-control" placeholder="Location" @bind="locationFilter" @bind:after="OnFiltersChanged" />
+            <input type="text" class="form-control" placeholder="Location" value="@locationFilter"
+                   @oninput="@((ChangeEventArgs e) => { locationFilter = e.Value?.ToString() ?? string.Empty; ApplyFilters(); })" />
         </div>
 
         <div class="col-md-3">
-            <select class="form-select" @bind="categoryFilter" @bind:after="OnFiltersChanged">
+            <select class="form-select" value="@categoryFilter"
+                    @onchange="@((ChangeEventArgs e) => { categoryFilter = e.Value?.ToString() ?? string.Empty; ApplyFilters(); })">
                 <option value="">All Categories</option>
                 @foreach (var category in categories)
                 {
@@ -55,12 +57,14 @@
     <div class="row mb-3">
         <div class="col-md-3">
             <label class="form-label">Start Date (From)</label>
-            <input type="date" class="form-control" @bind="startDateFilter" @bind:after="OnFiltersChanged" />
+            <input type="date" class="form-control" value="@startDateFilter?.ToString("yyyy-MM-dd")"
+                   @onchange="@((ChangeEventArgs e) => { startDateFilter = string.IsNullOrEmpty(e.Value?.ToString()) ? null : DateTime.Parse(e.Value.ToString()!); ApplyFilters(); })" />
         </div>
 
         <div class="col-md-3">
             <label class="form-label">Start Date (To)</label>
-            <input type="date" class="form-control" @bind="endDateFilter" @bind:after="OnFiltersChanged" />
+            <input type="date" class="form-control" value="@endDateFilter?.ToString("yyyy-MM-dd")"
+                   @onchange="@((ChangeEventArgs e) => { endDateFilter = string.IsNullOrEmpty(e.Value?.ToString()) ? null : DateTime.Parse(e.Value.ToString()!); ApplyFilters(); })" />
         </div>
     </div>
 
@@ -140,6 +144,7 @@
 
 @code {
     private List<ServiceOpportunity>? opportunities;
+    private List<ServiceOpportunity> filteredOpportunities = new();
     private bool isLoading = true;
 
     private string searchTerm = string.Empty;
@@ -165,16 +170,44 @@
                 .Distinct()
                 .OrderBy(c => c)
                 .ToList();
+
+            ApplyFilters();
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error loading opportunities: {ex.Message}");
             opportunities = new List<ServiceOpportunity>();
+            filteredOpportunities = new List<ServiceOpportunity>();
         }
         finally
         {
             isLoading = false;
         }
+    }
+
+    private void ApplyFilters()
+    {
+        if (opportunities == null)
+        {
+            filteredOpportunities = new List<ServiceOpportunity>();
+            return;
+        }
+
+        filteredOpportunities = opportunities
+            .Where(o =>
+                (string.IsNullOrWhiteSpace(searchTerm) ||
+                    o.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                    o.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) &&
+                (string.IsNullOrWhiteSpace(locationFilter) ||
+                    o.Location.Contains(locationFilter, StringComparison.OrdinalIgnoreCase)) &&
+                (string.IsNullOrWhiteSpace(categoryFilter) ||
+                    o.Category == categoryFilter) &&
+                (!startDateFilter.HasValue || o.StartDate.Date >= startDateFilter.Value.Date) &&
+                (!endDateFilter.HasValue || o.StartDate.Date <= endDateFilter.Value.Date)
+            )
+            .ToList();
+
+        StateHasChanged();
     }
 
     private void ClearFilters()
@@ -184,26 +217,9 @@
         categoryFilter = string.Empty;
         startDateFilter = null;
         endDateFilter = null;
-        StateHasChanged();
+        ApplyFilters();
     }
 
-    private void OnFiltersChanged()
-    {
-        StateHasChanged();
-    }
-
-    private IEnumerable<ServiceOpportunity> FilteredOpportunities =>
-          opportunities?
-              .Where(o =>
-                  (string.IsNullOrWhiteSpace(searchTerm) ||
-                      o.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                      o.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) &&
-                  (string.IsNullOrWhiteSpace(locationFilter) ||
-                      o.Location.Contains(locationFilter, StringComparison.OrdinalIgnoreCase)) &&
-                  (!string.IsNullOrWhiteSpace(categoryFilter) ? o.Category == categoryFilter : true) &&
-                  (!startDateFilter.HasValue || o.StartDate.Date >= startDateFilter.Value.Date) &&
-                  (!endDateFilter.HasValue || o.StartDate.Date <= endDateFilter.Value.Date)
-              )
-          ?? Enumerable.Empty<ServiceOpportunity>();
+    private IEnumerable<ServiceOpportunity> FilteredOpportunities => filteredOpportunities;
 
 }
