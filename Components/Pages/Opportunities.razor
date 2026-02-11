@@ -27,18 +27,21 @@
 
     <div class="row mb-3">
         <div class="col-md-3">
-            <input class="form-control" placeholder="Search title or description..."     value="@searchTerm"
-                   @oninput="@(e => { searchTerm = e.Value?.ToString() ?? string.Empty; })" />
+            <input class="form-control" placeholder="Search title or description..." 
+                   value="@searchTerm"
+                   @oninput="OnSearchChanged" />
         </div>
 
         <div class="col-md-3">
-            <input class="form-control"          placeholder="Location"            value="@locationFilter"
-                   @oninput="@(e => { locationFilter = e.Value?.ToString() ?? string.Empty; })" />
+            <input class="form-control" placeholder="Location" 
+                   value="@locationFilter"
+                   @oninput="OnLocationChanged" />
         </div>
 
         <div class="col-md-3">
-            <select class="form-select"                  value="@categoryFilter"
-                    @onchange="@(e => { categoryFilter = e.Value?.ToString() ?? string.Empty; })">
+            <select class="form-select" 
+                    value="@categoryFilter"
+                    @onchange="OnCategoryChanged">
                 <option value="">All Categories</option>
                 @foreach (var category in categories)
                 {
@@ -57,14 +60,16 @@
     <div class="row mb-3">
         <div class="col-md-3">
             <label class="form-label">Start Date (From)</label>
-            <input type="date"         class="form-control"            value="@(startDateFilter?.ToString("yyyy-MM-dd"))"
-                   @onchange="@(e => { startDateFilter = string.IsNullOrWhiteSpace(e.Value?.ToString()) ? null : DateTime.Parse(e.Value.ToString()!); })" />
+            <input type="date" class="form-control" 
+                   value="@(startDateFilter?.ToString("yyyy-MM-dd"))"
+                   @onchange="OnStartDateChanged" />
         </div>
 
         <div class="col-md-3">
             <label class="form-label">Start Date (To)</label>
-            <input type="date"                 class="form-control"                   value="@(endDateFilter?.ToString("yyyy-MM-dd"))"
-                   @onchange="@(e => { endDateFilter = string.IsNullOrWhiteSpace(e.Value?.ToString()) ? null : DateTime.Parse(e.Value.ToString()!); })" />
+            <input type="date" class="form-control" 
+                   value="@(endDateFilter?.ToString("yyyy-MM-dd"))"
+                   @onchange="OnEndDateChanged" />
         </div>
     </div>
 
@@ -188,6 +193,39 @@
         categoryFilter = string.Empty;
         startDateFilter = null;
         endDateFilter = null;
+        StateHasChanged();
+    }
+
+    private void OnSearchChanged(ChangeEventArgs e)
+    {
+        searchTerm = e.Value?.ToString() ?? string.Empty;
+        StateHasChanged();
+    }
+
+    private void OnLocationChanged(ChangeEventArgs e)
+    {
+        locationFilter = e.Value?.ToString() ?? string.Empty;
+        StateHasChanged();
+    }
+
+    private void OnCategoryChanged(ChangeEventArgs e)
+    {
+        categoryFilter = e.Value?.ToString() ?? string.Empty;
+        StateHasChanged();
+    }
+
+    private void OnStartDateChanged(ChangeEventArgs e)
+    {
+        var dateString = e.Value?.ToString();
+        startDateFilter = string.IsNullOrWhiteSpace(dateString) ? null : DateTime.Parse(dateString);
+        StateHasChanged();
+    }
+
+    private void OnEndDateChanged(ChangeEventArgs e)
+    {
+        var dateString = e.Value?.ToString();
+        endDateFilter = string.IsNullOrWhiteSpace(dateString) ? null : DateTime.Parse(dateString);
+        StateHasChanged();
     }
 
     private IEnumerable<ServiceOpportunity> FilteredOpportunities =>
