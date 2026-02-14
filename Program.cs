@@ -140,31 +140,37 @@ app.UseAuthorization();
 
 app.UseAntiforgery();
 
-app.MapPost("/account/login", async (LoginRequest request, SignInManager<ApplicationUser> signInManager) =>
+app.MapPost("/account/login-handler", async (HttpRequest httpRequest, SignInManager<ApplicationUser> signInManager) =>
 {
-    if (string.IsNullOrWhiteSpace(request.Email) || string.IsNullOrWhiteSpace(request.Password))
+    var form = await httpRequest.ReadFormAsync();
+    var email = form["Email"].ToString();
+    var password = form["Password"].ToString();
+    var rememberMeRaw = form["RememberMe"].ToString();
+    var rememberMe = string.Equals(rememberMeRaw, "true", StringComparison.OrdinalIgnoreCase) ||
+                     string.Equals(rememberMeRaw, "on", StringComparison.OrdinalIgnoreCase);
+
+    if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
     {
-        return Results.BadRequest("Email and password are required.");
+        return Results.Redirect("/Account/Login?error=missing");
     }
 
-    var result = await signInManager.PasswordSignInAsync(request.Email, request.Password, request.RememberMe, lockoutOnFailure: true);
+    var result = await signInManager.PasswordSignInAsync(email, password, rememberMe, lockoutOnFailure: true);
 
     if (result.Succeeded)
     {
-        return Results.Ok();
+        return Results.Redirect("/dashboard");
     }
 
     if (result.IsLockedOut)
     {
-        return Results.StatusCode(StatusCodes.Status423Locked);
+        return Results.Redirect("/Account/Login?error=locked");
     }
 
-    return Results.Unauthorized();
-}).AllowAnonymous().DisableAntiforgery();
+    return Results.Redirect("/Account/Login?error=invalid");
+}).AllowAnonymous();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
 app.Run();
 
-internal sealed record LoginRequest(string Email, string Password, bool RememberMe);

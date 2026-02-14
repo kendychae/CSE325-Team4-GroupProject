@@ -1,10 +1,7 @@
 @page "/Account/Login"
 @rendermode InteractiveServer
 @using System.ComponentModel.DataAnnotations
-@using Microsoft.AspNetCore.Identity
-@inject SignInManager<ApplicationUser> SignInManager
 @inject NavigationManager Navigation
-@inject IHttpClientFactory HttpClientFactory
 
 <div class="container">
     <div class="col-md-6">
@@ -19,78 +16,50 @@
                 </div>
             }
 
-            <EditForm Model="loginModel" OnValidSubmit="HandleLogin">
-                <DataAnnotationsValidator />
-                <ValidationSummary />
-
+            <form method="post" action="/account/login-handler" @formname="LoginForm">
+                <AntiforgeryToken />
                 <div class="mb-3">
                     <label for="email" class="form-label">Email Address</label>
-                    <InputText id="email" @bind-Value="loginModel.Email" class="form-control" placeholder="Enter your email" />
+                    <InputText id="email" name="Email" @bind-Value="loginModel.Email" class="form-control" placeholder="Enter your email" />
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
-                    <InputText id="password" @bind-Value="loginModel.Password" type="password" class="form-control" placeholder="Enter your password" />
+                    <InputText id="password" name="Password" @bind-Value="loginModel.Password" type="password" class="form-control" placeholder="Enter your password" />
                 </div>
                 <div class="mb-3 form-check">
-                    <InputCheckbox id="rememberMe" @bind-Value="loginModel.RememberMe" class="form-check-input" />
+                    <InputCheckbox id="rememberMe" name="RememberMe" @bind-Value="loginModel.RememberMe" class="form-check-input" />
                     <label for="rememberMe" class="form-check-label">Remember me</label>
                 </div>
                 <div class="button-container">
                     <button type="submit" class="btn btn-primary">Sign In</button>
                     <a href="/Account/Register" class="btn btn-link">Create Account</a>
                 </div>
-            </EditForm>
+            </form>
         </div>
     </div>
 </div>
 
 @code {
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string? Error { get; set; }
+
     private LoginModel loginModel = new();
     private string? errorMessage = null;
 
-    private async Task HandleLogin()
+    protected override void OnInitialized()
     {
-        try
+        if (string.Equals(Error, "invalid", StringComparison.OrdinalIgnoreCase))
         {
-            if (string.IsNullOrWhiteSpace(loginModel.Email) || string.IsNullOrWhiteSpace(loginModel.Password))
-            {
-                errorMessage = "Email and password are required.";
-                return;
-            }
-
-            var client = HttpClientFactory.CreateClient();
-            client.BaseAddress = new Uri(Navigation.BaseUri);
-
-            var response = await client.PostAsJsonAsync("account/login", new
-            {
-                Email = loginModel.Email,
-                Password = loginModel.Password,
-                RememberMe = loginModel.RememberMe
-            });
-
-            if (response.IsSuccessStatusCode)
-            {
-                Navigation.NavigateTo("/opportunities", forceLoad: true);
-            }
-            else if ((int)response.StatusCode == StatusCodes.Status423Locked)
-            {
-                errorMessage = "Account locked out. Please try again later.";
-            }
-            else if ((int)response.StatusCode == StatusCodes.Status401Unauthorized)
-            {
-                errorMessage = "Invalid email or password.";
-            }
-            else
-            {
-                var serverMessage = await response.Content.ReadAsStringAsync();
-                errorMessage = string.IsNullOrWhiteSpace(serverMessage)
-                    ? "Unable to sign in. Please try again."
-                    : serverMessage;
-            }
+            errorMessage = "Invalid email or password.";
         }
-        catch (Exception ex)
+        else if (string.Equals(Error, "locked", StringComparison.OrdinalIgnoreCase))
         {
-            errorMessage = $"An error occurred: {ex.Message}";
+            errorMessage = "Account locked out. Please try again later.";
+        }
+        else if (string.Equals(Error, "missing", StringComparison.OrdinalIgnoreCase))
+        {
+            errorMessage = "Email and password are required.";
         }
     }
 
