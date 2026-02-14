@@ -4,6 +4,7 @@
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
 @inject NavigationManager Navigation
+@inject IHttpClientFactory HttpClientFactory
 
 <div class="container">
     <div class="col-md-6">
@@ -18,7 +19,7 @@
                 </div>
             }
 
-            <EditForm Model="loginModel" OnValidSubmit="RedirectLogin">
+            <EditForm Model="loginModel" OnValidSubmit="HandleLogin">
                 <DataAnnotationsValidator />
                 <ValidationSummary />
 
@@ -57,18 +58,34 @@
                 return;
             }
 
-            var result = await SignInManager.PasswordSignInAsync(loginModel.Email, loginModel.Password, loginModel.RememberMe, lockoutOnFailure: true);
-            if (result.Succeeded)
+            var client = HttpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(Navigation.BaseUri);
+
+            var response = await client.PostAsJsonAsync("account/login", new
+            {
+                Email = loginModel.Email,
+                Password = loginModel.Password,
+                RememberMe = loginModel.RememberMe
+            });
+
+            if (response.IsSuccessStatusCode)
             {
                 Navigation.NavigateTo("/opportunities", forceLoad: true);
             }
-            else if (result.IsLockedOut)
+            else if ((int)response.StatusCode == StatusCodes.Status423Locked)
             {
                 errorMessage = "Account locked out. Please try again later.";
             }
-            else
+            else if ((int)response.StatusCode == StatusCodes.Status401Unauthorized)
             {
                 errorMessage = "Invalid email or password.";
+            }
+            else
+            {
+                var serverMessage = await response.Content.ReadAsStringAsync();
+                errorMessage = string.IsNullOrWhiteSpace(serverMessage)
+                    ? "Unable to sign in. Please try again."
+                    : serverMessage;
             }
         }
         catch (Exception ex)
@@ -76,18 +93,6 @@
             errorMessage = $"An error occurred: {ex.Message}";
         }
     }
-    private void RedirectLogin()
-    {
-        if (string.IsNullOrWhiteSpace(loginModel.Email) || string.IsNullOrWhiteSpace(loginModel.Password))
-        {
-            errorMessage = "Email and password are required.";
-            return;
-        } else {
-            var url = $"/account/login-redirect?Email={Uri.EscapeDataString(loginModel.Email)}&Password={Uri.EscapeDataString(loginModel.Password)}";
-            Navigation.NavigateTo(url, forceLoad: true);
-        }
-    }
-    
 
     public class LoginModel
     {

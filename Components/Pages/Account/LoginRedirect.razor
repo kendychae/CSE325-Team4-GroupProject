@@ -1,4 +1,5 @@
 @page "/account/login-redirect"
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
 @using Microsoft.AspNetCore.Identity
 @using ServeHub.Data
 @inject SignInManager<ApplicationUser> SignInManager
@@ -17,15 +18,28 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var result = await SignInManager.PasswordSignInAsync(Email, Password, isPersistent: true, lockoutOnFailure: true);
+        try
+        {
+            if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
+            {
+                Navigation.NavigateTo("/Account/Login", forceLoad: true);
+                return;
+            }
 
-        if (result.Succeeded)
-        {
-            Navigation.NavigateTo("/dashboard", forceLoad: true);
+            var result = await SignInManager.PasswordSignInAsync(Email, Password, isPersistent: true, lockoutOnFailure: true);
+
+            if (result.Succeeded)
+            {
+                Navigation.NavigateTo("/opportunities", forceLoad: true);
+            }
+            else
+            {
+                Navigation.NavigateTo("/Account/Login", forceLoad: true);
+            }
         }
-        else
+        catch
         {
-            Navigation.NavigateTo("/login?error=invalid", forceLoad: true);
+            Navigation.NavigateTo("/Account/Login", forceLoad: true);
         }
     }
 }
