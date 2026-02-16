@@ -21,11 +21,11 @@
 
         if (result.Succeeded)
         {
-            Navigation.NavigateTo("/dashboard", forceLoad: true);
+            Navigation.NavigateTo("/opportunities", forceLoad: true);
         }
         else
         {
-            Navigation.NavigateTo("/login?error=invalid", forceLoad: true);
+            Navigation.NavigateTo("/Account/Login?error=invalid", forceLoad: true);
         }
     }
 }
