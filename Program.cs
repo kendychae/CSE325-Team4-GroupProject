@@ -12,24 +12,29 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-// Add Database Context
+builder.Services.AddHttpClient();
+
 // Supports both SQL Server and SQLite
+// Add Database Context - Explicitly handle development vs production
+var isDevelopment = builder.Environment.IsDevelopment();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
 if (string.IsNullOrEmpty(connectionString))
 {
-    // Default to SQL Server LocalDB
-    connectionString = "Server=(localdb)\\mssqllocaldb;Database=ServeHubDb;Trusted_Connection=true;MultipleActiveResultSets=true";
+    throw new InvalidOperationException("Connection string not configured.");
 }
 
-// Automatically detect database provider based on connection string
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    if (connectionString.Contains("Data Source=") && connectionString.EndsWith(".db"))
+    if (isDevelopment && connectionString.Contains(".db"))
     {
+        // Development with SQLite
         options.UseSqlite(connectionString);
+        Console.WriteLine("Using SQLite for Development");
     }
     else
     {
+        // Production or LocalDB - Use SQL Server
         options.UseSqlServer(connectionString, sqlOptions =>
         {
             sqlOptions.EnableRetryOnFailure(
@@ -37,6 +42,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 maxRetryDelay: TimeSpan.FromSeconds(30),
                 errorNumbersToAdd: null);
         });
+        Console.WriteLine($"Using SQL Server for {(isDevelopment ? "Development (LocalDB)" : "Production (Azure)")}");
     }
 });
 
@@ -59,24 +65,6 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 })
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
-
-// // Add Razor Pages and Server-side Blazor
-// builder.Services.AddRazorPages();
-// builder.Services.AddServerSideBlazor();
-
-// // Add authorization policies if needed
-// builder.Services.AddAuthorization(options =>
-// {
-//     options.FallbackPolicy = new AuthorizationPolicyBuilder()
-//         .RequireAuthenticatedUser()
-//         .Build();
-// });
-
-// // Configure HTTPS redirection
-// builder.Services.AddHttpsRedirection(options =>
-// {
-//     options.HttpsPort = 443;
-// });
 
 // Add Authentication State Provider for Blazor
 builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
@@ -119,9 +107,17 @@ using (var scope = app.Services.CreateScope())
         logger.LogError(ex, "Database migration failed at startup.");
         // Don't rethrow — let the app start so you can diagnose via logs
     }
-  
+
     // Seed demo data for video demonstration
-    await DatabaseSeeder.SeedDataAsync(dbContext, userManager);
+    try
+    {
+        await DatabaseSeeder.SeedDataAsync(dbContext, userManager);
+    }
+    catch (Exception ex)
+    {
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Database seeding failed at startup.");
+    }
 }
 
 // Configure the HTTP request pipeline.
@@ -144,7 +140,37 @@ app.UseAuthorization();
 
 app.UseAntiforgery();
 
+app.MapPost("/account/login-handler", async (HttpRequest httpRequest, SignInManager<ApplicationUser> signInManager) =>
+{
+    var form = await httpRequest.ReadFormAsync();
+    var email = form["Email"].ToString();
+    var password = form["Password"].ToString();
+    var rememberMeRaw = form["RememberMe"].ToString();
+    var rememberMe = string.Equals(rememberMeRaw, "true", StringComparison.OrdinalIgnoreCase) ||
+                     string.Equals(rememberMeRaw, "on", StringComparison.OrdinalIgnoreCase);
+
+    if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+    {
+        return Results.Redirect("/Account/Login?error=missing");
+    }
+
+    var result = await signInManager.PasswordSignInAsync(email, password, rememberMe, lockoutOnFailure: true);
+
+    if (result.Succeeded)
+    {
+        return Results.Redirect("/dashboard");
+    }
+
+    if (result.IsLockedOut)
+    {
+        return Results.Redirect("/Account/Login?error=locked");
+    }
+
+    return Results.Redirect("/Account/Login?error=invalid");
+}).AllowAnonymous();
+
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
 app.Run();
+
