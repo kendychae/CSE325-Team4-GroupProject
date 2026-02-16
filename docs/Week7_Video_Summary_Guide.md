@@ -59,7 +59,6 @@
 - Try to access protected page without login - show redirect
 - Show loading states and error messages
 
-
 **Script:**
 
 > "I'm Iyen, demonstrating our error handling. Watch what happens when I try to create an opportunity without filling required fields - we get clear validation messages. If I navigate to a non-existent page, our custom 404 page appears. Trying to access protected pages without authentication redirects you to login. Throughout the app, we display loading spinners during data fetches and show user-friendly error messages when operations fail. These features ensure a smooth, professional user experience."
