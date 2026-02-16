@@ -59,6 +59,7 @@
 - Try to access protected page without login - show redirect
 - Show loading states and error messages
 
+
 **Script:**
 
 > "I'm Iyen, demonstrating our error handling. Watch what happens when I try to create an opportunity without filling required fields - we get clear validation messages. If I navigate to a non-existent page, our custom 404 page appears. Trying to access protected pages without authentication redirects you to login. Throughout the app, we display loading spinners during data fetches and show user-friendly error messages when operations fail. These features ensure a smooth, professional user experience."
@@ -181,5 +182,5 @@
 
 - **Repo**: https://github.com/kendychae/CSE325-Team4-GroupProject
 - **Project Board**: https://github.com/users/kendychae/projects/2
-- **Deployed Site**: https://servehub-app-b3fac9a8h5cybrfr.spaincentral-01.azurewebsites.net/
+- **Deployed Site**: http://servehub-app-b3fac9a8h5cybrfr.spaincentral-01.azurewebsites.net/
 - **Video**: [Insert Zoom/Teams Recording Link]
